@@ -48,3 +48,7 @@ next-env.d.ts
 *.db-journal
 *.db-shm
 *.db-wal
+
+# user-uploaded images
+/public/uploads/*
+!/public/uploads/.gitkeep

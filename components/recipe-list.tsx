@@ -1,17 +1,13 @@
 "use client"
 
-import {Card, CardAction, CardFooter, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import Image from "next/image"
-import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
-import {ChefHat, Eye, Funnel, HeartCrack, Plus, Search, SquarePen} from "lucide-react";
-import { recipes as recipesTable } from "@/db/schema";
-import { InferSelectModel } from "drizzle-orm";
+import {Funnel, HeartCrack, Plus, Search} from "lucide-react";
 import {useState} from "react";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "@/components/ui/input-group";
 import Link from "next/link";
+import {Recipe, RecipeCard} from "@/components/recipe-card";
 
-type Recipe = InferSelectModel<typeof recipesTable>;
+
 
 export function RecipeList({ recipes }: { recipes: Recipe[] }) {
     const [ nameFilter, setNameFilter ] = useState<string>("");
@@ -22,11 +18,11 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
 
     return (
         <>
-            <div className="fixed bottom-6 right-6 flex flex-col gap-3 sm:hidden z-50">
-                <Button size="icon-xl" variant="secondary">
+            <div className="fixed bottom-6 right-4 flex flex-col gap-3 sm:hidden z-50">
+                <Button size="icon-xl" className="rounded-full" variant="secondary">
                     <Funnel className="size-7" />
                 </Button>
-                <Button size="icon-xl" asChild>
+                <Button size="icon-xl" className="rounded-full" asChild>
                     <Link href="/recipes/new"><Plus className="size-7" /></Link>
                 </Button>
             </div>
@@ -55,44 +51,9 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
                     <HeartCrack className="size-7" />
                 </div>
             ) : (
-                <div className="grid gap-4" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}>
+                <div className="grid gap-4 max-sm:mb-36" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}>
                     {filteredRecipes.map((recipe) => (
-                        <Card
-                            key={recipe.id}
-                            className="relative mx-auto w-full pt-0"
-                        >
-                            {recipe.image != null ? (
-                                <Image
-                                    src={recipe.image}
-                                    alt="Recipe image"
-                                    width={320} height={160}
-                                    className="aspect-video w-full object-cover"
-                                />
-                            ) : (
-                                <div className="relative z-20 w-full h-40 aspect-video bg-muted/40 flex items-center justify-center">
-                                    <ChefHat className="size-20 text-muted" />
-                                </div>
-                            )}
-                            <CardHeader>
-                                <CardTitle className="font-semibold">{recipe.name}</CardTitle>
-                                <CardDescription>{recipe.description}</CardDescription>
-                                <CardAction>
-                                    {recipe.prepTime !== null && (
-                                        <Badge>{recipe.prepTime} min</Badge>
-                                    )}
-                                </CardAction>
-                            </CardHeader>
-                            <CardFooter>
-                                <div className="w-full flex flex-row gap-4">
-                                    <Button variant="secondary" size="lg" className="flex-1 font-semibold">
-                                        <SquarePen className="size-5" /> Upravit
-                                    </Button>
-                                    <Button size="lg" className="flex-1 font-semibold">
-                                        <Eye className="size-5" /> Zobrazit
-                                    </Button>
-                                </div>
-                            </CardFooter>
-                        </Card>
+                        <RecipeCard key={recipe.id} recipe={recipe} />
                     ))}
                 </div>
             )}

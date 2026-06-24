@@ -68,9 +68,9 @@
   --popover-foreground: oklch(0.9663 0.0176 81.3321);
   --primary: oklch(0.6286 0.1412 40.7678);
   --primary-foreground: oklch(0.9663 0.0176 81.3321);
-  --secondary: oklch(0.2961 0.0053 106.7199);
+  --secondary: oklch(0.3211 0.0218 70.5956);
   --secondary-foreground: oklch(0.8390 0.0437 70.5956);
-  --muted: oklch(0.2567 0.0019 106.54);
+  --muted: oklch(0.3396 0.0051 106.67);
   --muted-foreground: oklch(0.8390 0.0437 70.5956);
   --accent: oklch(0.6286 0.1412 40.7678);
   --accent-foreground: oklch(1.0000 0 0);
@@ -190,5 +190,11 @@
   blockquote {
     @apply mt-6 border-l-2 pl-6 italic;
   }
+}
 
+@media (max-width: 767px) {
+  .lucide:not([class*="size-"]) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 }
