@@ -1,0 +1,22 @@
+"use client"
+import { useTheme } from "next-themes";
+import {Button} from "@/components/ui/button";
+import {Moon, Sun} from "lucide-react";
+
+export function ThemeToggle() {
+    const { setTheme, resolvedTheme } = useTheme();
+
+    return (
+        <Button
+            variant="ghost"
+            size="icon-lg"
+            onClick={() => {setTheme(resolvedTheme === "dark" ? "light" : "dark")}}
+        >
+            {resolvedTheme === "dark" ? (
+                <Sun className="size-7" />
+            ) : (
+                <Moon className="size-7" />
+                )}
+        </Button>
+    );
+}
