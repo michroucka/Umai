@@ -14,7 +14,7 @@ export const ingredients = sqliteTable("ingredients", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   recipeId: integer("recipe_id").notNull().references(() => recipes.id, {onDelete: "cascade"}),
   name: text("name").notNull(),
-  description: text("description"),
+  note: text("note"),
   amount: real("amount"),
   unit: text("unit").notNull(),
 });

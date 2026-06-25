@@ -191,10 +191,3 @@
     @apply mt-6 border-l-2 pl-6 italic;
   }
 }
-
-@media (max-width: 767px) {
-  .lucide:not([class*="size-"]) {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-}

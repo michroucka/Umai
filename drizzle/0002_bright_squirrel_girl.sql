@@ -1,0 +1,1 @@
+ALTER TABLE `ingredients` RENAME COLUMN "description" TO "note";
