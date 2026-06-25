@@ -52,7 +52,9 @@ function AutocompleteInput({
                              children,
                              ref,
                              ...props
-                           }: ComponentProps<typeof AutocompletePrimitive.Input>) {
+                           }: Omit<ComponentProps<typeof AutocompletePrimitive.Input>, 'className'> & {
+  className?: string
+}) {
   const { anchorRef } = useAnchorRef()
   useImperativeHandle(ref, () => anchorRef.current!, [anchorRef])
   return (
