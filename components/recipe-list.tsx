@@ -45,8 +45,8 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
                 </div>
             </div>
             {filteredRecipes.length === 0 ? (
-                <div className="flex p-8 gap-2 justify-center text-2xl font-medium items-center text-muted">
-                    <h1>Žádné recepty</h1>
+                <div className="flex p-8 gap-2 justify-center text-2xl font-medium items-center text-muted pt-32">
+                    <h3>Žádné recepty</h3>
                     <HeartCrack className="size-7" />
                 </div>
             ) : (

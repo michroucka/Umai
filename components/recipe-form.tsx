@@ -81,11 +81,6 @@ export function RecipeForm() {
             className="grid grid-cols-1 xl:grid-cols-3 sm:max-xl:w-2/3 sm:max-xl:mx-auto gap-10 gap-y-4"
             onSubmit={form.handleSubmit(onSubmit)}
         >
-            <div className="xl:col-span-3">
-                <h1>Nový recept</h1>
-                <Separator className="max-w-2/3 sm:max-w-1/3 mx-auto mt-2" />
-            </div>
-
             <FieldSet>
                 <FieldLegend>Základní informace</FieldLegend>
                 <FieldDescription>Název, popis a čas přípravy receptu.</FieldDescription>
