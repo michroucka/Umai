@@ -15,15 +15,16 @@ import {Button} from "@/components/ui/button";
 import {Trash2} from "lucide-react";
 
 
-export function RecipeIngredientsField({ control, getValues, errors, trigger }: {
+export function RecipeIngredientsField({ control, getValues, errors, trigger, isSubmitted }: {
     control: Control<RecipeFormValues>;
     getValues: UseFormGetValues<RecipeFormValues>;
     errors: FieldErrors<RecipeFormValues>;
     trigger: UseFormTrigger<RecipeFormValues>;
+    isSubmitted: boolean;
 }) {
     const { fields, append, remove } = useFieldArray({ control, name: "ingredients" });
 
-    const units = ["g", "ml", "ks", "dle chuti"]
+    const units = ["g", "ml", "ks", "dle chuti", "dle potřeby"]
 
     return (
         <FieldGroup>
@@ -42,7 +43,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger }: 
                                     <>
                                         <Input
                                             {...field}
-                                            aria-invalid={!isLast && fieldState.invalid}
+                                            aria-invalid={isSubmitted && !isLast && fieldState.invalid}
                                             onChange={(e) => {
                                                 const wasEmpty = field.value === "";
                                                 const newValue = e.target.value;
@@ -64,7 +65,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger }: 
                                                 void trigger("ingredients")
                                             }}
                                         />
-                                        {!isLast && fieldState.invalid && <FieldError errors={[fieldState.error]}/>}
+                                        {isSubmitted && !isLast && fieldState.invalid && <FieldError errors={[fieldState.error]}/>}
                                     </>
                                 )}
                             />
@@ -78,8 +79,16 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger }: 
                                         control={control}
                                         render={({field, fieldState}) => (
                                             <InputGroupInput
-                                                type="number" min={0} {...field}
-                                                aria-invalid={!isLast && fieldState.invalid}
+                                                type="number" min={0}
+                                                name={field.name}
+                                                ref={field.ref}
+                                                onBlur={field.onBlur}
+                                                value={field.value ?? ""}
+                                                onChange={(e) => {
+                                                    const val = e.target.valueAsNumber;
+                                                    field.onChange(isNaN(val) ? undefined : val);
+                                                }}
+                                                aria-invalid={isSubmitted && !isLast && fieldState.invalid}
                                             />
                                         )}
                                     />
@@ -101,7 +110,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger }: 
                                                     <AutocompleteInput
                                                         placeholder="Jednotka"
                                                         className="w-1/2 border-0 border-l rounded-l-none shadow-none"
-                                                        aria-invalid={!isLast && fieldState.invalid}
+                                                        aria-invalid={isSubmitted && !isLast && fieldState.invalid}
                                                     >
                                                         <AutocompleteClear/>
                                                         <AutocompleteTrigger/>
@@ -120,7 +129,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger }: 
                                         )}
                                     />
                                 </InputGroup>
-                                {!isLast && errors.ingredients?.[index]?.unit && (
+                                {isSubmitted && !isLast && errors.ingredients?.[index]?.unit && (
                                     <FieldError className="w-1/2 ms-auto" errors={[errors.ingredients[index].unit]} />
                                 )}
                             </div>

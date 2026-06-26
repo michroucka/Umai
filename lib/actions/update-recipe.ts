@@ -16,19 +16,19 @@ export async function updateRecipe(recipeId: number, data: FormData)  {
     const prepTime = parsePrepTime(Number(data.get("hours")), Number(data.get("minutes")));
     const imgPath = await saveImage(data.get("image"));
 
-    await db.transaction(async (tx) => {
-        await tx.update(recipes).set({
+    db.transaction((tx) => {
+        tx.update(recipes).set({
             name: data.get("name") as string,
             description: data.get("description") as string || null,
             prepTime: prepTime,
             image: imgPath,
             portions: Number(data.get("portions")),
-        }).where(eq(recipes.id, recipeId));
+        }).where(eq(recipes.id, recipeId)).run();
 
-        await tx.delete(ingredients).where(eq(ingredients.recipeId, recipeId));
-        await tx.delete(steps).where(eq(steps.recipeId, recipeId));
+        tx.delete(ingredients).where(eq(ingredients.recipeId, recipeId)).run();
+        tx.delete(steps).where(eq(steps.recipeId, recipeId)).run();
 
-        await tx.insert(ingredients).values(
+        tx.insert(ingredients).values(
             ing.map((i) => ({
                 recipeId: recipeId,
                 name: i.name as string,
@@ -36,15 +36,15 @@ export async function updateRecipe(recipeId: number, data: FormData)  {
                 amount: i.amount as number || null,
                 unit: i.unit as string,
             }))
-        );
+        ).run();
 
-        await tx.insert(steps).values(
+        tx.insert(steps).values(
             stp.map((s, idx) => ({
                 recipeId: recipeId,
                 stepOrder: idx,
                 content: s.content,
             }))
-        );
+        ).run();
     });
 
     redirect("/");

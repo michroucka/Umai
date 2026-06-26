@@ -1,0 +1,9 @@
+services:
+  umai:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/public/uploads
+    environment:
+      - DATABASE_PATH=/app/data/umai.db

@@ -39,60 +39,63 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
             onPointerMove={cancelPress}
             onPointerCancel={cancelPress}
             onContextMenu={(e) => e.preventDefault()}
+            onClick={() => redirect(`/recipes/${recipe.id}`) }
         >
-            <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen} >
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        variant="outline"
-                        size="icon-sm"
-                        className="rounded-full right-1 top-1 absolute z-50 opacity-0 group-hover:opacity-100 data-[state=open]:opacity-100 transition-opacity"
-                    >
-                        <EllipsisVertical className="size-4.5" />
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                        <List />
-                        Ingredience
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                        onClick={() => { redirect(`/recipes/${recipe.id}/edit`); }}
-                    >
-                        <SquarePen />
-                        Upravit
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                        variant="destructive"
-                        onClick={() => { setMenuOpen(false); setDeleteOpen(true); }}
-                    >
-                        <Trash2 />
-                        Smazat
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
-
-            <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-                <DialogContent showCloseButton={false}>
-                    <DialogHeader>
-                        <DialogTitle>Smazat recept</DialogTitle>
-                        <DialogDescription>
-                            Opravdu chcete smazat recept &quot;{recipe.name}&quot;? Tato akce je nevratná.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="secondary">Zrušit</Button>
-                        </DialogClose>
+            <div onClick={(e) => e.stopPropagation()}>
+                <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen} >
+                    <DropdownMenuTrigger asChild>
                         <Button
-                            variant="destructive"
-                            onClick={() => { void deleteRecipe(recipe.id); setDeleteOpen(false); }}
+                            variant="outline"
+                            size="icon-sm"
+                            className="rounded-full right-1 top-1 absolute z-50 opacity-0 group-hover:opacity-100 data-[state=open]:opacity-100 transition-opacity"
                         >
-                            <Trash2 /> Smazat
+                            <EllipsisVertical className="size-4.5" />
                         </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem>
+                            <List />
+                            Ingredience
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => redirect(`/recipes/${recipe.id}/edit`)}
+                        >
+                            <SquarePen />
+                            Upravit
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                            variant="destructive"
+                            onClick={() => { setMenuOpen(false); setDeleteOpen(true); }}
+                        >
+                            <Trash2 />
+                            Smazat
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
+                <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+                    <DialogContent showCloseButton={false}>
+                        <DialogHeader>
+                            <DialogTitle>Smazat recept</DialogTitle>
+                            <DialogDescription>
+                                Opravdu chcete smazat recept &quot;{recipe.name}&quot;? Tato akce je nevratná.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button variant="secondary">Zrušit</Button>
+                            </DialogClose>
+                            <Button
+                                variant="destructive"
+                                onClick={() => { void deleteRecipe(recipe.id); setDeleteOpen(false); }}
+                            >
+                                <Trash2 /> Smazat
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+            </div>
 
             <Card
                 className="relative mx-auto w-full h-full pt-0 shadow-md hover:shadow-xl transition duration-250"

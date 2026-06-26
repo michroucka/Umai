@@ -33,7 +33,7 @@ const recipeSchema = z.object({
     portions: z.number().min(1),
     hours: z.number().min(0),
     minutes: z.number().min(0).max(59),
-    image: z.union([z.instanceof(File), z.url()]).optional(),
+    image: z.union([z.instanceof(File), z.string()]).optional(),
 
     ingredients: z.array(z.object({
         name: z.string(),
@@ -246,6 +246,7 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                     getValues={form.getValues}
                     errors={form.formState.errors}
                     trigger={form.trigger}
+                    isSubmitted={form.formState.isSubmitted}
                 />
             </FieldSet>
 

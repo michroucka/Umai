@@ -13,28 +13,28 @@ export function Navbar() {
 
 
     return (
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-6">
             <Link href={"/"}>
                 <div className="flex gap-4 items-end">
                     <Image
                         src="/umai_logo_only.svg"
                         alt="Logo"
-                        width={80}
-                        height={80}
+                        width={60}
+                        height={60}
                     />
                     {resolvedTheme === "dark" ?
                         <Image
                             src="/umai_logo_text_light.svg"
                             alt="Logo Text"
-                            width={150}
-                            height={80}
+                            width={100}
+                            height={60}
                         />
                         :
                         <Image
                             src="/umai_logo_text.svg"
                             alt="Logo Text"
-                            width={150}
-                            height={80}
+                            width={100}
+                            height={60}
                         />
                     }
                 </div>

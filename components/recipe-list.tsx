@@ -5,7 +5,8 @@ import {Funnel, HeartCrack, Plus, Search} from "lucide-react";
 import {useState} from "react";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "@/components/ui/input-group";
 import Link from "next/link";
-import {Recipe, RecipeCard} from "@/components/recipe-card";
+import {RecipeCard} from "@/components/recipe-card";
+import {Recipe} from "@/lib/types";
 
 
 export function RecipeList({ recipes }: { recipes: Recipe[] }) {
@@ -19,7 +20,7 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
         <>
             <div className="fixed bottom-6 right-4 flex flex-col gap-3 sm:hidden z-50">
                 <Button size="icon-xl" className="rounded-full" variant="secondary">
-                    <Funnel className="size-7" />
+                    <Funnel className="size-6" />
                 </Button>
                 <Button size="icon-xl" className="rounded-full" asChild>
                     <Link href="/recipes/new"><Plus className="size-7" /></Link>
