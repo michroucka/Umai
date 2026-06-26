@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function parsePrepTime(hours: number, minutes: number): number | null {
-    return (hours !== 0 && minutes !== 0) ? hours * 60 + minutes : null ;
+    return (hours !== 0 || minutes !== 0) ? hours * 60 + minutes : null;
 }
 
 export function parseHoursMinutes(prepTime: number) {
