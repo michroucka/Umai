@@ -250,7 +250,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                         <div key={step.id}>
                             <div className="flex gap-2">
                                 <h3 className="text-primary min-w-6 self-start -mt-1">{step.stepOrder + 1}.</h3>
-                                <span>{step.content}</span>
+                                <span className="whitespace-pre-wrap">{step.content}</span>
                             </div>
                             {index < recipe.steps.length - 1 && <Separator className="my-4 mx-auto max-w-2/3 " />}
                         </div>

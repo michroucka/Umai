@@ -47,5 +47,5 @@ export async function updateRecipe(recipeId: number, data: FormData)  {
         ).run();
     });
 
-    redirect("/");
+    redirect(`/recipes/${recipeId}`);
 }
