@@ -208,7 +208,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                         <h4 className="mb-1">Ingredience</h4>
                         {recipe.ingredients.map((ingredient) => {
                             const amount = ingredient.amount ?
-                                formatAmount(ingredient.amount) : null;
+                                formatAmount((ingredient.amount / recipe.portions) * portions) : null;
 
                             return (
                                 <Field key={ingredient.id} orientation="horizontal" className="group">
