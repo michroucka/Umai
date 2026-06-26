@@ -17,7 +17,7 @@ export function RecipeStepsField({ control, errors, trigger }: {
         <FieldGroup>
             {fields.map((item, index) => (
                 <div key={item.id} className="flex gap-2">
-                    <Field orientation="horizontal">
+                    <Field orientation="horizontal" className="min-w-0">
                         <FieldLabel className="mb-auto" htmlFor={`steps.${index}.content`}>{index + 1}.</FieldLabel>
                         <Controller
                             name={`steps.${index}.content`}
