@@ -109,10 +109,9 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                                 >
                                                     <AutocompleteInput
                                                         placeholder="Jednotka"
-                                                        className="w-1/2 border-0 border-l rounded-l-none shadow-none [&_input::placeholder]:text-[13px]"
+                                                        className="w-1/2 border-0 border-l rounded-l-none shadow-none [&_input]:text-sm [&_input::placeholder]:text-[13px]"
                                                         aria-invalid={isSubmitted && !isLast && fieldState.invalid}
                                                     >
-                                                        <AutocompleteClear/>
                                                         <AutocompleteTrigger/>
                                                     </AutocompleteInput>
                                                     <AutocompletePopup>
