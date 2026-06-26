@@ -80,6 +80,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                         render={({field, fieldState}) => (
                                             <InputGroupInput
                                                 type="number" min={0}
+                                                step="any"
                                                 name={field.name}
                                                 ref={field.ref}
                                                 onBlur={field.onBlur}
