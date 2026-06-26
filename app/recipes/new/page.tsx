@@ -9,7 +9,7 @@ export default async function NewRecipePage() {
                 <h1>Nový recept</h1>
                 <Separator className="max-w-2/3 sm:max-w-1/3 mx-auto mt-2" />
             </div>
-            <RecipeForm />
+            <RecipeForm defaultRecipe={null} />
         </>
     )
 }
