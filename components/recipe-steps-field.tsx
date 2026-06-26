@@ -39,7 +39,7 @@ export function RecipeStepsField({ control, errors, trigger }: {
                     </Field>
                     <div>
                         <Button
-                            size="icon"
+                            size="icon-sm"
                             variant="destructive"
                             type="button"
                             className="h-full"
@@ -53,11 +53,12 @@ export function RecipeStepsField({ control, errors, trigger }: {
             ))}
             <Button
                 type="button"
+                size="sm"
                 variant="outline"
                 className="w-full"
                 onClick={() => append({content: ""})}
             >
-                <Plus /> Přidat krok
+                <Plus className="size-3.5" /> Přidat krok
             </Button>
             {errors.steps?.root && <FieldError errors={[errors.steps.root]} />}
         </FieldGroup>

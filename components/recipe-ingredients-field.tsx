@@ -109,7 +109,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                                 >
                                                     <AutocompleteInput
                                                         placeholder="Jednotka"
-                                                        className="w-1/2 border-0 border-l rounded-l-none shadow-none"
+                                                        className="w-1/2 border-0 border-l rounded-l-none shadow-none [&_input::placeholder]:text-[13px]"
                                                         aria-invalid={isSubmitted && !isLast && fieldState.invalid}
                                                     >
                                                         <AutocompleteClear/>
@@ -147,7 +147,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                     </div>
                     <div>
                         <Button
-                            size="icon"
+                            size="icon-sm"
                             variant="destructive"
                             type="button"
                             className="h-full"

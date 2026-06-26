@@ -55,6 +55,7 @@ export function RecipeImageField({ control, setValue, getValues }: {
                 />
                 <ButtonGroup id="image">
                     <Button type="button"
+                            size="sm"
                             variant="outline"
                             onClick={() => fileInputRef.current?.click()}
                     >
@@ -63,6 +64,7 @@ export function RecipeImageField({ control, setValue, getValues }: {
                     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                         <DialogTrigger asChild>
                             <Button variant="outline"
+                                    size="sm"
                                     type="button"
                                     onClick={async () => {
                                         const query = getValues("name");
@@ -125,7 +127,7 @@ export function RecipeImageField({ control, setValue, getValues }: {
                         <Button
                             type="button"
                             className="absolute right-1 top-1 rounded-full bg-destructive hover:bg-destructive/75"
-                            size="icon-sm"
+                            size="icon-xs"
                             onClick={() => setValue("image", undefined)}
                         >
                             <X />

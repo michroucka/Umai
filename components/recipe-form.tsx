@@ -223,14 +223,14 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                             )}
                         />
                     </div>
-                    <Field orientation="horizontal" className="max-xl:hidden">
-                        <Button type="submit">
-                            <Save /> Uložit
-                        </Button>
+                    <Field orientation="horizontal" className="max-xl:hidden justify-between">
                         <Button variant="outline" type="button" asChild>
                             <Link href="/">
                                 <X /> Zrušit
                             </Link>
+                        </Button>
+                        <Button type="submit">
+                            <Save /> Uložit
                         </Button>
                     </Field>
                 </FieldGroup>
@@ -262,14 +262,14 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                 />
             </FieldSet>
 
-            <div className="flex gap-2 xl:hidden">
-                <Button type="submit">
-                    <Save /> Uložit
-                </Button>
+            <div className="flex xl:hidden justify-between mt-2">
                 <Button variant="outline" type="button" asChild>
                     <Link href="/">
                         <X /> Zrušit
                     </Link>
+                </Button>
+                <Button type="submit">
+                    <Save /> Uložit
                 </Button>
             </div>
         </form>

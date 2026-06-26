@@ -81,7 +81,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
         </div>
     ) : (
         <div>
-            <div className="flex gap-4 mb-4">
+            <div className="flex max-lg:justify-between lg:gap-4 mb-4">
                 <Button variant="outline" asChild>
                     <Link href="/"><X /> Zavřít</Link>
                 </Button>
@@ -111,33 +111,35 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                         <div className="flex justify-between text-center px-2">
                             <div>
                                 <p>Porce</p>
-                                <Button
-                                    variant="ghost"
-                                    size="icon-xs"
-                                    onClick={() => setPortions(portions - 1)}
-                                >
-                                    <Minus />
-                                </Button>
-                                <Input
-                                    type="number"
-                                    value={portions}
-                                    min={1} max={99}
-                                    onChange={(e) => setPortions(Math.min(99, Math.max(1, Number(e.target.value))))}
-                                    onFocus={(e) => e.target.select()}
-                                    className="max-w-10 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                />
-                                <Button
-                                    variant="ghost"
-                                    size="icon-xs"
-                                    onClick={() => setPortions(portions + 1)}
-                                >
-                                    <Plus />
-                                </Button>
+                                <div className="flex items-center">
+                                    <Button
+                                        variant="ghost"
+                                        size="icon-sm"
+                                        onClick={() => setPortions(portions - 1)}
+                                    >
+                                        <Minus />
+                                    </Button>
+                                    <Input
+                                        type="number"
+                                        value={portions}
+                                        min={1} max={99}
+                                        onChange={(e) => setPortions(Math.min(99, Math.max(1, Number(e.target.value))))}
+                                        onFocus={(e) => e.target.select()}
+                                        className="max-w-10 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    />
+                                    <Button
+                                        variant="ghost"
+                                        size="icon-sm"
+                                        onClick={() => setPortions(portions + 1)}
+                                    >
+                                        <Plus className="size-5" />
+                                    </Button>
+                                </div>
                             </div>
                             {prepTime &&
                                 <div>
                                     <p>Čas přípravy</p>
-                                    <Badge>
+                                    <Badge size="lg">
                                         {prepTime.hours} h {prepTime.minutes} min
                                     </Badge>
                                 </div>
@@ -160,33 +162,35 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                             <div className="flex justify-between text-center px-2">
                                 <div>
                                     <p>Porce</p>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon-xs"
-                                        onClick={() => setPortions(portions - 1)}
-                                    >
-                                        <Minus />
-                                    </Button>
-                                    <Input
-                                        type="number"
-                                        value={portions}
-                                        min={1} max={99}
-                                        onChange={(e) => setPortions(Math.min(99, Math.max(1, Number(e.target.value))))}
-                                        onFocus={(e) => e.target.select()}
-                                        className="max-w-10 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    />
-                                    <Button
-                                        variant="ghost"
-                                        size="icon-xs"
-                                        onClick={() => setPortions(portions + 1)}
-                                    >
-                                        <Plus />
-                                    </Button>
+                                    <div>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon-xs"
+                                            onClick={() => setPortions(portions - 1)}
+                                        >
+                                            <Minus />
+                                        </Button>
+                                        <Input
+                                            type="number"
+                                            value={portions}
+                                            min={1} max={99}
+                                            onChange={(e) => setPortions(Math.min(99, Math.max(1, Number(e.target.value))))}
+                                            onFocus={(e) => e.target.select()}
+                                            className="max-w-10 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        />
+                                        <Button
+                                            variant="ghost"
+                                            size="icon-xs"
+                                            onClick={() => setPortions(portions + 1)}
+                                        >
+                                            <Plus />
+                                        </Button>
+                                    </div>
                                 </div>
                                 {prepTime &&
                                     <div>
                                         <p>Čas přípravy</p>
-                                        <Badge>
+                                        <Badge size="lg">
                                             {prepTime.hours} h {prepTime.minutes} min
                                         </Badge>
                                     </div>
