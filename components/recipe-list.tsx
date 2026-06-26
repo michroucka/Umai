@@ -18,7 +18,7 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
 
     return (
         <>
-            <div className="fixed bottom-6 right-4 flex flex-col gap-3 sm:hidden z-50">
+            <div className="fixed bottom-12 sm:bottom-6 right-4 flex flex-col gap-3 sm:hidden z-50">
                 <Button size="icon-xl" className="rounded-full" variant="secondary">
                     <Funnel className="size-6" />
                 </Button>
