@@ -165,7 +165,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                             {recipe.description &&
                                 <p className="m-0 leading-5 text-sm">{recipe.description}</p>
                             }
-                            <div className="flex text-center">
+                            <div className="flex text-center mt-1">
                                 <div className="flex-1">
                                     <p>Porce</p>
                                     <div>
