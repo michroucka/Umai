@@ -35,7 +35,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
     return fullscreenMode ? (
         <div className="fixed inset-0 z-50 bg-background flex flex-col">
             <div className="flex-1 overflow-y-auto p-6">
-                <span className="text-lg">
+                <span className="text-lg whitespace-pre-wrap">
                     <span className="text-3xl font-semibold text-primary mr-2">{recipe.steps[currentStep].stepOrder + 1}.</span>
                     {recipe.steps[currentStep].content}
                 </span>
