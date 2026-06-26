@@ -17,10 +17,12 @@ import {
     DialogFooter, DialogHeader, DialogTitle
 } from "@/components/ui/dialog";
 import {redirect} from "next/navigation";
+import {parseHoursMinutes} from "@/lib/utils";
 
 export function RecipeCard({ recipe }: { recipe: Recipe }) {
     const [ menuOpen, setMenuOpen ] = useState(false);
     const [ deleteOpen, setDeleteOpen ] = useState(false);
+    const prepTime = recipe.prepTime ? parseHoursMinutes(recipe.prepTime) : null;
 
     const pressTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
@@ -115,8 +117,8 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
                     <CardTitle className="font-semibold">{recipe.name}</CardTitle>
                     {recipe.description && <CardDescription className="">{recipe.description}</CardDescription>}
                     <CardAction>
-                        {recipe.prepTime !== null && (
-                            <Badge>{Math.floor(recipe.prepTime / 60)} h {recipe.prepTime % 60} min</Badge>
+                        {prepTime && (
+                            <Badge>{prepTime.hours && `${prepTime.hours} h`} {prepTime.minutes} min</Badge>
                         )}
                     </CardAction>
                 </CardHeader>
