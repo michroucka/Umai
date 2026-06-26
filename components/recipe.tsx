@@ -4,7 +4,7 @@ import {RecipeWithDetails} from "@/lib/types";
 import {Input} from "@/components/ui/input";
 import {useEffect, useState} from "react";
 import {Badge} from "@/components/ui/badge";
-import {parseHoursMinutes} from "@/lib/utils";
+import {formatAmount, parseHoursMinutes} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {ChevronLeft, ChevronRight, Maximize2, Minus, PenSquare, Plus, X} from "lucide-react";
 import {Separator} from "@/components/ui/separator";
@@ -208,7 +208,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                         <h4 className="mb-1">Ingredience</h4>
                         {recipe.ingredients.map((ingredient) => {
                             const amount = ingredient.amount ?
-                                Math.round((ingredient.amount / recipe.portions) * portions) : null;
+                                formatAmount(ingredient.amount) : null;
 
                             return (
                                 <Field key={ingredient.id} orientation="horizontal" className="group">
