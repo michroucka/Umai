@@ -20,8 +20,10 @@ import Link from "next/link";
 import {createRecipe} from "@/lib/actions/create-recipe";
 import {RecipeImageField} from "@/components/recipe-image-field";
 import {RecipeIngredientsField} from "@/components/recipe-ingredients-field";
-import {Separator} from "@/components/ui/separator";
 import {RecipeStepsField} from "@/components/recipe-steps-field";
+import {RecipeWithDetails} from "@/lib/types";
+import {parseHoursMinutes} from "@/lib/utils";
+import {updateRecipe} from "@/lib/actions/update-recipe";
 
 export type RecipeFormValues = z.infer<typeof recipeSchema>;
 
@@ -54,27 +56,53 @@ const recipeSchema = z.object({
     ),
 });
 
-async function onSubmit(data: z.infer<typeof recipeSchema>) {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    if (data.description) formData.append("description", data.description);
-    formData.append("portions", String(data.portions));
-    formData.append("hours", String(data.hours));
-    formData.append("minutes", String(data.minutes));
-    if (data.image) formData.append("image", data.image);
+function mapToFormValues(recipe: RecipeWithDetails) {
+    const prepTime = recipe.prepTime ? parseHoursMinutes(recipe.prepTime) : { hours: 0, minutes: 0 };
 
-    formData.append("ingredients", JSON.stringify(data.ingredients));
-    formData.append("steps", JSON.stringify(data.steps));
+    return {
+        name: recipe.name,
+        description: recipe.description ?? undefined,
+        hours: prepTime.hours,
+        minutes: prepTime.minutes,
+        image: recipe.image ?? undefined,
+        portions: recipe.portions,
 
-    await createRecipe(formData);
+        ingredients: [
+            ...recipe.ingredients.map(
+                ({ name, note, amount, unit }) =>
+                    ({ name, note: note ?? undefined, amount: amount ?? undefined, unit })),
+            { name: "", note: undefined, amount: undefined, unit: "" },
+        ],
+        steps: recipe.steps.map(({ content }) => ({ content })),
+    }
 }
 
-export function RecipeForm() {
+export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails | null }) {
     const form = useForm<z.infer<typeof recipeSchema>>({
         resolver: zodResolver(recipeSchema),
-        defaultValues: { name: "", description: "", portions: 2, hours: 0, minutes: 0,
+        defaultValues: defaultRecipe ? mapToFormValues(defaultRecipe) :
+            { name: "", description: "", portions: 2, hours: 0, minutes: 0,
             ingredients: [{ name: "", unit: "", amount: undefined }], steps: [{ content: "" }] },
     });
+
+    async function onSubmit(data: z.infer<typeof recipeSchema>) {
+        const formData = new FormData();
+        formData.append("name", data.name);
+        if (data.description) formData.append("description", data.description);
+        formData.append("portions", String(data.portions));
+        formData.append("hours", String(data.hours));
+        formData.append("minutes", String(data.minutes));
+        if (data.image) formData.append("image", data.image);
+
+        formData.append("ingredients", JSON.stringify(data.ingredients));
+        formData.append("steps", JSON.stringify(data.steps));
+
+        if (defaultRecipe) {
+            await updateRecipe(defaultRecipe.id, formData);
+        } else {
+            await createRecipe(formData);
+        }
+    }
 
     return (
         <form

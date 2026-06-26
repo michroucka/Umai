@@ -1,21 +1,14 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import {useEffect, useState} from "react";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
 
-export function useIsMobile() {
-    const [isMobile, setIsMobile] = useState(() =>
-        typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches);
+export function parsePrepTime(hours: number, minutes: number): number | null {
+    return (hours !== 0 && minutes !== 0) ? hours * 60 + minutes : null ;
+}
 
-    useEffect(() => {
-        const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-        const mq = window.matchMedia("(max-width: 640px)");
-        mq.addEventListener("change", handler);
-        return () => mq.removeEventListener("change", handler);
-    }, []);
-
-    return isMobile;
+export function parseHoursMinutes(prepTime: number) {
+    return { hours: Math.floor(prepTime / 60), minutes: prepTime % 60 }
 }

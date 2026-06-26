@@ -10,15 +10,13 @@ import {ChefHat, EllipsisVertical, List, SquarePen, Trash2} from "lucide-react";
 import {Card, CardAction, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {useRef, useState} from "react";
-import {InferSelectModel} from "drizzle-orm";
-import {recipes as recipesTable} from "@/db/schema"
 import {deleteRecipe} from "@/lib/actions/delete-recipe";
+import {Recipe} from "@/lib/types";
 import {
     Dialog, DialogClose, DialogContent, DialogDescription,
     DialogFooter, DialogHeader, DialogTitle
 } from "@/components/ui/dialog";
-
-export type Recipe = InferSelectModel<typeof recipesTable>;
+import {redirect} from "next/navigation";
 
 export function RecipeCard({ recipe }: { recipe: Recipe }) {
     const [ menuOpen, setMenuOpen ] = useState(false);
@@ -57,7 +55,9 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
                         <List />
                         Ingredience
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => { redirect(`/recipes/${recipe.id}/edit`); }}
+                    >
                         <SquarePen />
                         Upravit
                     </DropdownMenuItem>

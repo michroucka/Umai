@@ -1,41 +1,49 @@
 "use server"
 
-import path from "path";
-import { mkdir, writeFile } from "fs/promises";
 import { db } from "@/db";
-import {recipes} from "@/db/schema";
+import {ingredients, recipes, steps} from "@/db/schema";
 import {redirect} from "next/navigation";
+import {saveImage} from "@/lib/actions/recipe-utils";
+import {RecipeFormValues} from "@/components/recipe-form";
+import {parsePrepTime} from "@/lib/utils";
 
 export async function createRecipe(data: FormData) {
-    const prepTime = Number(data.get("hours")) * 60 + Number(data.get("minutes"));
+    const ing = (JSON.parse(data.get("ingredients") as string) as
+        RecipeFormValues["ingredients"]).filter(i => i.name.trim() !== "");
+    const stp = (JSON.parse(data.get("steps") as string) as
+        RecipeFormValues["steps"]).filter(s => s.content.trim() !== "");
+
+    const prepTime = parsePrepTime(Number(data.get("hours")), Number(data.get("minutes")));
     const date = new Date().toISOString();
+    const imgPath = await saveImage(data.get("image"));
 
-    let imgPath: string | null = null;
-    const img = data.get("image");
-    if (img instanceof File) {
-        const arrayBuffer = await img.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
 
-        const ext = img.name.split(".").pop();
-        const filename = `${crypto.randomUUID()}.${ext}`;
-        const uploadDir = path.join(process.cwd(), "public", "uploads");
-
-        await mkdir(uploadDir, { recursive: true });
-        await writeFile(path.join(uploadDir, filename), buffer);
-
-        imgPath = `/uploads/${filename}`;
-    } else {
-        imgPath = img as string || null;
-    }
-
-    await db.insert(recipes).values({
+    const [recipe] = await db.insert(recipes).values({
         name: data.get("name") as string,
         description: data.get("description") as string || null,
         date: date,
         prepTime: prepTime,
         image: imgPath,
         portions: Number(data.get("portions")),
-    })
+    }).returning();
+
+    await db.insert(ingredients).values(
+        ing.map((i) => ({
+            recipeId: recipe.id,
+            name: i.name as string,
+            note: i.note as string || null,
+            amount: i.amount as number || null,
+            unit: i.unit as string,
+        }))
+    );
+
+    await db.insert(steps).values(
+        stp.map((s, idx) => ({
+            recipeId: recipe.id,
+            stepOrder: idx,
+            content: s.content,
+        }))
+    );
 
     redirect("/");
 }
