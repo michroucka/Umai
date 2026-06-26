@@ -98,7 +98,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                 <img
                                     src={recipe.image}
                                     alt=""
-                                    className="aspect-square w-full object-cover"
+                                    className="aspect-video w-full object-cover"
                                 />
                             </div>
                         )}
@@ -140,7 +140,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                 <div>
                                     <p>Čas přípravy</p>
                                     <Badge size="lg">
-                                        {prepTime.hours} h {prepTime.minutes} min
+                                        {prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes} min
                                     </Badge>
                                 </div>
                             }
@@ -151,16 +151,22 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                     <div className="hidden sm:flex gap-2">
                         <div className="flex flex-col gap-2">
                             {recipe.image && (
-                                <div className="relative min-w-64 w-64 h-40 rounded-md bg-muted/40 flex items-center justify-center overflow-hidden">
+                                <div className="relative min-w-64 w-64 aspect-video rounded-md bg-muted/40 flex items-center justify-center overflow-hidden mb-4">
                                     <img
                                         src={recipe.image}
                                         alt=""
-                                        className="aspect-square w-full object-cover"
+                                        className="aspect-video w-full object-cover"
                                     />
                                 </div>
                             )}
-                            <div className="flex justify-between text-center px-2">
-                                <div>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <h3>{recipe.name}</h3>
+                            {recipe.description &&
+                                <p className="m-0 leading-5 text-sm">{recipe.description}</p>
+                            }
+                            <div className="flex text-center">
+                                <div className="flex-1">
                                     <p>Porce</p>
                                     <div>
                                         <Button
@@ -188,23 +194,16 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                     </div>
                                 </div>
                                 {prepTime &&
-                                    <div>
+                                    <div className="flex-1">
                                         <p>Čas přípravy</p>
                                         <Badge size="lg">
-                                            {prepTime.hours} h {prepTime.minutes} min
+                                            {prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes} min
                                         </Badge>
                                     </div>
                                 }
                             </div>
                         </div>
-                        <div className="flex flex-col gap-1">
-                            <h3>{recipe.name}</h3>
-                            {recipe.description &&
-                                <p className="m-0 leading-5 text-sm">{recipe.description}</p>
-                            }
-                        </div>
                     </div>
-                    <Separator className="lg:max-w-2/3" />
                     <div className="flex flex-col gap-1">
                         <h4 className="mb-1">Ingredience</h4>
                         {recipe.ingredients.map((ingredient) => {

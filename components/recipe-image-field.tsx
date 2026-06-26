@@ -121,7 +121,7 @@ export function RecipeImageField({ control, setValue, getValues }: {
                     </Dialog>
                 </ButtonGroup>
             </Field>
-            <div className="relative w-44 h-26 rounded-md bg-muted/40 flex items-center justify-center overflow-hidden">
+            <div className="relative w-44 aspect-video rounded-md bg-muted/40 flex items-center justify-center overflow-hidden">
                 {previewUrl != null ? (
                     <>
                         <Button
@@ -135,7 +135,7 @@ export function RecipeImageField({ control, setValue, getValues }: {
                         <img
                             src={previewUrl}
                             alt=""
-                            className="aspect-square w-full object-cover"
+                            className="aspect-video w-full object-cover"
                         />
                     </>
                 ) : (
