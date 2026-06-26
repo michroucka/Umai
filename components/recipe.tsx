@@ -140,7 +140,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                 <div>
                                     <p>Čas přípravy</p>
                                     <Badge size="lg">
-                                        {prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes} min
+                                        {prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes > 0 && `${prepTime.minutes} min`}
                                     </Badge>
                                 </div>
                             }
@@ -197,7 +197,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                     <div className="flex-1">
                                         <p>Čas přípravy</p>
                                         <Badge size="lg">
-                                            {prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes} min
+                                            {prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes > 0 && `${prepTime.minutes} min`}
                                         </Badge>
                                     </div>
                                 }

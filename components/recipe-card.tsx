@@ -118,7 +118,7 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
                     {recipe.description && <CardDescription className="">{recipe.description}</CardDescription>}
                     <CardAction>
                         {prepTime && (
-                            <Badge>{prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes} min</Badge>
+                            <Badge>{prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes > 0 && `${prepTime.minutes} min`}</Badge>
                         )}
                     </CardAction>
                 </CardHeader>
