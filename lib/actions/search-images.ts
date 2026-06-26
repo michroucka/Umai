@@ -6,5 +6,5 @@ export async function searchImages(query: string) {
         { headers: { Authorization: process.env.PEXELS_API_KEY! } }
     );
     const data = await res.json();
-    return data.photos as { id: number; src: { medium: string; large: string } }[];
+    return (data.photos ?? []) as { id: number; src: { medium: string; large: string } }[];
 }
