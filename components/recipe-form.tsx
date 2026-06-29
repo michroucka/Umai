@@ -33,7 +33,13 @@ const recipeSchema = z.object({
     portions: z.number().min(1),
     hours: z.number().min(0),
     minutes: z.number().min(0).max(59),
-    image: z.union([z.instanceof(File), z.string()]).optional(),
+    image: z.union([
+        z.instanceof(File).refine(
+            (file) => file.size <= 10 * 1024 * 1024,
+            "Obrázek je příliš velký (maximálně 10 MB)"
+        ),
+        z.string()
+    ]).optional(),
 
     ingredients: z.array(z.object({
         name: z.string(),

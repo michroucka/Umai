@@ -4,7 +4,7 @@ import {Input} from "@/components/ui/input";
 import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
 import {InputGroup, InputGroupInput} from "@/components/ui/input-group";
 import {
-    Autocomplete, AutocompleteClear,
+    Autocomplete,
     AutocompleteInput,
     AutocompleteItem,
     AutocompleteList,
@@ -12,7 +12,7 @@ import {
     AutocompleteTrigger
 } from "@/components/ui/autocomplete";
 import {Button} from "@/components/ui/button";
-import {Trash2} from "lucide-react";
+import {ChevronDown, ChevronUp, Trash2} from "lucide-react";
 
 
 export function RecipeIngredientsField({ control, getValues, errors, trigger, isSubmitted }: {
@@ -22,14 +22,16 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
     trigger: UseFormTrigger<RecipeFormValues>;
     isSubmitted: boolean;
 }) {
-    const { fields, append, remove } = useFieldArray({ control, name: "ingredients" });
+    const { fields, append, remove, move } = useFieldArray({ control, name: "ingredients" });
 
-    const units = ["g", "ml", "ks", "dle chuti", "dle potřeby"]
+    const units = ["g", "ml", "ks", "lžíce", "lžičky", "dle chuti", "dle potřeby"]
 
     return (
         <FieldGroup>
         {fields.map((item, index) => {
+            const isFirst = index === 0;
             const isLast = index === fields.length - 1;
+            const isSecondToLast = index === fields.length - 2;
 
             return (
                 <div key={item.id} className="flex gap-2">
@@ -48,8 +50,6 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                                 const wasEmpty = field.value === "";
                                                 const newValue = e.target.value;
                                                 field.onChange(e);
-
-                                                const isSecondToLast = index === fields.length - 2;
 
                                                 if (wasEmpty && newValue !== "" && isLast) {
                                                     append({name: "", unit: "", amount: undefined}, {shouldFocus: false});
@@ -145,16 +145,34 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                             />
                         </Field>
                     </div>
-                    <div>
+                    <div className="flex flex-col">
+                        <Button
+                            size="icon-sm"
+                            variant="ghost"
+                            type="button"
+                            onClick={() => move(index, index - 1)}
+                            disabled={fields.length === 1 || isLast || isFirst}
+                        >
+                            <ChevronUp />
+                        </Button>
                         <Button
                             size="icon-sm"
                             variant="destructive"
                             type="button"
-                            className="h-full"
+                            className="flex-1"
                             onClick={() => remove(index)}
                             disabled={fields.length === 1 || isLast}
                         >
                             <Trash2 />
+                        </Button>
+                        <Button
+                            size="icon-sm"
+                            variant="ghost"
+                            type="button"
+                            onClick={() => move(index, index + 1)}
+                            disabled={fields.length === 1 || isLast || isSecondToLast}
+                        >
+                            <ChevronDown />
                         </Button>
                     </div>
                 </div>

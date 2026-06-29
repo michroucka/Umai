@@ -1,5 +1,5 @@
-import {Field, FieldLabel} from "@/components/ui/field";
-import {Control, Controller, UseFormGetValues, UseFormSetValue, useWatch} from "react-hook-form";
+import {Field, FieldError, FieldLabel} from "@/components/ui/field";
+import {Control, Controller, UseFormGetValues, UseFormSetValue, useFormState, useWatch} from "react-hook-form";
 import { ButtonGroup } from "./ui/button-group";
 import {Button} from "@/components/ui/button";
 import {ChefHat, Search, Upload, X} from "lucide-react";
@@ -21,6 +21,7 @@ export function RecipeImageField({ control, setValue, getValues }: {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const imgWatch = useWatch({ control: control, name: "image" });
+    const { errors } = useFormState({ control, name: "image" });
 
     const objectUrl = useMemo(() => {
         return imgWatch instanceof File ? URL.createObjectURL(imgWatch) : null;
@@ -35,7 +36,7 @@ export function RecipeImageField({ control, setValue, getValues }: {
     }, [previewUrl]);
     return (
         <div className="flex flex-col gap-4">
-            <Field>
+            <Field data-invalid={!!errors.image}>
                 <FieldLabel htmlFor="image">Obrázek</FieldLabel>
                 <Controller
                     name="image"
@@ -49,7 +50,10 @@ export function RecipeImageField({ control, setValue, getValues }: {
                                    fileInputRef.current = e
                                }}
                                className="hidden"
-                               onChange={(e) => onChange(e.target.files?.[0] ?? null)}
+                               onChange={(e) => {
+                                   const file = e.target.files?.[0];
+                                   if (file) onChange(file);
+                               }}
                         />
                     )}
                 />
@@ -107,7 +111,7 @@ export function RecipeImageField({ control, setValue, getValues }: {
                                             setValue("image", photo.src.medium);
                                             setDialogOpen(false);
                                         }}
-                                        className="overflow-hidden rounded-md border hover:ring-2 hover:ring-primary"
+                                        className="overflow-hidden rounded-md border hover:ring-2 hover:ring-primary transition"
                                     >
                                         <img
                                             src={photo.src.medium}
@@ -120,15 +124,22 @@ export function RecipeImageField({ control, setValue, getValues }: {
                         </DialogContent>
                     </Dialog>
                 </ButtonGroup>
+                {errors.image && <FieldError errors={[errors.image]} />}
             </Field>
-            <div className="relative w-44 aspect-video rounded-md bg-muted/40 flex items-center justify-center overflow-hidden">
+            <div
+                className="relative w-44 aspect-video rounded-md bg-muted/40 flex items-center justify-center overflow-hidden border hover:ring-2 hover:ring-primary transition cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}
+            >
                 {previewUrl != null ? (
                     <>
                         <Button
                             type="button"
                             className="absolute right-1 top-1 rounded-full bg-destructive hover:bg-destructive/75"
                             size="icon-xs"
-                            onClick={() => setValue("image", undefined)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setValue("image", undefined);
+                            }}
                         >
                             <X />
                         </Button>

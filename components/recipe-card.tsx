@@ -107,6 +107,9 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
                         src={recipe.image}
                         alt="Recipe image"
                         className="aspect-video w-full object-cover"
+                        draggable={false}
+                        onContextMenu={(e) => e.preventDefault()}
+                        style={{ WebkitTouchCallout: 'none' }}
                     />
                 ) : (
                     <div className="relative z-20 w-full aspect-video bg-muted/40 flex items-center justify-center">
