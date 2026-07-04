@@ -1,8 +1,6 @@
 "use client"
 
 import Image from "next/image";
-import {Button} from "@/components/ui/button";
-import {Settings} from "lucide-react";
 import {ThemeToggle} from "@/components/theme-toggle";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -39,15 +37,7 @@ export function Navbar() {
                     }
                 </div>
             </Link>
-            <div className="flex gap-1">
-                <Button
-                    variant="ghost"
-                    size="icon-lg"
-                >
-                    <Settings className="size-7 sm:size-6" />
-                </Button>
-                <ThemeToggle />
-            </div>
+            <ThemeToggle />
         </div>
     );
 }

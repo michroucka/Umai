@@ -6,16 +6,30 @@ import {useEffect, useState} from "react";
 import {Badge} from "@/components/ui/badge";
 import {formatAmount, parseHoursMinutes} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
-import {ChevronLeft, ChevronRight, Maximize2, Minus, PenSquare, Plus, X} from "lucide-react";
+import {ChevronLeft, ChevronRight, Maximize2, Minus, PenSquare, Plus, TimerIcon, Trash2, X} from "lucide-react";
 import {Separator} from "@/components/ui/separator";
 import {Field, FieldContent, FieldDescription, FieldLabel} from "@/components/ui/field";
 import {Checkbox} from "@/components/ui/checkbox";
 import Link from "next/link";
 import {ButtonGroup} from "@/components/ui/button-group";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle
+} from "@/components/ui/dialog";
+import {deleteRecipe} from "@/lib/actions/delete-recipe";
+import {Timer} from "@/components/timer";
 
 export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
     const [fullscreenMode, setFullScreenMode] = useState<boolean>(false);
     const [currentStep, setCurrentStep] = useState<number>(0);
+    const [timerOpen, setTimerOpen] = useState<boolean>(false);
+
+    const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
 
     const [portions, setPortions] = useState<number>(recipe.portions);
     const prepTime = recipe.prepTime ? parseHoursMinutes(recipe.prepTime) : null;
@@ -40,15 +54,26 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                     {recipe.steps[currentStep].content}
                 </span>
             </div>
-            <div className="flex justify-between p-6">
-                <Button
-                    size="icon-xl"
-                    variant="outline"
-                    className="rounded-full"
-                    onClick={() => setFullScreenMode(false)}
-                >
-                    <X />
-                </Button>
+            {timerOpen && <Timer />}
+            <div className="flex justify-between p-6 pt-3">
+                <div className="flex gap-2">
+                    <Button
+                        size="icon-xl"
+                        variant="outline"
+                        className="rounded-full"
+                        onClick={() => setFullScreenMode(false)}
+                    >
+                        <X />
+                    </Button>
+                    <Button
+                        size="icon-xl"
+                        variant="outline"
+                        className="rounded-full"
+                        onClick={() => setTimerOpen(!timerOpen)}
+                    >
+                        <TimerIcon />
+                    </Button>
+                </div>
                 <div>
                     <ButtonGroup>
                         <Button
@@ -81,13 +106,41 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
         </div>
     ) : (
         <div>
-            <div className="flex max-lg:justify-between lg:gap-4 mb-4">
+            <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+                <DialogContent showCloseButton={false}>
+                    <DialogHeader>
+                        <DialogTitle>Smazat recept</DialogTitle>
+                        <DialogDescription>
+                            Opravdu chcete smazat recept &quot;{recipe.name}&quot;? Tato akce je nevratná.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button variant="secondary">Zrušit</Button>
+                        </DialogClose>
+                        <Button
+                            variant="destructive"
+                            onClick={() => { void deleteRecipe(recipe.id); setDeleteOpen(false); }}
+                            asChild
+                        >
+                            <Link href="/"><Trash2 /> Smazat</Link>
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            <div className="flex justify-between mb-4">
                 <Button variant="outline" asChild>
                     <Link href="/"><X /> Zavřít</Link>
                 </Button>
-                <Button variant="secondary" asChild>
-                    <Link href={`/recipes/${recipe.id}/edit`}><PenSquare /> Upravit</Link>
-                </Button>
+                <div className="flex gap-2">
+                    <Button variant="secondary" asChild>
+                        <Link href={`/recipes/${recipe.id}/edit`}><PenSquare /> Upravit</Link>
+                    </Button>
+                    <Button variant="destructive" size="icon" onClick={() => setDeleteOpen(true)}>
+                        <Trash2 />
+                    </Button>
+                </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2 lg:pr-4 lg:border-r">

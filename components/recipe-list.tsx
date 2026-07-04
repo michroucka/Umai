@@ -1,7 +1,7 @@
 "use client"
 
 import {Button} from "@/components/ui/button";
-import {Funnel, HeartCrack, Plus, Search} from "lucide-react";
+import {HeartCrack, Plus, Search} from "lucide-react";
 import {useState} from "react";
 import {InputGroup, InputGroupAddon, InputGroupInput} from "@/components/ui/input-group";
 import Link from "next/link";
@@ -18,10 +18,7 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
 
     return (
         <>
-            <div className="fixed bottom-12 sm:bottom-6 right-4 flex flex-col gap-3 sm:hidden z-50">
-                <Button size="icon-xl" className="rounded-full" variant="secondary">
-                    <Funnel className="size-6" />
-                </Button>
+            <div className="fixed bottom-12 sm:bottom-6 right-4 sm:hidden z-50">
                 <Button size="icon-xl" className="rounded-full" asChild>
                     <Link href="/recipes/new"><Plus className="size-7" /></Link>
                 </Button>
@@ -36,10 +33,7 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
                         {filteredRecipes.length} {filteredRecipes.length > 1 ? (filteredRecipes.length > 4 ? "receptů" : "recepty") : (filteredRecipes.length < 1 ? "receptů" : "recept")}
                     </InputGroupAddon>
                 </InputGroup>
-                <div className="hidden sm:flex gap-2">
-                    <Button variant="secondary">
-                        <Funnel /> Filtrovat
-                    </Button>
+                <div className="hidden sm:flex">
                     <Button asChild>
                         <Link href="/recipes/new"><Plus /> Přidat</Link>
                     </Button>

@@ -14,7 +14,7 @@ export function RecipeStepsField({ control, errors, trigger }: {
     const { fields, append, remove } = useFieldArray({ control, name: "steps" });
 
     return (
-        <FieldGroup>
+        <FieldGroup className="max-xl:mb-16">
             {fields.map((item, index) => (
                 <div key={item.id} className="flex gap-2">
                     <Field orientation="horizontal" className="min-w-0">

@@ -268,8 +268,8 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                 />
             </FieldSet>
 
-            <div className="flex xl:hidden justify-between mt-2">
-                <Button variant="outline" type="button" asChild>
+            <div className="fixed inset-x-0 bottom-8 z-50 xl:hidden flex justify-between px-6">
+                <Button variant="secondary" type="button" asChild>
                     <Link href="/">
                         <X /> Zrušit
                     </Link>
