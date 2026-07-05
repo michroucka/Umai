@@ -3,6 +3,7 @@ name: umai
 services:
   umai:
     build: .
+    container_name: umai
     restart: unless-stopped
     volumes:
       - ./data:/app/data
