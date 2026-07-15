@@ -91,7 +91,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                                         name={field.name}
                                                         ref={field.ref}
                                                         onBlur={field.onBlur}
-                                                        value={field.value ?? ""}
+                                                        value={(field.value as string | number | undefined) ?? ""}
                                                         onChange={(e) => field.onChange(e.target.value)}
                                                         aria-invalid={isSubmitted && !isLast && fieldState.invalid}
                                                     />

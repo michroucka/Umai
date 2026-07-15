@@ -25,7 +25,7 @@ import {RecipeWithDetails} from "@/lib/types";
 import {parseHoursMinutes} from "@/lib/utils";
 import {updateRecipe} from "@/lib/actions/update-recipe";
 
-export type RecipeFormValues = z.infer<typeof recipeSchema>;
+export type RecipeFormValues = z.input<typeof recipeSchema>;
 
 const recipeSchema = z.object({
     name: z.string().min(1, "Název je povinný"),
@@ -87,14 +87,14 @@ function mapToFormValues(recipe: RecipeWithDetails) {
 }
 
 export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails | null }) {
-    const form = useForm<z.infer<typeof recipeSchema>>({
+    const form = useForm<z.input<typeof recipeSchema>, unknown, z.output<typeof recipeSchema>>({
         resolver: zodResolver(recipeSchema),
         defaultValues: defaultRecipe ? mapToFormValues(defaultRecipe) :
             { name: "", description: "", portions: 2, hours: 0, minutes: 0,
             ingredients: [{ name: "", unit: "", amount: undefined }], steps: [{ content: "" }] },
     });
 
-    async function onSubmit(data: z.infer<typeof recipeSchema>) {
+    async function onSubmit(data: z.output<typeof recipeSchema>) {
         const formData = new FormData();
         formData.append("name", data.name);
         if (data.description) formData.append("description", data.description);
