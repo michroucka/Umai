@@ -143,11 +143,10 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                 </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-2 lg:pr-4 lg:border-r">
-                    {/* MOBILE */}
-                    <div className="sm:hidden flex flex-col gap-2">
+                <div className="flex flex-col gap-4 sm:gap-2 lg:pr-4 lg:border-r">
+                    <div className="flex flex-col sm:flex-row gap-2">
                         {recipe.image && (
-                            <div className="relative w-full aspect-video rounded-md bg-muted/40 flex items-center justify-center overflow-hidden">
+                            <div className="relative w-full sm:w-64 sm:min-w-64 mb-0 sm:mb-4 aspect-video rounded-md bg-muted/40 flex items-center justify-center overflow-hidden">
                                 <img
                                     src={recipe.image}
                                     alt=""
@@ -155,79 +154,23 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                 />
                             </div>
                         )}
-                        <div className="flex flex-col gap-0.5">
-                            <h3>{recipe.name}</h3>
-                            {recipe.description &&
-                                <p className="m-0 leading-5 text-sm">{recipe.description}</p>
-                            }
-                        </div>
-                        <div className="flex justify-between text-center px-2">
-                            <div>
-                                <p>Porce</p>
-                                <div className="flex items-center">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon-sm"
-                                        onClick={() => setPortions(portions - 1)}
-                                    >
-                                        <Minus />
-                                    </Button>
-                                    <Input
-                                        type="number"
-                                        value={portions}
-                                        min={1} max={99}
-                                        onChange={(e) => setPortions(Math.min(99, Math.max(1, Number(e.target.value))))}
-                                        onFocus={(e) => e.target.select()}
-                                        className="max-w-10 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    />
-                                    <Button
-                                        variant="ghost"
-                                        size="icon-sm"
-                                        onClick={() => setPortions(portions + 1)}
-                                    >
-                                        <Plus className="size-5" />
-                                    </Button>
-                                </div>
-                            </div>
-                            {prepTime &&
-                                <div>
-                                    <p>Čas přípravy</p>
-                                    <Badge size="lg">
-                                        {prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes > 0 && `${prepTime.minutes} min`}
-                                    </Badge>
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    {/* DESKTOP */}
-                    <div className="hidden sm:flex gap-2">
                         <div className="flex flex-col gap-2">
-                            {recipe.image && (
-                                <div className="relative min-w-64 w-64 aspect-video rounded-md bg-muted/40 flex items-center justify-center overflow-hidden mb-4">
-                                    <img
-                                        src={recipe.image}
-                                        alt=""
-                                        className="aspect-video w-full object-cover"
-                                    />
-                                </div>
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <h3>{recipe.name}</h3>
-                            {recipe.description &&
-                                <p className="m-0 leading-5 text-sm">{recipe.description}</p>
-                            }
-                            <div className="flex text-center mt-1">
-                                <div className="flex-1">
+                            <div className="flex flex-col gap-0.5">
+                                <h3>{recipe.name}</h3>
+                                {recipe.description &&
+                                    <p className="m-0 leading-5 text-sm">{recipe.description}</p>
+                                }
+                            </div>
+                            <div className="flex max-sm:justify-between sm:gap-8 text-center">
+                                <div>
                                     <p>Porce</p>
-                                    <div>
+                                    <div className="flex items-center">
                                         <Button
                                             variant="ghost"
-                                            size="icon-xs"
+                                            size="icon-sm"
                                             onClick={() => setPortions(portions - 1)}
                                         >
-                                            <Minus />
+                                            <Minus className="size-4" />
                                         </Button>
                                         <Input
                                             type="number"
@@ -239,15 +182,15 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                         />
                                         <Button
                                             variant="ghost"
-                                            size="icon-xs"
+                                            size="icon-sm"
                                             onClick={() => setPortions(portions + 1)}
                                         >
-                                            <Plus />
+                                            <Plus className="size-4" />
                                         </Button>
                                     </div>
                                 </div>
                                 {prepTime &&
-                                    <div className="flex-1">
+                                    <div>
                                         <p>Čas přípravy</p>
                                         <Badge size="lg">
                                             {prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes > 0 && `${prepTime.minutes} min`}

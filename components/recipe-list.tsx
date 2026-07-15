@@ -45,7 +45,7 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
                     <HeartCrack className="size-7" />
                 </div>
             ) : (
-                <div className="grid gap-4 max-sm:mb-36" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}>
+                <div className="grid gap-4 max-sm:mb-24" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))" }}>
                     {filteredRecipes.map((recipe) => (
                         <RecipeCard key={recipe.id} recipe={recipe} />
                     ))}
