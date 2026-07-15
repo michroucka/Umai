@@ -87,6 +87,8 @@ function mapToFormValues(recipe: RecipeWithDetails) {
 }
 
 export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails | null }) {
+    const cancelHref = defaultRecipe ? `/recipes/${defaultRecipe.id}` : "/";
+
     const form = useForm<z.input<typeof recipeSchema>, unknown, z.output<typeof recipeSchema>>({
         resolver: zodResolver(recipeSchema),
         defaultValues: defaultRecipe ? mapToFormValues(defaultRecipe) :
@@ -234,7 +236,7 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                     </div>
                     <Field orientation="horizontal" className="max-xl:hidden justify-between">
                         <Button variant="outline" type="button" asChild>
-                            <Link href="/">
+                            <Link href={cancelHref}>
                                 <X /> Zrušit
                             </Link>
                         </Button>
@@ -273,7 +275,7 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
 
             <div className="fixed inset-x-0 bottom-8 z-50 xl:hidden flex justify-between px-6">
                 <Button variant="secondary" type="button" asChild>
-                    <Link href="/">
+                    <Link href={cancelHref}>
                         <X /> Zrušit
                     </Link>
                 </Button>
