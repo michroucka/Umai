@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import {deleteRecipe} from "@/lib/actions/delete-recipe";
 import {Timer} from "@/components/timer";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useDragControls } from "motion/react";
 import {Ingredients} from "@/components/ingredients";
 
 export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
@@ -38,6 +38,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
 
     const [timerOpen, setTimerOpen] = useState<boolean>(false);
     const [ingredientsOpen, setIngredientsOpen] = useState<boolean>(false);
+    const ingredientsDragControls = useDragControls();
 
     const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
 
@@ -128,13 +129,20 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                     exit={{ y: "100%" }}
                                     transition={{ type: "tween", duration: 0.25, ease: "easeOut" }}
                                     drag="y"
+                                    dragListener={false}
+                                    dragControls={ingredientsDragControls}
                                     dragConstraints={{ top: 0, bottom: 0 }}
                                     dragElastic={{ top: 0, bottom: 0.5 }}
                                     onDragEnd={(_, info) => {
                                         if (info.offset.y > 100) setIngredientsOpen(false);
                                     }}
                                 >
-                                    <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-muted-foreground/30" />
+                                    <div
+                                        className="-mx-4 -mt-4 mb-3 flex touch-none justify-center py-3"
+                                        onPointerDown={(e) => ingredientsDragControls.start(e)}
+                                    >
+                                        <div className="h-1 w-10 rounded-full bg-muted-foreground/30" />
+                                    </div>
                                     <Ingredients ingredients={recipe.ingredients} portionsFactor={portions / recipe.portions} />
                                 </motion.div>
                             </>
