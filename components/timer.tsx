@@ -140,10 +140,10 @@ export function Timer() {
                             <Input
                                 type="number"
                                 className="w-8 h-auto border-0 bg-transparent! shadow-none p-0 text-2xl font-bold text-end
-                                       focus-visible:ring-0 focus-visible:border-transparent
-                                       [&::-webkit-outer-spin-button]:appearance-none
-                                       [&::-webkit-inner-spin-button]:appearance-none
-                                       [-moz-appearance:textfield]"
+                                   focus-visible:ring-0 focus-visible:border-transparent
+                                   [&::-webkit-outer-spin-button]:appearance-none
+                                   [&::-webkit-inner-spin-button]:appearance-none
+                                   [-moz-appearance:textfield]"
                                 value={inputMinutes}
                                 onFocus={(e) => e.target.select()}
                                 onChange={(e) => {
@@ -159,10 +159,10 @@ export function Timer() {
                             <Input
                                 type="number"
                                 className="w-8 h-auto border-0 bg-transparent! shadow-none p-0 text-2xl font-bold text-end
-                                       focus-visible:ring-0 focus-visible:border-transparent
-                                       [&::-webkit-outer-spin-button]:appearance-none
-                                       [&::-webkit-inner-spin-button]:appearance-none
-                                       [-moz-appearance:textfield]"
+                                   focus-visible:ring-0 focus-visible:border-transparent
+                                   [&::-webkit-outer-spin-button]:appearance-none
+                                   [&::-webkit-inner-spin-button]:appearance-none
+                                   [-moz-appearance:textfield]"
                                 value={inputSeconds}
                                 onFocus={(e) => e.target.select()}
                                 onChange={(e) => {

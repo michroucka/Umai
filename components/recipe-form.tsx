@@ -44,7 +44,10 @@ const recipeSchema = z.object({
     ingredients: z.array(z.object({
         name: z.string(),
         note: z.string().optional(),
-        amount: z.number().min(0.1).optional(),
+        amount: z.preprocess(
+            (val) => (val === "" ? undefined : val),
+            z.coerce.number().min(0.1).optional(),
+        ),
         unit: z.string(),
     }).refine(
         (ing) => ing.name === "" || ing.unit !== "",
