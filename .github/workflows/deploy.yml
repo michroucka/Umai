@@ -10,8 +10,7 @@ jobs:
     runs-on: [self-hosted, nas]
     steps:
       - name: Pull tag and redeploy
-        # TODO: uprav na skutečnou cestu k repu na nasce
-        working-directory: /path/to/Umai
+        working-directory: /home/michroucka/umai
         run: |
           set -e
           git fetch --tags --force
