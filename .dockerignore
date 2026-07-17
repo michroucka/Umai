@@ -1,0 +1,12 @@
+node_modules
+.git
+.next
+data
+uploads
+public/uploads
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+.idea
+npm-debug.log*
