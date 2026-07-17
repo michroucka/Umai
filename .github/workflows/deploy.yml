@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, nas]
+    runs-on: self-hosted
     steps:
       - name: Pull tag and redeploy
         working-directory: /home/michroucka/umai
