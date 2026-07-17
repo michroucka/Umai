@@ -1,0 +1,33 @@
+name: Deploy to NAS
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, nas]
+    steps:
+      - name: Pull tag and redeploy
+        # TODO: uprav na skutečnou cestu k repu na nasce
+        working-directory: /path/to/Umai
+        run: |
+          set -e
+          git fetch --tags --force
+          git checkout "${{ github.ref_name }}"
+
+          attempts=3
+          for ((i=1; i<=attempts; i++)); do
+            echo "Deploy attempt $i/$attempts"
+            if docker compose up -d --build --wait; then
+              echo "Deploy succeeded"
+              exit 0
+            fi
+            echo "Attempt $i failed"
+            [ "$i" -lt "$attempts" ] && sleep 10
+          done
+
+          echo "Deploy failed after $attempts attempts, recent logs:"
+          docker compose logs --tail=50
+          exit 1
