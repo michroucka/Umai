@@ -1,18 +1,26 @@
-# Umai 🍳
+<div align="center">
+  <img src=".github/assets/umai_logo_light.svg" alt="Umai logo" width="400" />
+</div>
 
-A personal recipe-keeping web app - store recipes with ingredients and step-by-step instructions, scale portions up or down, and browse a clean, mobile-friendly recipe list from your phone. Self-hosted, runs on your own server via Docker.
+<div align="center">
+
+**A personal recipe-keeping web app - store recipes with ingredients and step-by-step instructions, scale portions up or down, and browse a clean, mobile-friendly recipe list from your phone. Self-hosted, runs on your own server via Docker.**
 
 Built as a learning project to pick up React and Next.js.
 
-![Recipe overview](docs/screenshots/homepage.jpg)
+</div>
+
+![Recipe overview](.github/assets/screenshots/homepage.jpg)
+
+---
 
 ## Features
 
 - Add, edit, and delete recipes with photos, prep time, and step-by-step instructions
 - **Portion scaling** - ingredient amounts recalculate live for any serving count
-- Ingredient autocomplete with reorderable (drag-and-drop) ingredient lists
+- Ingredient autocomplete with reorderable ingredient lists
 - Photo upload or search (via the [Pexels](https://www.pexels.com/api/) API) with local storage
-- Built-in cooking timer
+- Built-in cooking timer with alarm
 - Installable as a PWA, with light/dark theme support
 - Mobile-first UI, usable one-handed while cooking
 
@@ -20,7 +28,7 @@ Built as a learning project to pick up React and Next.js.
 
 - [Next.js 16](https://nextjs.org/) (App Router) + [React 19](https://react.dev/)
 - TypeScript
-- [Tailwind CSS v4](https://tailwindcss.com/) + [Radix UI](https://www.radix-ui.com/)
+- [Tailwind CSS v4](https://tailwindcss.com/) + [Radix UI](https://www.radix-ui.com/) primitives, scaffolded via [shadcn/ui](https://ui.shadcn.com/)
 - SQLite via [Drizzle ORM](https://orm.drizzle.team/)
 - Docker for deployment
 
@@ -28,25 +36,25 @@ Built as a learning project to pick up React and Next.js.
 
 | Recipe list (mobile) | Recipe detail |
 | --- | --- |
-| ![Recipe list on mobile](docs/screenshots/homepage-mobile.png) | ![Recipe detail with portion scaling](docs/screenshots/recipe-detail.png) |
+| ![Recipe list on mobile](.github/assets/screenshots/homepage-mobile.png) | ![Recipe detail with portion scaling](.github/assets/screenshots/recipe-detail.png) |
 
 **Live portion scaling** - ingredient amounts recalculate as you change the serving count:
 
-![Portion scaling demo](docs/screenshots/portion-scaling.gif)
+![Portion scaling demo](.github/assets/screenshots/portion-scaling.gif)
 
-**Adding a recipe** - form with ingredient autocomplete and drag-and-drop reordering:
+**Adding a recipe** - form with ingredients and animated reordering:
 
-![Recipe creation demo](docs/screenshots/recipe-creation.gif)
+![Recipe creation demo](.github/assets/screenshots/recipe-creation.gif)
 
 **Mobile fullscreen recipe view** - ingredients, steps, and the built-in timer while cooking:
 
-![Mobile fullscreen recipe view demo](docs/screenshots/mobile-fullscreen-functions.gif)
+![Mobile fullscreen recipe view demo](.github/assets/screenshots/mobile-fullscreen-functions.gif)
 
 Light and dark themes:
 
 | Light | Dark |
 | --- | --- |
-| ![Recipe edit form, light theme](docs/screenshots/recipe-edit-mobile-light.png) | ![Recipe edit form, dark theme](docs/screenshots/recipe-edit-mobile-dark.png) |
+| ![Recipe edit form, light theme](.github/assets/screenshots/recipe-edit-mobile-light.png) | ![Recipe edit form, dark theme](.github/assets/screenshots/recipe-edit-mobile-dark.png) |
 
 ## Getting started
 
