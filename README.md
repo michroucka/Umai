@@ -12,8 +12,6 @@ Built as a learning project to pick up React and Next.js.
 
 ![Recipe overview](.github/assets/screenshots/homepage.jpg)
 
----
-
 ## Features
 
 - Add, edit, and delete recipes with photos, prep time, and step-by-step instructions
