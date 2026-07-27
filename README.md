@@ -1,6 +1,6 @@
 # Umai 🍳
 
-A personal recipe-keeping web app — store recipes with ingredients and step-by-step instructions, scale portions up or down, and browse a clean, mobile-friendly recipe list from your phone. Self-hosted, runs on your own server via Docker.
+A personal recipe-keeping web app - store recipes with ingredients and step-by-step instructions, scale portions up or down, and browse a clean, mobile-friendly recipe list from your phone. Self-hosted, runs on your own server via Docker.
 
 Built as a learning project to pick up React and Next.js.
 
@@ -9,7 +9,7 @@ Built as a learning project to pick up React and Next.js.
 ## Features
 
 - Add, edit, and delete recipes with photos, prep time, and step-by-step instructions
-- **Portion scaling** — ingredient amounts recalculate live for any serving count
+- **Portion scaling** - ingredient amounts recalculate live for any serving count
 - Ingredient autocomplete with reorderable (drag-and-drop) ingredient lists
 - Photo upload or search (via the [Pexels](https://www.pexels.com/api/) API) with local storage
 - Built-in cooking timer
@@ -30,15 +30,15 @@ Built as a learning project to pick up React and Next.js.
 | --- | --- |
 | ![Recipe list on mobile](docs/screenshots/homepage-mobile.png) | ![Recipe detail with portion scaling](docs/screenshots/recipe-detail.png) |
 
-**Live portion scaling** — ingredient amounts recalculate as you change the serving count:
+**Live portion scaling** - ingredient amounts recalculate as you change the serving count:
 
 ![Portion scaling demo](docs/screenshots/portion-scaling.gif)
 
-**Adding a recipe** — form with ingredient autocomplete and drag-and-drop reordering:
+**Adding a recipe** - form with ingredient autocomplete and drag-and-drop reordering:
 
 ![Recipe creation demo](docs/screenshots/recipe-creation.gif)
 
-**Mobile fullscreen recipe view** — ingredients, steps, and the built-in timer while cooking:
+**Mobile fullscreen recipe view** - ingredients, steps, and the built-in timer while cooking:
 
 ![Mobile fullscreen recipe view demo](docs/screenshots/mobile-fullscreen-functions.gif)
 
@@ -85,8 +85,8 @@ drizzle/        Generated SQL migrations
 
 ## Deployment
 
-`.github/workflows/deploy.yml` redeploys the app to my home server (NAS) via a self-hosted GitHub Actions runner whenever a `v*` tag is pushed — `git fetch`, checkout the tag, and `docker compose up -d --build`.
+`.github/workflows/deploy.yml` redeploys the app to my home server (NAS) via a self-hosted GitHub Actions runner whenever a `v*` tag is pushed - `git fetch`, checkout the tag, and `docker compose up -d --build`.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE).
