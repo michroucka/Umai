@@ -46,7 +46,7 @@ Built as a learning project to pick up React and Next.js.
 
 ![Recipe creation demo](.github/assets/screenshots/recipe-creation.gif)
 
-**Mobile fullscreen recipe view** - ingredients, steps, and the built-in timer while cooking:
+**Mobile fullscreen recipe view** - always-on ingredients, steps, and the built-in timer while cooking:
 
 ![Mobile fullscreen recipe view demo](.github/assets/screenshots/mobile-fullscreen-functions.gif)
 
@@ -76,7 +76,7 @@ Open [http://localhost:3000](http://localhost:3000). The dev server uses a local
 ### Running with Docker
 
 ```bash
-cp .env.example .env
+cp .env.example .env  # add your PEXELS_API_KEY
 docker compose up -d --build
 ```
 
