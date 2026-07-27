@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Umai 🍳
 
-## Getting Started
+A personal recipe-keeping web app — store recipes with ingredients and step-by-step instructions, scale portions up or down, and browse a clean, mobile-friendly recipe list from your phone. Self-hosted, runs on your own server via Docker.
 
-First, run the development server:
+Built as a learning project to pick up React and Next.js.
+
+![Recipe overview](docs/screenshots/homepage.jpg)
+
+## Features
+
+- Add, edit, and delete recipes with photos, prep time, and step-by-step instructions
+- **Portion scaling** — ingredient amounts recalculate live for any serving count
+- Ingredient autocomplete with reorderable (drag-and-drop) ingredient lists
+- Photo upload or search (via the [Pexels](https://www.pexels.com/api/) API) with local storage
+- Built-in cooking timer
+- Installable as a PWA, with light/dark theme support
+- Mobile-first UI, usable one-handed while cooking
+
+## Tech stack
+
+- [Next.js 16](https://nextjs.org/) (App Router) + [React 19](https://react.dev/)
+- TypeScript
+- [Tailwind CSS v4](https://tailwindcss.com/) + [Radix UI](https://www.radix-ui.com/)
+- SQLite via [Drizzle ORM](https://orm.drizzle.team/)
+- Docker for deployment
+
+## Screenshots & demos
+
+| Recipe list (mobile) | Recipe detail |
+| --- | --- |
+| ![Recipe list on mobile](docs/screenshots/homepage-mobile.png) | ![Recipe detail with portion scaling](docs/screenshots/recipe-detail.png) |
+
+**Live portion scaling** — ingredient amounts recalculate as you change the serving count:
+
+![Portion scaling demo](docs/screenshots/portion-scaling.gif)
+
+**Adding a recipe** — form with ingredient autocomplete and drag-and-drop reordering:
+
+![Recipe creation demo](docs/screenshots/recipe-creation.gif)
+
+**Mobile fullscreen recipe view** — ingredients, steps, and the built-in timer while cooking:
+
+![Mobile fullscreen recipe view demo](docs/screenshots/mobile-fullscreen-functions.gif)
+
+Light and dark themes:
+
+| Light | Dark |
+| --- | --- |
+| ![Recipe edit form, light theme](docs/screenshots/recipe-edit-mobile-light.png) | ![Recipe edit form, dark theme](docs/screenshots/recipe-edit-mobile-dark.png) |
+
+## Getting started
+
+### Prerequisites
+
+- Node.js 22+
+- A [Pexels API key](https://www.pexels.com/api/) (optional, only needed for the photo-search feature)
+
+### Local development
 
 ```bash
+npm install
+cp .env.example .env.local   # add your PEXELS_API_KEY
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The dev server uses a local SQLite file (`umai.db`) created automatically on first run.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Running with Docker
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cp .env.example .env
+docker compose up -d --build
+```
 
-## Learn More
+This builds the production image and starts the app on port `3333` (see `docker-compose.yml`), persisting the database and uploaded images in `./data` and `./uploads`.
 
-To learn more about Next.js, take a look at the following resources:
+## Project structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/            Next.js App Router pages and API routes
+components/     React components (recipe form, list, ingredients, UI primitives)
+db/             Drizzle schema and database client
+drizzle/        Generated SQL migrations
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+`.github/workflows/deploy.yml` redeploys the app to my home server (NAS) via a self-hosted GitHub Actions runner whenever a `v*` tag is pushed — `git fetch`, checkout the tag, and `docker compose up -d --build`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT — see [LICENSE](LICENSE).
