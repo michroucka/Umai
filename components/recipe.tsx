@@ -2,7 +2,7 @@
 
 import {RecipeWithDetails} from "@/lib/types";
 import {Input} from "@/components/ui/input";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {Badge} from "@/components/ui/badge";
 import {formatAmount, parseHoursMinutes} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
@@ -45,16 +45,31 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
     const [portions, setPortions] = useState<number>(recipe.portions);
     const prepTime = recipe.prepTime ? parseHoursMinutes(recipe.prepTime) : null;
 
-    useEffect(() => {
-        let wakeLock: WakeLockSentinel | null = null;
+    const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 
-        navigator.wakeLock?.request("screen").then((lock) => {
-            wakeLock = lock;
-        });
+    useEffect(() => {
+        async function acquireWakeLock() {
+            try {
+                wakeLockRef.current = await navigator.wakeLock?.request("screen");
+            } catch (err) {
+                console.error("Failed to acquireWakeLock: ", err);
+            }
+        }
+
+        function handleVisibilityChange() {
+            if (document.visibilityState === "visible") {
+                acquireWakeLock();
+            }
+        }
+
+        acquireWakeLock();
+        document.addEventListener("visibilitychange", handleVisibilityChange);
 
         return () => {
-            wakeLock?.release();
-        };
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
+            wakeLockRef.current?.release();
+        }
+
     }, []);
 
     function paginate(newDirection: number) {
