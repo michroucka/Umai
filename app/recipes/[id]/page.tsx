@@ -23,7 +23,7 @@ export default async function RecipePage({ params }: { params: Promise<{id: stri
     }
 
     return (
-        <>
+        <div className="xl:pb-6">
             <div className="flex p-4 gap-2 justify-center text-2xl font-medium items-center text-muted pt-32">
                 <h3>Recept nebyl nalezen</h3>
                 <HeartCrack className="size-7" />
@@ -31,6 +31,6 @@ export default async function RecipePage({ params }: { params: Promise<{id: stri
             <Button variant="link" asChild>
                 <Link href="/"><ChevronLeft /> Zpět na recepty</Link>
             </Button>
-        </>
+        </div>
     )
 }

@@ -9,6 +9,8 @@ export default async function Home() {
   const allRecipes = await db.select().from(recipes);
 
   return (
-      <RecipeList recipes={allRecipes} />
+      <div className="xl:pb-6">
+        <RecipeList recipes={allRecipes} />
+      </div>
   );
 };

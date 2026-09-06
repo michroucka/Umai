@@ -15,7 +15,7 @@ export function RecipeStepsField({ control, errors, trigger }: {
     const { fields, append, remove } = useFieldArray({ control, name: "steps" });
 
     return (
-        <FieldGroup className="max-xl:mb-16">
+        <FieldGroup className="max-xl:mb-16 xl:flex-1 xl:min-h-0 xl:overflow-y-auto">
             <AnimatePresence initial={false}>
                 {fields.map((item, index) => (
                     <motion.div
@@ -65,7 +65,7 @@ export function RecipeStepsField({ control, errors, trigger }: {
                 type="button"
                 size="sm"
                 variant="outline"
-                className="w-full"
+                className="w-full mb-6"
                 onClick={() => append({content: ""})}
             >
                 <Plus className="size-3.5" /> Přidat krok

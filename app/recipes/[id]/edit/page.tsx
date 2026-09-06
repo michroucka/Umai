@@ -18,18 +18,18 @@ export default async function EditRecipePage({ params }: { params: Promise<{ id:
 
     if (data) {
         return (
-            <>
-                <div className="pb-4">
+            <div className="xl:flex xl:h-full xl:min-h-0 xl:flex-col">
+                <div className="pb-4 xl:shrink-0">
                     <h1>Upravit recept</h1>
                     <Separator className="max-w-2/3 sm:max-w-1/3 mx-auto mt-2" />
                 </div>
                 <RecipeForm defaultRecipe={data}  />
-            </>
+            </div>
         )
     }
 
     return (
-        <>
+        <div className="xl:pb-6">
             <div className="flex p-4 gap-2 justify-center text-2xl font-medium items-center text-muted pt-32">
                 <h3>Recept nebyl nalezen</h3>
                 <HeartCrack className="size-7" />
@@ -37,6 +37,6 @@ export default async function EditRecipePage({ params }: { params: Promise<{ id:
             <Button variant="link" asChild>
                 <Link href="/"><ChevronLeft /> Zpět na recepty</Link>
             </Button>
-        </>
+        </div>
     )
 }

@@ -27,7 +27,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
     const units = ["g", "ml", "ks", "lžíce", "lžičky", "dle chuti", "dle potřeby"]
 
     return (
-        <FieldGroup>
+        <FieldGroup className="xl:flex-1 xl:min-h-0 xl:overflow-y-auto xl:pb-6">
             <AnimatePresence mode="popLayout" initial={false}>
                 {fields.map((item, index) => {
                     const isFirst = index === 0;

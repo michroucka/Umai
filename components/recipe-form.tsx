@@ -45,7 +45,10 @@ const recipeSchema = z.object({
         name: z.string(),
         note: z.string().optional(),
         amount: z.preprocess(
-            (val) => (val === "" ? undefined : val),
+            (val) => {
+                const normalized = typeof val === "string" ? val.replace(",", ".") : val;
+                return normalized === "" ? undefined : normalized;
+            },
             z.coerce.number().min(0.1).optional(),
         ),
         unit: z.string(),
@@ -117,7 +120,7 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
 
     return (
         <form
-            className="grid grid-cols-1 xl:grid-cols-3 sm:max-xl:w-2/3 sm:max-xl:mx-auto gap-10 gap-y-4"
+            className="grid grid-cols-1 xl:grid-cols-3 sm:max-xl:w-2/3 sm:max-xl:mx-auto gap-10 gap-y-4 xl:flex-1 xl:min-h-0"
             onSubmit={form.handleSubmit(onSubmit)}
         >
             <FieldSet>
@@ -249,7 +252,7 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
 
             <FieldSeparator className="sm:hidden" />
 
-            <FieldSet>
+            <FieldSet className="xl:min-h-0">
                 <FieldLegend>Ingredience</FieldLegend>
                 <FieldDescription>Co všechno budete potřebovat a v jakém množství.</FieldDescription>
                 <RecipeIngredientsField
@@ -263,7 +266,7 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
 
             <FieldSeparator className="sm:hidden" />
 
-            <FieldSet>
+            <FieldSet className="xl:min-h-0">
                 <FieldLegend>Postup přípravy</FieldLegend>
                 <FieldDescription>Jednotlivé kroky, jak recept připravit.</FieldDescription>
                 <RecipeStepsField

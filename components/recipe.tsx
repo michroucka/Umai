@@ -213,7 +213,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                     </div>
                 </motion.div>
             ) : (
-                <motion.div key="normal">
+                <motion.div key="normal" className="xl:flex xl:h-full xl:min-h-0 xl:flex-col">
                     <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
                         <DialogContent showCloseButton={false}>
                             <DialogHeader>
@@ -237,7 +237,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                         </DialogContent>
                     </Dialog>
 
-                    <div className="flex justify-between mb-4">
+                    <div className="flex justify-between mb-4 xl:shrink-0">
                         <Button variant="outline" asChild>
                             <Link href="/"><X /> Zavřít</Link>
                         </Button>
@@ -250,9 +250,9 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                             </Button>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <div className="flex flex-col gap-4 sm:gap-2 lg:pr-4 lg:border-r">
-                            <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:flex-1 xl:min-h-0">
+                        <div className="flex flex-col gap-4 sm:gap-2 xl:pr-4 xl:border-r xl:min-h-0">
+                            <div className="flex flex-col sm:flex-row gap-2 xl:shrink-0">
                                 {recipe.image && (
                                     <div className="relative w-full sm:w-64 sm:min-w-64 mb-0 sm:mb-4 aspect-video rounded-md bg-muted/40 flex items-center justify-center overflow-hidden">
                                         <img
@@ -308,57 +308,61 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-1.5">
-                                <h4 className="mb-1">Ingredience</h4>
-                                {recipe.ingredients.map((ingredient) => {
-                                    const amount = ingredient.amount ?
-                                        formatAmount((ingredient.amount / recipe.portions) * portions) : null;
+                            <div className="flex flex-col gap-2 xl:flex-1 xl:min-h-0">
+                                <h4 className="mb-1 xl:shrink-0">Ingredience</h4>
+                                <div className="flex flex-col gap-2 xl:flex-1 xl:min-h-0 xl:overflow-y-auto xl:pb-4">
+                                    {recipe.ingredients.map((ingredient) => {
+                                        const amount = ingredient.amount ?
+                                            formatAmount((ingredient.amount / recipe.portions) * portions) : null;
 
-                                    return (
-                                        <Field key={ingredient.id} orientation="horizontal" className="group">
-                                            <Checkbox id={`ingredient-${ingredient.id}`} name={`ingredient-${ingredient.id}`}/>
-                                            <FieldContent className="gap-0">
-                                                <FieldLabel
-                                                    htmlFor={`ingredient-${ingredient.id}`}
-                                                    className="gap-1 group-has-data-[state=checked]:line-through group-has-data-[state=checked]:text-muted-foreground"
-                                                >
-                                                    <span className="font-bold">{ingredient.name}</span> • {amount ?? ""} {ingredient.unit}
-                                                </FieldLabel>
-                                                {ingredient.note &&
-                                                    <FieldDescription
-                                                        className="group-has-data-[state=checked]:line-through group-has-data-[state=checked]:opacity-75"
+                                        return (
+                                            <Field key={ingredient.id} orientation="horizontal" className="group">
+                                                <Checkbox id={`ingredient-${ingredient.id}`} name={`ingredient-${ingredient.id}`}/>
+                                                <FieldContent className="gap-0">
+                                                    <FieldLabel
+                                                        htmlFor={`ingredient-${ingredient.id}`}
+                                                        className="gap-1 group-has-data-[state=checked]:line-through group-has-data-[state=checked]:text-muted-foreground"
                                                     >
-                                                        {ingredient.note}
-                                                    </FieldDescription>
-                                                }
-                                            </FieldContent>
-                                        </Field>
-                                    )
-                                })}
+                                                        <span className="font-bold">{ingredient.name}</span> • {amount ?? ""} {ingredient.unit}
+                                                    </FieldLabel>
+                                                    {ingredient.note &&
+                                                        <FieldDescription
+                                                            className="group-has-data-[state=checked]:line-through group-has-data-[state=checked]:opacity-75"
+                                                        >
+                                                            {ingredient.note}
+                                                        </FieldDescription>
+                                                    }
+                                                </FieldContent>
+                                            </Field>
+                                        )
+                                    })}
+                                </div>
                             </div>
                         </div>
-                        <Separator className="lg:hidden" />
-                        <div className="flex flex-col gap-1">
-                            <div className="flex justify-between mb-1">
+                        <Separator className="xl:hidden" />
+                        <div className="flex flex-col gap-1 xl:min-h-0">
+                            <div className="flex justify-between mb-1 xl:shrink-0">
                                 <h4 className="mb-1">Postup</h4>
                                 <Button
                                     size="icon"
                                     variant="ghost"
-                                    className="lg:hidden"
+                                    className="xl:hidden"
                                     onClick={() => setFullScreenMode(true)}
                                 >
                                     <Maximize2 />
                                 </Button>
                             </div>
-                            {recipe.steps.map((step, index) => (
-                                <div key={step.id}>
-                                    <div className="flex gap-2">
-                                        <h3 className="text-primary min-w-6 self-start -mt-1">{step.stepOrder + 1}.</h3>
-                                        <span className="whitespace-pre-wrap">{step.content}</span>
+                            <div className="flex flex-col gap-1 xl:flex-1 xl:min-h-0 xl:overflow-y-auto xl:pb-4">
+                                {recipe.steps.map((step, index) => (
+                                    <div key={step.id}>
+                                        <div className="flex gap-2">
+                                            <h3 className="text-primary min-w-6 self-start -mt-1">{step.stepOrder + 1}.</h3>
+                                            <span className="whitespace-pre-wrap">{step.content}</span>
+                                        </div>
+                                        {index < recipe.steps.length - 1 && <Separator className="my-4 mx-auto max-w-2/3 " />}
                                     </div>
-                                    {index < recipe.steps.length - 1 && <Separator className="my-4 mx-auto max-w-2/3 " />}
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </motion.div>
