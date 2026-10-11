@@ -33,15 +33,17 @@ Dostaneš recept – buď jako strukturovaná data (schema.org JSON-LD), nebo ja
 - Vše přelož do přirozené češtiny (název, popis, ingredience, kroky). Pokud je recept už česky, jen ho učeš.
 - Jednotky převeď na metrické. Preferuj tyto jednotky: ${UNITS.join(", ")}. Cups, oz, lb apod. převeď na g nebo ml (u sypkých surovin raději na gramy). Kusové suroviny (vejce, cibule) mají jednotku "ks". Teploty převeď na °C.
 - U surovin bez množství (sůl, pepř "podle chuti") dej amount null a unit "dle chuti" nebo "dle potřeby".
-- Název suroviny piš krátce a v 1. pádě (např. "cibule"); upřesnění jako "nadrobno nakrájená" dej do note.
-- Kroky postupu rozděl na jednotlivé logické kroky, bez číslování na začátku.
+- Název suroviny piš krátce, v 1. pádě a s velkým počátečním písmenem (např. "Cibule", "Černý pepř"); upřesnění jako "nadrobno nakrájená" dej do note (malým písmenem).
+- Kroky postupu seskup do ucelených fází přípravy (typicky 3–8 kroků, např. "příprava těsta", "příprava náplně", "pečení"). Jeden krok = několik souvisejících vět, ne jedna věta. Vynech triviální kroky jako "připravte si všechny suroviny" nebo "předehřejte troubu" samostatně – předehřátí zmiň v kroku, kam logicky patří. Kroky piš bez číslování na začátku.
 - portions je počet porcí; pokud není uveden, odhadni ho rozumně podle množství.
 - prepTimeMinutes je celkový čas přípravy v minutách, nebo null, pokud není znám.
 - imageUrl je absolutní URL hlavního obrázku receptu, pokud je v podkladech, jinak null.
 - description je krátký popis (1–2 věty), nebo null.
-- Nic si nevymýšlej – pokud nějaká informace v podkladech není, použij null.`;
+- Nic si nevymýšlej – pokud nějaká informace v podkladech není, použij null.
 
-export async function importRecipe(input: string): Promise<ImportResult> {
+Uživatel může k receptu připojit doplňující pokyny (např. "přepočítej na 4 porce", "bez cibule"). Ty mají přednost před pravidly výše – uprav podle nich recept a nastav odpovídající hodnoty (např. portions a množství surovin).`;
+
+export async function importRecipe(input: string, instructions?: string): Promise<ImportResult> {
     const trimmed = input.trim();
     if (!trimmed) return { ok: false, error: "Vložte URL nebo text receptu." };
     if (!process.env.ANTHROPIC_API_KEY) return { ok: false, error: "Chybí ANTHROPIC_API_KEY v .env." };
@@ -70,20 +72,33 @@ export async function importRecipe(input: string): Promise<ImportResult> {
                 format: betaZodOutputFormat(importedRecipeSchema),
             },
             system: SYSTEM_PROMPT,
-            messages: [{ role: "user", content: source }],
+            messages: [{ role: "user", content: instructions?.trim()
+                ? `${source}\n\nDoplňující pokyny uživatele:\n${instructions.trim()}`
+                : source }],
         });
 
         if (response.stop_reason === "refusal") return { ok: false, error: "Model odmítl recept zpracovat." };
         if (response.stop_reason === "max_tokens") return { ok: false, error: "Recept je příliš dlouhý." };
         if (!response.parsed_output) return { ok: false, error: "Nepodařilo se rozpoznat recept." };
 
-        return { ok: true, recipe: response.parsed_output };
+        const recipe = response.parsed_output;
+        return {
+            ok: true,
+            recipe: {
+                ...recipe,
+                ingredients: recipe.ingredients.map(i => ({ ...i, name: capitalize(i.name.trim()) })),
+            },
+        };
     } catch (e) {
         if (e instanceof Anthropic.AuthenticationError) return { ok: false, error: "Neplatný API klíč." };
         if (e instanceof Anthropic.RateLimitError) return { ok: false, error: "Příliš mnoho požadavků, zkuste to za chvíli." };
         if (e instanceof Anthropic.APIError) return { ok: false, error: `Chyba AI (${e.status}): ${e.message}` };
         throw e;
     }
+}
+
+function capitalize(text: string): string {
+    return text.charAt(0).toLocaleUpperCase("cs-CZ") + text.slice(1);
 }
 
 function parseUrl(input: string): URL | null {

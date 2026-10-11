@@ -9,16 +9,18 @@ import {ImportedRecipe, importRecipe} from "@/lib/actions/import-recipe";
 export function RecipeImportDialog({ onImport }: { onImport: (recipe: ImportedRecipe) => void }) {
     const [open, setOpen] = useState(false);
     const [input, setInput] = useState("");
+    const [instructions, setInstructions] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [isPending, startTransition] = useTransition();
 
     function handleImport() {
         setError(null);
         startTransition(async () => {
-            const result = await importRecipe(input);
+            const result = await importRecipe(input, instructions);
             if (result.ok) {
                 onImport(result.recipe);
                 setInput("");
+                setInstructions("");
                 setOpen(false);
             } else {
                 setError(result.error);
@@ -45,6 +47,13 @@ export function RecipeImportDialog({ onImport }: { onImport: (recipe: ImportedRe
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="https://… nebo text receptu"
                     className="max-h-64"
+                    disabled={isPending}
+                />
+                <Textarea
+                    value={instructions}
+                    onChange={(e) => setInstructions(e.target.value)}
+                    placeholder="Doplňující pokyny (nepovinné), např. přepočítej na 4 porce"
+                    className="min-h-12"
                     disabled={isPending}
                 />
                 {error && <FieldError>{error}</FieldError>}
