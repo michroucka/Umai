@@ -24,6 +24,8 @@ import {RecipeStepsField} from "@/components/recipe-steps-field";
 import {RecipeWithDetails} from "@/lib/types";
 import {parseHoursMinutes} from "@/lib/utils";
 import {updateRecipe} from "@/lib/actions/update-recipe";
+import {RecipeImportDialog} from "@/components/recipe-import-dialog";
+import {ImportedRecipe} from "@/lib/actions/import-recipe";
 
 export type RecipeFormValues = z.input<typeof recipeSchema>;
 
@@ -89,6 +91,28 @@ function mapToFormValues(recipe: RecipeWithDetails) {
     }
 }
 
+function mapImportedToFormValues(recipe: ImportedRecipe): RecipeFormValues {
+    const prepTime = recipe.prepTimeMinutes ? parseHoursMinutes(Math.round(recipe.prepTimeMinutes)) : { hours: 0, minutes: 0 };
+    const steps = recipe.steps.filter(s => s.trim() !== "").map(content => ({ content }));
+
+    return {
+        name: recipe.name,
+        description: recipe.description ?? undefined,
+        hours: prepTime.hours,
+        minutes: prepTime.minutes,
+        image: recipe.imageUrl ?? undefined,
+        portions: Math.max(1, Math.round(recipe.portions)),
+
+        ingredients: [
+            ...recipe.ingredients.map(
+                ({ name, note, amount, unit }) =>
+                    ({ name, note: note ?? undefined, amount: amount || undefined, unit })),
+            { name: "", note: undefined, amount: undefined, unit: "" },
+        ],
+        steps: steps.length > 0 ? steps : [{ content: "" }],
+    }
+}
+
 export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails | null }) {
     const cancelHref = defaultRecipe ? `/recipes/${defaultRecipe.id}` : "/";
 
@@ -127,6 +151,9 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                 <FieldLegend>Základní informace</FieldLegend>
                 <FieldDescription>Název, popis a čas přípravy receptu.</FieldDescription>
                 <FieldGroup>
+                    {!defaultRecipe && (
+                        <RecipeImportDialog onImport={(recipe) => form.reset(mapImportedToFormValues(recipe))} />
+                    )}
                     <RecipeImageField control={form.control} setValue={form.setValue} getValues={form.getValues} />
                     <Controller
                         name="name"

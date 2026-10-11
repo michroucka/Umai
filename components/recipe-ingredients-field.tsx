@@ -14,6 +14,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {ChevronDown, ChevronUp, Trash2} from "lucide-react";
 import {AnimatePresence, motion} from "motion/react";
+import {UNITS} from "@/lib/units";
 
 export function RecipeIngredientsField({ control, getValues, errors, trigger, isSubmitted }: {
     control: Control<RecipeFormValues>;
@@ -23,8 +24,6 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
     isSubmitted: boolean;
 }) {
     const { fields, append, remove, move } = useFieldArray({ control, name: "ingredients" });
-
-    const units = ["g", "ml", "ks", "lžíce", "lžičky", "dle chuti", "dle potřeby"]
 
     return (
         <FieldGroup className="xl:flex-1 xl:min-h-0 xl:overflow-y-auto xl:pb-6">
@@ -108,7 +107,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                                                 field.onChange(value);
                                                                 void trigger("ingredients")
                                                             }}
-                                                            items={units}
+                                                            items={UNITS}
                                                             mode="none"
                                                             openOnInputClick
                                                         >
