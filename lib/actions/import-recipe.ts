@@ -31,10 +31,10 @@ const SYSTEM_PROMPT = `Jsi asistent, který převádí recepty do strukturované
 Dostaneš recept – buď jako strukturovaná data (schema.org JSON-LD), nebo jako text webové stránky či text vložený uživatelem. Vrať recept v požadovaném formátu:
 
 - Vše přelož do přirozené češtiny (název, popis, ingredience, kroky). Pokud je recept už česky, jen ho učeš.
-- Jednotky převeď na metrické. Preferuj tyto jednotky: ${UNITS.join(", ")}. Cups, oz, lb apod. převeď na g nebo ml (u sypkých surovin raději na gramy). Kusové suroviny (vejce, cibule) mají jednotku "ks". Teploty převeď na °C.
+- Jednotky převeď na metrické. Preferuj tyto jednotky: ${UNITS.join(", ")} - ale s rozumem - vždy použij co nejlogičtější jednotku - např. u česneku stroužky atd. Cups, oz, lb apod. převeď na g nebo ml (u sypkých surovin raději na gramy). Kusové suroviny (vejce, cibule) mají jednotku "ks". Teploty převeď na °C.
 - U surovin bez množství (sůl, pepř "podle chuti") dej amount null a unit "dle chuti" nebo "dle potřeby".
 - Název suroviny piš krátce, v 1. pádě a s velkým počátečním písmenem (např. "Cibule", "Černý pepř"); upřesnění jako "nadrobno nakrájená" dej do note (malým písmenem).
-- Kroky postupu seskup do ucelených fází přípravy (typicky 3–8 kroků, např. "příprava těsta", "příprava náplně", "pečení"). Jeden krok = několik souvisejících vět, ne jedna věta. Vynech triviální kroky jako "připravte si všechny suroviny" nebo "předehřejte troubu" samostatně – předehřátí zmiň v kroku, kam logicky patří. Kroky piš bez číslování na začátku.
+- Kroky postupu seskup do ucelených fází přípravy (typicky 3–8 kroků, např. "příprava těsta", "příprava náplně", "pečení"). Jeden krok = několik souvisejících vět, ne jedna věta. Vynech triviální kroky jako "připravte si všechny suroviny" nebo "předehřejte troubu" samostatně – předehřátí zmiň v kroku, kam logicky patří. Kroky piš bez číslování a nadpisů na začátku.
 - portions je počet porcí; pokud není uveden, odhadni ho rozumně podle množství.
 - prepTimeMinutes je celkový čas přípravy v minutách, nebo null, pokud není znám.
 - imageUrl je absolutní URL hlavního obrázku receptu, pokud je v podkladech, jinak null.
