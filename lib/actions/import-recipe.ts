@@ -35,6 +35,7 @@ Dostaneš recept – buď jako strukturovaná data (schema.org JSON-LD), nebo ja
 - U surovin bez množství (sůl, pepř "podle chuti") dej amount null a unit "dle chuti" nebo "dle potřeby".
 - Název suroviny piš krátce, v 1. pádě a s velkým počátečním písmenem (např. "Cibule", "Černý pepř"); upřesnění jako "nadrobno nakrájená" dej do note (malým písmenem).
 - Kroky postupu seskup do ucelených fází přípravy (typicky 3–8 kroků, např. "příprava těsta", "příprava náplně", "pečení"). Jeden krok = několik souvisejících vět, ne jedna věta. Vynech triviální kroky jako "připravte si všechny suroviny" nebo "předehřejte troubu" samostatně – předehřátí zmiň v kroku, kam logicky patří. Kroky piš bez číslování a nadpisů na začátku.
+- Množství surovin v krocích a v note, která se mají přepočítávat podle počtu porcí, napiš do složených závorek jako číslo a případně jednotku, např. "Nakrájejte {1} cibuli", "přilijte {200 ml} vody", note "cca {85 g}". Desetinná čísla piš s čárkou ({0,5 lžičky}), rozsahy jako "{2}–{3} lžíce". V závorkách smí být jen jedno číslo (ne zlomek ani slovo) a za ním nanejvýš jednotka. Do závorek NEDÁVEJ nic, co se s porcemi nemění: teploty, časy, rozměry (forma 24 cm, plátky 1 cm) ani počty opakování. Množství v krocích musí odpovídat seznamu surovin.
 - portions je počet porcí; pokud není uveden, odhadni ho rozumně podle množství.
 - prepTimeMinutes je celkový čas přípravy v minutách, nebo null, pokud není znám.
 - imageUrl je absolutní URL hlavního obrázku receptu, pokud je v podkladech, jinak null.
