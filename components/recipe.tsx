@@ -27,6 +27,13 @@ import { motion, AnimatePresence, useDragControls } from "motion/react";
 import {Ingredients} from "@/components/ingredients";
 import {ScalableText} from "@/components/scalable-text";
 
+const MIN_PORTIONS = 1;
+const MAX_PORTIONS = 99;
+
+function clampPortions(value: number): number {
+    return Math.min(MAX_PORTIONS, Math.max(MIN_PORTIONS, value));
+}
+
 export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
     const [fullscreenMode, setFullScreenMode] = useState<boolean>(false);
     const [currentStep, setCurrentStep] = useState<number>(0);
@@ -278,22 +285,24 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                                 <Button
                                                     variant="ghost"
                                                     size="icon-sm"
-                                                    onClick={() => setPortions(portions - 1)}
+                                                    onClick={() => setPortions(p => clampPortions(p - 1))}
+                                                    disabled={portions <= MIN_PORTIONS}
                                                 >
                                                     <Minus className="size-4" />
                                                 </Button>
                                                 <Input
                                                     type="number"
                                                     value={portions}
-                                                    min={1} max={99}
-                                                    onChange={(e) => setPortions(Math.min(99, Math.max(1, Number(e.target.value))))}
+                                                    min={MIN_PORTIONS} max={MAX_PORTIONS}
+                                                    onChange={(e) => setPortions(clampPortions(Number(e.target.value)))}
                                                     onFocus={(e) => e.target.select()}
                                                     className="max-w-10 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                                 />
                                                 <Button
                                                     variant="ghost"
                                                     size="icon-sm"
-                                                    onClick={() => setPortions(portions + 1)}
+                                                    onClick={() => setPortions(p => clampPortions(p + 1))}
+                                                    disabled={portions >= MAX_PORTIONS}
                                                 >
                                                     <Plus className="size-4" />
                                                 </Button>
