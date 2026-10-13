@@ -25,6 +25,7 @@ import {deleteRecipe} from "@/lib/actions/delete-recipe";
 import {Timer} from "@/components/timer";
 import { motion, AnimatePresence, useDragControls } from "motion/react";
 import {Ingredients} from "@/components/ingredients";
+import {ScalableText} from "@/components/scalable-text";
 
 export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
     const [fullscreenMode, setFullScreenMode] = useState<boolean>(false);
@@ -43,6 +44,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
     const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
 
     const [portions, setPortions] = useState<number>(recipe.portions);
+    const portionsFactor = portions / recipe.portions;
     const prepTime = recipe.prepTime ? parseHoursMinutes(recipe.prepTime) : null;
 
     const wakeLockRef = useRef<WakeLockSentinel | null>(null);
@@ -111,7 +113,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                         >
                             <span className="text-lg whitespace-pre-wrap">
                                 <span className="text-3xl font-semibold text-primary mr-2">{recipe.steps[currentStep].stepOrder + 1}.</span>
-                                {recipe.steps[currentStep].content}
+                                <ScalableText text={recipe.steps[currentStep].content} factor={portionsFactor} />
                             </span>
                         </motion.div>
                     </AnimatePresence>
@@ -158,7 +160,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                     >
                                         <div className="h-1 w-10 rounded-full bg-muted-foreground/30" />
                                     </div>
-                                    <Ingredients ingredients={recipe.ingredients} portionsFactor={portions / recipe.portions} />
+                                    <Ingredients ingredients={recipe.ingredients} portionsFactor={portionsFactor} />
                                 </motion.div>
                             </>
                         )}
@@ -313,7 +315,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                 <div className="flex flex-col gap-2 xl:flex-1 xl:min-h-0 xl:overflow-y-auto xl:pb-4">
                                     {recipe.ingredients.map((ingredient) => {
                                         const amount = ingredient.amount ?
-                                            formatAmount((ingredient.amount / recipe.portions) * portions) : null;
+                                            formatAmount(ingredient.amount * portionsFactor) : null;
 
                                         return (
                                             <Field key={ingredient.id} orientation="horizontal" className="group">
@@ -329,7 +331,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                                         <FieldDescription
                                                             className="group-has-data-[state=checked]:line-through group-has-data-[state=checked]:opacity-75"
                                                         >
-                                                            {ingredient.note}
+                                                            <ScalableText text={ingredient.note} factor={portionsFactor} />
                                                         </FieldDescription>
                                                     }
                                                 </FieldContent>
@@ -357,7 +359,9 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                     <div key={step.id}>
                                         <div className="flex gap-2">
                                             <h3 className="text-primary min-w-6 self-start -mt-1">{step.stepOrder + 1}.</h3>
-                                            <span className="whitespace-pre-wrap">{step.content}</span>
+                                            <span className="whitespace-pre-wrap">
+                                                <ScalableText text={step.content} factor={portionsFactor} />
+                                            </span>
                                         </div>
                                         {index < recipe.steps.length - 1 && <Separator className="my-4 mx-auto max-w-2/3 " />}
                                     </div>

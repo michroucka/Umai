@@ -2,6 +2,7 @@
 
 import {Ingredient} from "@/lib/types";
 import {formatAmount} from "@/lib/utils";
+import {ScalableText} from "@/components/scalable-text";
 
 export function Ingredients({ingredients, portionsFactor}: { ingredients: Ingredient[], portionsFactor: number }) {
 
@@ -19,7 +20,7 @@ export function Ingredients({ingredients, portionsFactor}: { ingredients: Ingred
                         </span>
                         {ingredient.note &&
                             <span className="block text-sm text-muted-foreground">
-                                {ingredient.note}
+                                <ScalableText text={ingredient.note} factor={portionsFactor} />
                             </span>
                         }
                     </li>
