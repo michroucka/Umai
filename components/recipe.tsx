@@ -56,6 +56,18 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
 
     const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 
+    // TODO: wake lock fixes
+    // - Race on unmount: request() is async, so if cleanup runs before it
+    //   resolves (fast unmount, StrictMode double-mount in dev), the lock is
+    //   acquired after cleanup and never released. Track a `cancelled` flag
+    //   in the effect and release the fresh sentinel right after `await`
+    //   when it's set.
+    // - Leaked sentinel: acquireWakeLock() overwrites the ref without
+    //   releasing the previous sentinel. Skip the request when a live
+    //   (`!released`) sentinel is already held.
+    // - Unsupported API: `navigator.wakeLock?.request` silently does nothing
+    //   when the API is missing (e.g. iOS home screen apps before 18.4).
+    //   Check `"wakeLock" in navigator` explicitly if the user should know.
     useEffect(() => {
         async function acquireWakeLock() {
             try {
