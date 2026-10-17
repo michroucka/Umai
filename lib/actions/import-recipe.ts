@@ -15,9 +15,9 @@ const importedRecipeSchema = z.object({
         name: z.string(),
         amount: z.number().nullable(),
         unit: z.string(),
-        note: z.string().nullable(),
+        note: z.string().nullable().describe("Upřesnění suroviny; každé množství ve {složených závorkách}, např. \"cca {85 g}\""),
     })),
-    steps: z.array(z.string()),
+    steps: z.array(z.string().describe("Text kroku; každé množství suroviny ve {složených závorkách}, např. \"Nakrájejte {1} cibuli\"")),
 });
 
 export type ImportedRecipe = z.infer<typeof importedRecipeSchema>;
@@ -35,12 +35,34 @@ Dostaneš recept – buď jako strukturovaná data (schema.org JSON-LD), nebo ja
 - U surovin bez množství (sůl, pepř "podle chuti") dej amount null a unit "dle chuti" nebo "dle potřeby".
 - Název suroviny piš krátce, v 1. pádě a s velkým počátečním písmenem (např. "Cibule", "Černý pepř"); upřesnění jako "nadrobno nakrájená" dej do note (malým písmenem).
 - Kroky postupu seskup do ucelených fází přípravy (typicky 3–8 kroků, např. "příprava těsta", "příprava náplně", "pečení"). Jeden krok = několik souvisejících vět, ne jedna věta. Vynech triviální kroky jako "připravte si všechny suroviny" nebo "předehřejte troubu" samostatně – předehřátí zmiň v kroku, kam logicky patří. Kroky piš bez číslování a nadpisů na začátku.
-- Množství surovin v krocích a v note, která se mají přepočítávat podle počtu porcí, napiš do složených závorek jako číslo a případně jednotku, např. "Nakrájejte {1} cibuli", "přilijte {200 ml} vody", note "cca {85 g}". Desetinná čísla piš s čárkou ({0,5 lžičky}), rozsahy jako "{2}–{3} lžíce". V závorkách smí být jen jedno číslo (ne zlomek ani slovo) a za ním nanejvýš jednotka. Do závorek NEDÁVEJ nic, co se s porcemi nemění: teploty, časy, rozměry (forma 24 cm, plátky 1 cm) ani počty opakování. Množství v krocích musí odpovídat seznamu surovin.
 - portions je počet porcí; pokud není uveden, odhadni ho rozumně podle množství.
 - prepTimeMinutes je celkový čas přípravy v minutách, nebo null, pokud není znám.
 - imageUrl je absolutní URL hlavního obrázku receptu, pokud je v podkladech, jinak null.
 - description je krátký popis (1–2 věty), nebo null.
 - Nic si nevymýšlej – pokud nějaká informace v podkladech není, použij null.
+
+## Přepočítávaná množství (POVINNÉ)
+
+Aplikace přepočítává množství podle počtu porcí. V textu kroků (steps) a poznámek surovin (note) to funguje jen pro množství zapsaná ve složených závorkách. Proto KAŽDÉ množství suroviny, které v kroku nebo v note uvedeš, MUSÍ být ve složených závorkách – bez výjimky, i když je stejné jako v seznamu surovin.
+
+Formát: {číslo} nebo {číslo jednotka}
+- číslo píšeš číslicemi, desetinné s čárkou: {1}, {85 g}, {0,5 lžičky}, {200 ml}
+- slovní množství převeď na číslo: "jednu cibuli" → "{1} cibuli", "polovinu cibule" → "{0,5} cibule", "polovinu másla" → "{25 g} másla" (z celkového množství v seznamu surovin)
+- rozsah zapiš jako dvě čísla: "{2}–{3} lžíce"
+- v závorkách je vždy jen jedno číslo a nanejvýš jednotka – nikdy zlomek (1/2), slovo ani název suroviny
+
+Příklady:
+- ✅ "Nakrájejte {1} cibuli a {2} stroužky česneku, přidejte {200 ml} vody."  ❌ "Nakrájejte 1 cibuli a 2 stroužky česneku, přidejte 200 ml vody."
+- ✅ note "cca {85 g}"  ❌ note "cca 85 g"
+- ✅ "Vmíchejte {2} vejce a {150 g} mouky."  ❌ "Vmíchejte dvě vejce a 150 g mouky."
+
+Do závorek NIKDY nedávej čísla, která se s porcemi nemění:
+- teploty: "pečte na 180 °C" (ne "{180 °C}")
+- časy: "vařte 20 minut"
+- rozměry a nádobí: "forma o průměru 24 cm", "plátky silné 1 cm"
+- počty opakování a pořadí: "2× přeložte", "v 3 dávkách"
+
+Než odpověď vrátíš, projdi každý krok a každou note: každé číslo, které je množstvím suroviny, musí být ve {závorkách}; teploty, časy a rozměry v nich být nesmí.
 
 Uživatel může k receptu připojit doplňující pokyny (např. "přepočítej na 4 porce", "bez cibule"). Ty mají přednost před pravidly výše – uprav podle nich recept a nastav odpovídající hodnoty (např. portions a množství surovin).`;
 
