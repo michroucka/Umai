@@ -57,6 +57,14 @@ export function RecipeImageField({ control, setValue, getValues }: {
                         />
                     )}
                 />
+                {/* TODO: allow pasting an image URL (e.g. from Google Images) instead of uploading
+                    - Data layer already supports it: the form schema accepts a string, saveImage()
+                      passes strings through and <img> needs no remotePatterns. Only UI is missing
+                      (a third button / input that calls setValue("image", url)).
+                    - Hotlinked images can break later: Google Images thumbnails (encrypted-tbn*)
+                      expire and some sites block hotlinking. Consider downloading the URL in
+                      saveImage() on save and storing it locally like an upload; validate the
+                      content-type / size and reuse isPrivateHost() from import-recipe.ts. */}
                 <ButtonGroup id="image">
                     <Button type="button"
                             size="sm"

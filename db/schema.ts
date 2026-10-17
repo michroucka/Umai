@@ -15,6 +15,13 @@ export const ingredients = sqliteTable("ingredients", {
   recipeId: integer("recipe_id").notNull().references(() => recipes.id, {onDelete: "cascade"}),
   name: text("name").notNull(),
   note: text("note"),
+  // TODO: support amount ranges (e.g. "6–8 lžic")
+  // - amount holds a single number, so a range from the source recipe can't
+  //   be stored; notes and steps already support it via "{6}–{8 lžic}".
+  // - Probably a nullable second column (e.g. amountMax) plus a migration,
+  //   then: recipe form field, display + scaling in recipe.tsx and
+  //   ingredients.tsx, the importedRecipeSchema in import-recipe.ts and
+  //   a prompt rule for ranges in the amount field.
   amount: real("amount"),
   unit: text("unit").notNull(),
 });
