@@ -1,5 +1,5 @@
 <div align="center">
-  <img src=".github/assets/umai_logo_light.svg" alt="Umai logo" width="400" />
+  <img src=".github/assets/umai-readme-banner.svg" alt="Umai" width="640" />
 </div>
 
 <div align="center">
