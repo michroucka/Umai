@@ -19,7 +19,7 @@ jobs:
           attempts=3
           for ((i=1; i<=attempts; i++)); do
             echo "Deploy attempt $i/$attempts"
-            if docker compose up -d --build --wait; then
+            if docker compose build --pull && docker compose up -d --wait; then
               echo "Deploy succeeded"
               exit 0
             fi
