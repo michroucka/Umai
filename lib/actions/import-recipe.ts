@@ -4,6 +4,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import {betaZodOutputFormat} from "@anthropic-ai/sdk/helpers/beta/zod";
 import * as z from "zod";
 import {UNITS} from "@/lib/units";
+import {capitalize, fetchRecipeSource, parseUrl} from "@/lib/import/recipe-source";
 
 const importedRecipeSchema = z.object({
     name: z.string(),
@@ -124,92 +125,4 @@ export async function importRecipe(input: string, instructions?: string): Promis
         if (e instanceof Anthropic.APIError) return { ok: false, error: `Chyba AI (${e.status}): ${e.message}` };
         throw e;
     }
-}
-
-function capitalize(text: string): string {
-    return text.charAt(0).toLocaleUpperCase("cs-CZ") + text.slice(1);
-}
-
-function parseUrl(input: string): URL | null {
-    if (/\s/.test(input)) return null;
-    try {
-        const url = new URL(input);
-        return url.protocol === "http:" || url.protocol === "https:" ? url : null;
-    } catch {
-        return null;
-    }
-}
-
-// Server běží v domácí síti – nedovolíme stahovat adresy z lokální sítě.
-function isPrivateHost(hostname: string): boolean {
-    return hostname === "localhost"
-        || hostname.endsWith(".local")
-        || hostname.startsWith("[")
-        || /^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(hostname)
-        || /^172\.(1[6-9]|2\d|3[01])\./.test(hostname);
-}
-
-async function fetchRecipeSource(url: URL): Promise<string> {
-    if (isPrivateHost(url.hostname)) throw new Error("Adresy z lokální sítě nejsou povolené.");
-
-    const res = await fetch(url, {
-        headers: {
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
-            "Accept-Language": "cs,en;q=0.8",
-        },
-        signal: AbortSignal.timeout(15000),
-    });
-    if (!res.ok) throw new Error(`Stránka vrátila chybu ${res.status}.`);
-    const html = await res.text();
-
-    const jsonLd = findJsonLdRecipe(html);
-    if (jsonLd) return `Strukturovaná data receptu z ${url}:\n${JSON.stringify(jsonLd)}`;
-
-    const ogImage = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)?.[1];
-    const text = htmlToText(html);
-    if (text.length < 200) throw new Error("Na stránce se nepodařilo najít recept. Zkuste vložit text receptu.");
-
-    return `Text stránky ${url}:${ogImage ? `\nObrázek: ${ogImage}` : ""}\n\n${text.slice(0, 100_000)}`;
-}
-
-function findJsonLdRecipe(html: string): unknown {
-    const scripts = html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi);
-    for (const [, content] of scripts) {
-        try {
-            const recipe = findRecipeNode(JSON.parse(content));
-            if (recipe) return recipe;
-        } catch {
-            // nevalidní JSON-LD přeskočíme
-        }
-    }
-    return null;
-}
-
-function findRecipeNode(node: unknown): unknown {
-    if (Array.isArray(node)) {
-        for (const item of node) {
-            const found = findRecipeNode(item);
-            if (found) return found;
-        }
-        return null;
-    }
-    if (node && typeof node === "object") {
-        const obj = node as Record<string, unknown>;
-        const type = obj["@type"];
-        if (type === "Recipe" || (Array.isArray(type) && type.includes("Recipe"))) return obj;
-        if (obj["@graph"]) return findRecipeNode(obj["@graph"]);
-    }
-    return null;
-}
-
-function htmlToText(html: string): string {
-    return html
-        .replace(/<(script|style|noscript|svg|nav|footer|header)[^>]*>[\s\S]*?<\/\1>/gi, " ")
-        .replace(/<br\s*\/?>|<\/(p|li|h\d|div)>/gi, "\n")
-        .replace(/<[^>]+>/g, " ")
-        .replace(/&nbsp;/g, " ")
-        .replace(/&amp;/g, "&")
-        .replace(/[ \t]+/g, " ")
-        .replace(/\n\s*\n+/g, "\n")
-        .trim();
 }
