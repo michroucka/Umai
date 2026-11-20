@@ -1,0 +1,33 @@
+version: 2
+
+# One weekly PR per ecosystem with minor and patch updates.
+# Major versions need a migration, so they are planned by hand instead of coming as PRs.
+# Merging to main deploys to the NAS, so these PRs are merged by hand after CI passes.
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
+
+  # Keeps node:22-alpine on the latest Node 22; the major version is changed by hand.
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
