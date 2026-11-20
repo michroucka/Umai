@@ -1,8 +1,7 @@
 name: CI
 
+# Pushes to main run CI through deploy.yml, which deploys only when it passes.
 on:
-  push:
-    branches: [main]
   pull_request:
   workflow_call:
 

@@ -91,7 +91,7 @@ drizzle/        Generated SQL migrations
 
 ## Deployment
 
-`.github/workflows/deploy.yml` redeploys the app to my home server (NAS) via a self-hosted GitHub Actions runner whenever a `v*` tag is pushed - `git fetch`, checkout the tag, and `docker compose up -d --build`.
+`.github/workflows/deploy.yml` redeploys the app to my home server (NAS) via a self-hosted GitHub Actions runner on every push to `main` - it runs CI first, then checks out the tested commit and rebuilds with `docker compose`. It can also be started manually from the Actions tab.
 
 ## License
 
