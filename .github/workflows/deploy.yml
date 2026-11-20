@@ -2,8 +2,8 @@ name: Deploy to NAS
 
 on:
   push:
-    tags:
-      - "v*"
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -19,12 +19,12 @@ jobs:
       group: deploy-nas
       cancel-in-progress: false
     steps:
-      - name: Pull tag and redeploy
+      - name: Check out the tested commit and redeploy
         working-directory: /home/michroucka/umai
         run: |
           set -e
-          git fetch --tags --force
-          git checkout "${{ github.ref_name }}"
+          git fetch origin
+          git checkout --detach "${{ github.sha }}"
 
           attempts=3
           for ((i=1; i<=attempts; i++)); do
