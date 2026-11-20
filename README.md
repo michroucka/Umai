@@ -32,8 +32,8 @@ Built as a learning project to pick up React and Next.js.
 
 ## Screenshots & demos
 
-| Recipe list (mobile) | Recipe detail |
-| --- | --- |
+| Recipe list (mobile)                                                     | Recipe detail                                                                       |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
 | ![Recipe list on mobile](.github/assets/screenshots/homepage-mobile.png) | ![Recipe detail with portion scaling](.github/assets/screenshots/recipe-detail.png) |
 
 **Live portion scaling** - ingredient amounts recalculate as you change the serving count:
@@ -50,8 +50,8 @@ Built as a learning project to pick up React and Next.js.
 
 Light and dark themes:
 
-| Light | Dark |
-| --- | --- |
+| Light                                                                                     | Dark                                                                                    |
+| ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | ![Recipe edit form, light theme](.github/assets/screenshots/recipe-edit-mobile-light.png) | ![Recipe edit form, dark theme](.github/assets/screenshots/recipe-edit-mobile-dark.png) |
 
 ## Getting started

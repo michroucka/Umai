@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import {RecipeWithDetails} from "@/lib/types";
-import {Input} from "@/components/ui/input";
-import {useEffect, useRef, useState} from "react";
-import {Badge} from "@/components/ui/badge";
-import {formatAmount, parseHoursMinutes} from "@/lib/utils";
-import {Button} from "@/components/ui/button";
-import {ChevronLeft, ChevronRight, List, Maximize2, Minus, PenSquare, Plus, TimerIcon, Trash2, X} from "lucide-react";
-import {Separator} from "@/components/ui/separator";
-import {Field, FieldContent, FieldDescription, FieldLabel} from "@/components/ui/field";
-import {Checkbox} from "@/components/ui/checkbox";
+import { RecipeWithDetails } from "@/lib/types";
+import { Input } from "@/components/ui/input";
+import { useEffect, useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { formatAmount, parseHoursMinutes } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, List, Maximize2, Minus, PenSquare, Plus, TimerIcon, Trash2, X } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Field, FieldContent, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
-import {ButtonGroup} from "@/components/ui/button-group";
+import { ButtonGroup } from "@/components/ui/button-group";
 import {
     Dialog,
     DialogClose,
@@ -19,13 +19,13 @@ import {
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogTitle
+    DialogTitle,
 } from "@/components/ui/dialog";
-import {deleteRecipe} from "@/lib/actions/delete-recipe";
-import {Timer} from "@/components/timer";
+import { deleteRecipe } from "@/lib/actions/delete-recipe";
+import { Timer } from "@/components/timer";
 import { motion, AnimatePresence, useDragControls } from "motion/react";
-import {Ingredients} from "@/components/ingredients";
-import {ScalableText} from "@/components/scalable-text";
+import { Ingredients } from "@/components/ingredients";
+import { ScalableText } from "@/components/scalable-text";
 
 const MIN_PORTIONS = 1;
 const MAX_PORTIONS = 99;
@@ -34,7 +34,7 @@ function clampPortions(value: number): number {
     return Math.min(MAX_PORTIONS, Math.max(MIN_PORTIONS, value));
 }
 
-export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
+export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
     const [fullscreenMode, setFullScreenMode] = useState<boolean>(false);
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [swipeDirection, setSwipeDirection] = useState<number>(1);
@@ -89,8 +89,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
         return () => {
             document.removeEventListener("visibilitychange", handleVisibilityChange);
             wakeLockRef.current?.release();
-        }
-
+        };
     }, []);
 
     function paginate(newDirection: number) {
@@ -98,7 +97,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
         if (next < 0 || next > recipe.steps.length - 1) return;
         setSwipeDirection(newDirection);
         setCurrentStep(next);
-    };
+    }
 
     return (
         <AnimatePresence>
@@ -131,7 +130,9 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                             }}
                         >
                             <span className="text-lg whitespace-pre-wrap">
-                                <span className="text-3xl font-semibold text-primary mr-2">{recipe.steps[currentStep].stepOrder + 1}.</span>
+                                <span className="text-3xl font-semibold text-primary mr-2">
+                                    {recipe.steps[currentStep].stepOrder + 1}.
+                                </span>
                                 <ScalableText text={recipe.steps[currentStep].content} factor={portionsFactor} />
                             </span>
                         </motion.div>
@@ -216,7 +217,9 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                 <Button
                                     size="icon-xl"
                                     variant="outline"
-                                    onClick={() => {paginate(-1)}}
+                                    onClick={() => {
+                                        paginate(-1);
+                                    }}
                                     disabled={currentStep === 0}
                                 >
                                     <ChevronLeft />
@@ -249,10 +252,15 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                 </DialogClose>
                                 <Button
                                     variant="destructive"
-                                    onClick={() => { void deleteRecipe(recipe.id); setDeleteOpen(false); }}
+                                    onClick={() => {
+                                        void deleteRecipe(recipe.id);
+                                        setDeleteOpen(false);
+                                    }}
                                     asChild
                                 >
-                                    <Link href="/"><Trash2 /> Smazat</Link>
+                                    <Link href="/">
+                                        <Trash2 /> Smazat
+                                    </Link>
                                 </Button>
                             </DialogFooter>
                         </DialogContent>
@@ -260,11 +268,15 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
 
                     <div className="flex justify-between mb-4 xl:shrink-0">
                         <Button variant="outline" asChild>
-                            <Link href="/"><X /> Zavřít</Link>
+                            <Link href="/">
+                                <X /> Zavřít
+                            </Link>
                         </Button>
                         <div className="flex gap-2">
                             <Button variant="secondary" asChild>
-                                <Link href={`/recipes/${recipe.id}/edit`}><PenSquare /> Upravit</Link>
+                                <Link href={`/recipes/${recipe.id}/edit`}>
+                                    <PenSquare /> Upravit
+                                </Link>
                             </Button>
                             <Button variant="destructive" size="icon" onClick={() => setDeleteOpen(true)}>
                                 <Trash2 />
@@ -276,19 +288,15 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                             <div className="flex flex-col sm:flex-row gap-2 xl:shrink-0">
                                 {recipe.image && (
                                     <div className="relative w-full sm:w-64 sm:min-w-64 mb-0 sm:mb-4 aspect-video rounded-md bg-muted/40 flex items-center justify-center overflow-hidden">
-                                        <img
-                                            src={recipe.image}
-                                            alt=""
-                                            className="aspect-video w-full object-cover"
-                                        />
+                                        <img src={recipe.image} alt="" className="aspect-video w-full object-cover" />
                                     </div>
                                 )}
                                 <div className="flex flex-col gap-2">
                                     <div className="flex flex-col gap-0.5">
                                         <h3>{recipe.name}</h3>
-                                        {recipe.description &&
+                                        {recipe.description && (
                                             <p className="m-0 leading-5 text-sm">{recipe.description}</p>
-                                        }
+                                        )}
                                     </div>
                                     <div className="flex max-sm:justify-between sm:gap-8 text-center">
                                         <div>
@@ -297,7 +305,7 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                                 <Button
                                                     variant="ghost"
                                                     size="icon-sm"
-                                                    onClick={() => setPortions(p => clampPortions(p - 1))}
+                                                    onClick={() => setPortions((p) => clampPortions(p - 1))}
                                                     disabled={portions <= MIN_PORTIONS}
                                                 >
                                                     <Minus className="size-4" />
@@ -305,7 +313,8 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                                 <Input
                                                     type="number"
                                                     value={portions}
-                                                    min={MIN_PORTIONS} max={MAX_PORTIONS}
+                                                    min={MIN_PORTIONS}
+                                                    max={MAX_PORTIONS}
                                                     onChange={(e) => setPortions(clampPortions(Number(e.target.value)))}
                                                     onFocus={(e) => e.target.select()}
                                                     className="max-w-10 text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -313,21 +322,22 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                                 <Button
                                                     variant="ghost"
                                                     size="icon-sm"
-                                                    onClick={() => setPortions(p => clampPortions(p + 1))}
+                                                    onClick={() => setPortions((p) => clampPortions(p + 1))}
                                                     disabled={portions >= MAX_PORTIONS}
                                                 >
                                                     <Plus className="size-4" />
                                                 </Button>
                                             </div>
                                         </div>
-                                        {prepTime &&
+                                        {prepTime && (
                                             <div>
                                                 <p>Čas přípravy</p>
                                                 <Badge size="lg">
-                                                    {prepTime.hours > 0 && `${prepTime.hours} h`} {prepTime.minutes > 0 && `${prepTime.minutes} min`}
+                                                    {prepTime.hours > 0 && `${prepTime.hours} h`}{" "}
+                                                    {prepTime.minutes > 0 && `${prepTime.minutes} min`}
                                                 </Badge>
                                             </div>
-                                        }
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -335,29 +345,35 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                 <h4 className="mb-1 xl:shrink-0">Ingredience</h4>
                                 <div className="flex flex-col gap-2 xl:flex-1 xl:min-h-0 xl:overflow-y-auto xl:pb-4">
                                     {recipe.ingredients.map((ingredient) => {
-                                        const amount = ingredient.amount ?
-                                            formatAmount(ingredient.amount * portionsFactor) : null;
+                                        const amount = ingredient.amount
+                                            ? formatAmount(ingredient.amount * portionsFactor)
+                                            : null;
 
                                         return (
                                             <Field key={ingredient.id} orientation="horizontal" className="group">
-                                                <Checkbox id={`ingredient-${ingredient.id}`} name={`ingredient-${ingredient.id}`}/>
+                                                <Checkbox
+                                                    id={`ingredient-${ingredient.id}`}
+                                                    name={`ingredient-${ingredient.id}`}
+                                                />
                                                 <FieldContent className="gap-0">
                                                     <FieldLabel
                                                         htmlFor={`ingredient-${ingredient.id}`}
                                                         className="gap-1 group-has-data-[state=checked]:line-through group-has-data-[state=checked]:text-muted-foreground"
                                                     >
-                                                        <span className="font-bold">{ingredient.name}</span> • {amount ?? ""} {ingredient.unit}
+                                                        <span className="font-bold">{ingredient.name}</span> •{" "}
+                                                        {amount ?? ""} {ingredient.unit}
                                                     </FieldLabel>
-                                                    {ingredient.note &&
-                                                        <FieldDescription
-                                                            className="group-has-data-[state=checked]:line-through group-has-data-[state=checked]:opacity-75"
-                                                        >
-                                                            <ScalableText text={ingredient.note} factor={portionsFactor} />
+                                                    {ingredient.note && (
+                                                        <FieldDescription className="group-has-data-[state=checked]:line-through group-has-data-[state=checked]:opacity-75">
+                                                            <ScalableText
+                                                                text={ingredient.note}
+                                                                factor={portionsFactor}
+                                                            />
                                                         </FieldDescription>
-                                                    }
+                                                    )}
                                                 </FieldContent>
                                             </Field>
-                                        )
+                                        );
                                     })}
                                 </div>
                             </div>
@@ -379,12 +395,16 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                                 {recipe.steps.map((step, index) => (
                                     <div key={step.id}>
                                         <div className="flex gap-2">
-                                            <h3 className="text-primary min-w-6 self-start -mt-1">{step.stepOrder + 1}.</h3>
+                                            <h3 className="text-primary min-w-6 self-start -mt-1">
+                                                {step.stepOrder + 1}.
+                                            </h3>
                                             <span className="whitespace-pre-wrap">
                                                 <ScalableText text={step.content} factor={portionsFactor} />
                                             </span>
                                         </div>
-                                        {index < recipe.steps.length - 1 && <Separator className="my-4 mx-auto max-w-2/3 " />}
+                                        {index < recipe.steps.length - 1 && (
+                                            <Separator className="my-4 mx-auto max-w-2/3 " />
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -393,5 +413,5 @@ export function Recipe({recipe}: { recipe: RecipeWithDetails }) {
                 </motion.div>
             )}
         </AnimatePresence>
-    )
+    );
 }

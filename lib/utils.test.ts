@@ -55,9 +55,7 @@ describe("formatAmount", () => {
 
 describe("parseScalable", () => {
     it("returns plain text as a single segment", () => {
-        expect(parseScalable("Osolte a opepřete.")).toEqual([
-            { type: "text", value: "Osolte a opepřete." },
-        ]);
+        expect(parseScalable("Osolte a opepřete.")).toEqual([{ type: "text", value: "Osolte a opepřete." }]);
     });
 
     it("returns no segments for an empty string", () => {

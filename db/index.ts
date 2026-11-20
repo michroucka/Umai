@@ -13,5 +13,5 @@ sqlite.pragma("busy_timeout = 5000");
 export const db = drizzle(sqlite, { schema });
 
 if (process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD) {
-  migrate(db, { migrationsFolder: path.join(process.cwd(), "drizzle") });
+    migrate(db, { migrationsFolder: path.join(process.cwd(), "drizzle") });
 }

@@ -1,10 +1,17 @@
-import {useState, useTransition} from "react";
-import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {Button} from "@/components/ui/button";
-import {Textarea} from "@/components/ui/textarea";
-import {FieldError} from "@/components/ui/field";
-import {Loader2, Sparkles} from "lucide-react";
-import {ImportedRecipe, importRecipe} from "@/lib/actions/import-recipe";
+import { useState, useTransition } from "react";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { FieldError } from "@/components/ui/field";
+import { Loader2, Sparkles } from "lucide-react";
+import { ImportedRecipe, importRecipe } from "@/lib/actions/import-recipe";
 
 export function RecipeImportDialog({ onImport }: { onImport: (recipe: ImportedRecipe) => void }) {
     const [open, setOpen] = useState(false);
@@ -58,9 +65,17 @@ export function RecipeImportDialog({ onImport }: { onImport: (recipe: ImportedRe
                 />
                 {error && <FieldError>{error}</FieldError>}
                 <Button type="button" onClick={handleImport} disabled={isPending || !input.trim()}>
-                    {isPending ? <><Loader2 className="animate-spin" /> Zpracovávám…</> : <><Sparkles /> Importovat</>}
+                    {isPending ? (
+                        <>
+                            <Loader2 className="animate-spin" /> Zpracovávám…
+                        </>
+                    ) : (
+                        <>
+                            <Sparkles /> Importovat
+                        </>
+                    )}
                 </Button>
             </DialogContent>
         </Dialog>
-    )
+    );
 }
