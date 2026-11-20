@@ -9,5 +9,7 @@ export default defineConfig({
         environment: "node",
         include: ["**/*.test.{ts,tsx}"],
         exclude: ["node_modules/**", ".next/**"],
+        // Every test file imports its own copy of db/index.ts, so each gets a fresh migrated DB.
+        env: { DATABASE_PATH: ":memory:" },
     },
 });
