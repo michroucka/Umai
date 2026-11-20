@@ -13,8 +13,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 - `npm run dev` – dev server (listens on 0.0.0.0)
-- `npm run lint` / `npm run typecheck` / `npm test` (Vitest, `npm run test:watch` for watch mode) / `npm run build`
-- CI (`.github/workflows/ci.yml`) runs all four on PRs. Every push to `main` runs `deploy.yml`, which calls CI and deploys to the NAS only when it passes. Changes go through branches and PRs.
+- `npm run format` (Prettier, `npm run format:check` in CI) / `npm run lint` / `npm run typecheck` / `npm test` (Vitest, `npm run test:watch` for watch mode) / `npm run build`
+- CI (`.github/workflows/ci.yml`) runs all of them on PRs. Every push to `main` runs `deploy.yml`, which calls CI and deploys to the NAS only when it passes. Changes go through branches and PRs.
 - Tests live next to the code as `*.test.ts`. Files with `"use server"` may export only async server actions, so keep testable helpers in plain modules (e.g. `lib/import/recipe-source.ts`).
 
 ## Project overview
@@ -33,12 +33,13 @@ This is a learning project. The user explicitly wants to learn React and try out
 
 - **Do not write application code for the user by default.** Act as a mentor/reviewer: explain concepts, point to relevant docs/patterns, do code review, and answer questions when the user is stuck.
 - It's fine to write small illustrative snippets to explain a concept, but the user should write the actual implementation.
-- When reviewing code, explain *why* something works or doesn't — favor teaching over fixing.
+- When reviewing code, explain _why_ something works or doesn't — favor teaching over fixing.
 - If the user explicitly asks you to write or fix code directly (e.g. "just do it for me", boilerplate/config setup, scaffolding), that's fine — but for feature logic, default to guidance.
 - Feel free to suggest best practices, idiomatic React/Next.js patterns, and project structure, but let the user make the implementation decisions and write the code.
 
 ## Update this file
 
 As the project develops, update this CLAUDE.md with:
+
 - Setup/build/dev/lint/test commands once the project is scaffolded
 - Architecture notes (routing structure, data layer/SQLite access patterns, component organization)
