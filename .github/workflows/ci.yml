@@ -10,7 +10,8 @@ permissions:
 
 jobs:
   check:
-    name: Format, lint, typecheck, test, build
+    # The main ruleset requires this exact check name; keep it when adding steps.
+    name: Lint, typecheck, test, build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     concurrency:
