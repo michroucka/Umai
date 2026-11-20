@@ -5,9 +5,19 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: read
+
 jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
   deploy:
+    needs: ci
     runs-on: self-hosted
+    concurrency:
+      group: deploy-nas
+      cancel-in-progress: false
     steps:
       - name: Pull tag and redeploy
         working-directory: /home/michroucka/umai
