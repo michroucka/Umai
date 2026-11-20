@@ -24,12 +24,14 @@ export function isPrivateHost(hostname: string): boolean {
     if (host.startsWith("[")) return true;
     // IPv6 z DNS: povolíme jen globální unicast 2000::/3, vše ostatní (::1, fc00::/7, fe80::/10, ::ffff:…) blokujeme.
     if (host.includes(":")) return !/^[23][0-9a-f]{0,3}:/.test(host);
-    return host === "localhost"
-        || host.endsWith(".local")
-        || /^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(host)
-        || /^172\.(1[6-9]|2\d|3[01])\./.test(host)
+    return (
+        host === "localhost" ||
+        host.endsWith(".local") ||
+        /^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(host) ||
+        /^172\.(1[6-9]|2\d|3[01])\./.test(host) ||
         // 100.64.0.0/10 – CGNAT, používá ho Tailscale
-        || /^100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./.test(host);
+        /^100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./.test(host)
+    );
 }
 
 // Kontroluje i adresy, na které se doména přeloží (např. 127.0.0.1.nip.io).
@@ -55,7 +57,8 @@ async function fetchPublicPage(url: URL): Promise<Response> {
         await assertPublicUrl(current);
         const res = await fetch(current, {
             headers: {
-                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
+                "User-Agent":
+                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
                 "Accept-Language": "cs,en;q=0.8",
             },
             redirect: "manual",

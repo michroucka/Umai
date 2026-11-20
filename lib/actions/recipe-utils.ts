@@ -1,8 +1,7 @@
-"use server"
+"use server";
 
 import path from "path";
-import {mkdir, writeFile} from "fs/promises";
-
+import { mkdir, writeFile } from "fs/promises";
 
 export async function saveImage(img: FormDataEntryValue | null): Promise<string | null> {
     if (img instanceof File) {
@@ -16,5 +15,5 @@ export async function saveImage(img: FormDataEntryValue | null): Promise<string 
 
         return `/uploads/${filename}`;
     }
-    return img as string || null;
+    return (img as string) || null;
 }

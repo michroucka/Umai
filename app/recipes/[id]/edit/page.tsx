@@ -1,20 +1,20 @@
-import {RecipeForm} from "@/components/recipe-form";
-import {Separator} from "@/components/ui/separator";
-import {db} from "@/db";
-import {recipes} from "@/db/schema";
-import {eq} from "drizzle-orm";
-import {getRecipeDetails} from "@/lib/actions/get-recipe-details";
-import {ChevronLeft, HeartCrack} from "lucide-react";
+import { RecipeForm } from "@/components/recipe-form";
+import { Separator } from "@/components/ui/separator";
+import { db } from "@/db";
+import { recipes } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { getRecipeDetails } from "@/lib/actions/get-recipe-details";
+import { ChevronLeft, HeartCrack } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default async function EditRecipePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
     const recipe = await db.query.recipes.findFirst({
-        where: eq(recipes.id, Number(id))
+        where: eq(recipes.id, Number(id)),
     });
     const details = recipe ? await getRecipeDetails(recipe.id) : null;
-    const data = recipe && details ? { ...recipe, ...details } : null ;
+    const data = recipe && details ? { ...recipe, ...details } : null;
 
     if (data) {
         return (
@@ -23,9 +23,9 @@ export default async function EditRecipePage({ params }: { params: Promise<{ id:
                     <h1>Upravit recept</h1>
                     <Separator className="max-w-2/3 sm:max-w-1/3 mx-auto mt-2" />
                 </div>
-                <RecipeForm defaultRecipe={data}  />
+                <RecipeForm defaultRecipe={data} />
             </div>
-        )
+        );
     }
 
     return (
@@ -35,8 +35,10 @@ export default async function EditRecipePage({ params }: { params: Promise<{ id:
                 <HeartCrack className="size-7" />
             </div>
             <Button variant="link" asChild>
-                <Link href="/"><ChevronLeft /> Zpět na recepty</Link>
+                <Link href="/">
+                    <ChevronLeft /> Zpět na recepty
+                </Link>
             </Button>
         </div>
-    )
+    );
 }

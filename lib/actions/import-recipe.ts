@@ -1,10 +1,10 @@
-"use server"
+"use server";
 
 import Anthropic from "@anthropic-ai/sdk";
-import {betaZodOutputFormat} from "@anthropic-ai/sdk/helpers/beta/zod";
+import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import * as z from "zod";
-import {UNITS} from "@/lib/units";
-import {capitalize, fetchRecipeSource, parseUrl} from "@/lib/import/recipe-source";
+import { UNITS } from "@/lib/units";
+import { capitalize, fetchRecipeSource, parseUrl } from "@/lib/import/recipe-source";
 
 const importedRecipeSchema = z.object({
     name: z.string(),
@@ -12,20 +12,27 @@ const importedRecipeSchema = z.object({
     portions: z.number(),
     prepTimeMinutes: z.number().nullable(),
     imageUrl: z.string().nullable(),
-    ingredients: z.array(z.object({
-        name: z.string(),
-        amount: z.number().nullable(),
-        unit: z.string(),
-        note: z.string().nullable().describe("Upřesnění suroviny; každé množství ve {složených závorkách}, např. \"cca {85 g}\""),
-    })),
-    steps: z.array(z.string().describe("Text kroku; každé množství suroviny ve {složených závorkách}, např. \"Nakrájejte {1} cibuli\"")),
+    ingredients: z.array(
+        z.object({
+            name: z.string(),
+            amount: z.number().nullable(),
+            unit: z.string(),
+            note: z
+                .string()
+                .nullable()
+                .describe('Upřesnění suroviny; každé množství ve {složených závorkách}, např. "cca {85 g}"'),
+        }),
+    ),
+    steps: z.array(
+        z
+            .string()
+            .describe('Text kroku; každé množství suroviny ve {složených závorkách}, např. "Nakrájejte {1} cibuli"'),
+    ),
 });
 
 export type ImportedRecipe = z.infer<typeof importedRecipeSchema>;
 
-export type ImportResult =
-    | { ok: true; recipe: ImportedRecipe }
-    | { ok: false; error: string };
+export type ImportResult = { ok: true; recipe: ImportedRecipe } | { ok: false; error: string };
 
 const SYSTEM_PROMPT = `Jsi asistent, který převádí recepty do strukturované podoby pro českou receptovou aplikaci.
 
@@ -102,9 +109,14 @@ export async function importRecipe(input: string, instructions?: string): Promis
                 format: betaZodOutputFormat(importedRecipeSchema),
             },
             system: SYSTEM_PROMPT,
-            messages: [{ role: "user", content: instructions?.trim()
-                ? `${source}\n\nDoplňující pokyny uživatele:\n${instructions.trim()}`
-                : source }],
+            messages: [
+                {
+                    role: "user",
+                    content: instructions?.trim()
+                        ? `${source}\n\nDoplňující pokyny uživatele:\n${instructions.trim()}`
+                        : source,
+                },
+            ],
         });
 
         if (response.stop_reason === "refusal") return { ok: false, error: "Model odmítl recept zpracovat." };
@@ -116,12 +128,13 @@ export async function importRecipe(input: string, instructions?: string): Promis
             ok: true,
             recipe: {
                 ...recipe,
-                ingredients: recipe.ingredients.map(i => ({ ...i, name: capitalize(i.name.trim()) })),
+                ingredients: recipe.ingredients.map((i) => ({ ...i, name: capitalize(i.name.trim()) })),
             },
         };
     } catch (e) {
         if (e instanceof Anthropic.AuthenticationError) return { ok: false, error: "Neplatný API klíč." };
-        if (e instanceof Anthropic.RateLimitError) return { ok: false, error: "Příliš mnoho požadavků, zkuste to za chvíli." };
+        if (e instanceof Anthropic.RateLimitError)
+            return { ok: false, error: "Příliš mnoho požadavků, zkuste to za chvíli." };
         if (e instanceof Anthropic.APIError) return { ok: false, error: `Chyba AI (${e.status}): ${e.message}` };
         throw e;
     }

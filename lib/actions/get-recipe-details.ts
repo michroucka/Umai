@@ -1,8 +1,8 @@
-"use server"
+"use server";
 
-import {db} from "@/db";
-import {asc, eq} from "drizzle-orm";
-import {ingredients as i, steps as s} from "@/db/schema";
+import { db } from "@/db";
+import { asc, eq } from "drizzle-orm";
+import { ingredients as i, steps as s } from "@/db/schema";
 
 export async function getRecipeDetails(recipeId: number) {
     const [ingredients, steps] = await Promise.all([
@@ -13,7 +13,7 @@ export async function getRecipeDetails(recipeId: number) {
         db.query.steps.findMany({
             where: eq(s.recipeId, recipeId),
             orderBy: asc(s.stepOrder),
-        })
+        }),
     ]);
 
     return { ingredients, steps };

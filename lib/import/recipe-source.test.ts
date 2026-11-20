@@ -64,13 +64,19 @@ describe("isPrivateHost", () => {
         expect(isPrivateHost(hostname)).toBe(true);
     });
 
-    it.each(["www.recepty.cz", "8.8.8.8", "172.15.0.1", "172.32.0.1", "100.63.255.255", "100.128.0.1"])("allows %s", (hostname) => {
-        expect(isPrivateHost(hostname)).toBe(false);
-    });
+    it.each(["www.recepty.cz", "8.8.8.8", "172.15.0.1", "172.32.0.1", "100.63.255.255", "100.128.0.1"])(
+        "allows %s",
+        (hostname) => {
+            expect(isPrivateHost(hostname)).toBe(false);
+        },
+    );
 
-    it.each(["::1", "::", "fd7a:115c:a1e0::1", "fe80::1", "::ffff:192.168.1.10"])("blocks IPv6 address %s from DNS", (address) => {
-        expect(isPrivateHost(address)).toBe(true);
-    });
+    it.each(["::1", "::", "fd7a:115c:a1e0::1", "fe80::1", "::ffff:192.168.1.10"])(
+        "blocks IPv6 address %s from DNS",
+        (address) => {
+            expect(isPrivateHost(address)).toBe(true);
+        },
+    );
 
     it("allows a global IPv6 address from DNS", () => {
         expect(isPrivateHost("2a00:1450:4014:80d::200e")).toBe(false);
@@ -123,7 +129,9 @@ describe("htmlToText", () => {
     });
 
     it("turns block ends and line breaks into newlines", () => {
-        const lines = htmlToText("<p>Krok 1</p><p>Krok 2<br>pokračování</p>").split("\n").map(line => line.trim());
+        const lines = htmlToText("<p>Krok 1</p><p>Krok 2<br>pokračování</p>")
+            .split("\n")
+            .map((line) => line.trim());
         expect(lines).toEqual(["Krok 1", "Krok 2", "pokračování"]);
     });
 
@@ -164,17 +172,23 @@ describe("fetchRecipeSource", () => {
     });
 
     it("refuses a domain when any of its addresses is private", async () => {
-        lookupMock.mockResolvedValue([{ address: "93.184.215.14", family: 4 }, { address: "100.101.1.2", family: 4 }]);
+        lookupMock.mockResolvedValue([
+            { address: "93.184.215.14", family: 4 },
+            { address: "100.101.1.2", family: 4 },
+        ]);
         await expect(fetchRecipeSource(new URL("https://example.com/recept"))).rejects.toThrow("lokální sítě");
     });
 
     it("reports a domain that does not exist", async () => {
         lookupMock.mockRejectedValue(new Error("ENOTFOUND"));
-        await expect(fetchRecipeSource(new URL("https://neexistuje.example/recept"))).rejects.toThrow("nepodařilo najít");
+        await expect(fetchRecipeSource(new URL("https://neexistuje.example/recept"))).rejects.toThrow(
+            "nepodařilo najít",
+        );
     });
 
     it("follows a redirect to another public page", async () => {
-        const fetchMock = vi.fn()
+        const fetchMock = vi
+            .fn()
             .mockResolvedValueOnce(redirectTo("/recept-novy"))
             .mockResolvedValueOnce(new Response(jsonLdScript(recipeJsonLd)));
         vi.stubGlobal("fetch", fetchMock);
@@ -209,7 +223,9 @@ describe("fetchRecipeSource", () => {
     it("prefers structured JSON-LD data", async () => {
         stubFetch(`<html>${jsonLdScript(recipeJsonLd)}<p>${longText}</p></html>`);
         const source = await fetchRecipeSource(new URL("https://example.com/recept"));
-        expect(source).toBe(`Strukturovaná data receptu z https://example.com/recept:\n${JSON.stringify(recipeJsonLd)}`);
+        expect(source).toBe(
+            `Strukturovaná data receptu z https://example.com/recept:\n${JSON.stringify(recipeJsonLd)}`,
+        );
     });
 
     it("falls back to page text and includes the og:image", async () => {
@@ -221,6 +237,8 @@ describe("fetchRecipeSource", () => {
 
     it("fails when the page has too little text to be a recipe", async () => {
         stubFetch("<p>Přihlaste se</p>");
-        await expect(fetchRecipeSource(new URL("https://example.com/recept"))).rejects.toThrow("nepodařilo najít recept");
+        await expect(fetchRecipeSource(new URL("https://example.com/recept"))).rejects.toThrow(
+            "nepodařilo najít recept",
+        );
     });
 });

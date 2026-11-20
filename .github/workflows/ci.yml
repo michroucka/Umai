@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   check:
+    # The main ruleset requires this exact check name; keep it when adding steps.
     name: Lint, typecheck, test, build
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -25,6 +26,9 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      - name: Format
+        run: npm run format:check
 
       - name: Lint
         run: npm run lint

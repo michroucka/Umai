@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
     Field,
@@ -7,25 +7,26 @@ import {
     FieldError,
     FieldSet,
     FieldLegend,
-    FieldDescription, FieldSeparator
+    FieldDescription,
+    FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
-import {Button} from "@/components/ui/button";
-import {Save, X} from "lucide-react";
-import { zodResolver} from "@hookform/resolvers/zod";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Save, X } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {useForm, Controller} from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Link from "next/link";
-import {createRecipe} from "@/lib/actions/create-recipe";
-import {RecipeImageField} from "@/components/recipe-image-field";
-import {RecipeIngredientsField} from "@/components/recipe-ingredients-field";
-import {RecipeStepsField} from "@/components/recipe-steps-field";
-import {RecipeWithDetails} from "@/lib/types";
-import {parseHoursMinutes} from "@/lib/utils";
-import {updateRecipe} from "@/lib/actions/update-recipe";
-import {RecipeImportDialog} from "@/components/recipe-import-dialog";
-import {ImportedRecipe} from "@/lib/actions/import-recipe";
+import { createRecipe } from "@/lib/actions/create-recipe";
+import { RecipeImageField } from "@/components/recipe-image-field";
+import { RecipeIngredientsField } from "@/components/recipe-ingredients-field";
+import { RecipeStepsField } from "@/components/recipe-steps-field";
+import { RecipeWithDetails } from "@/lib/types";
+import { parseHoursMinutes } from "@/lib/utils";
+import { updateRecipe } from "@/lib/actions/update-recipe";
+import { RecipeImportDialog } from "@/components/recipe-import-dialog";
+import { ImportedRecipe } from "@/lib/actions/import-recipe";
 
 export type RecipeFormValues = z.input<typeof recipeSchema>;
 
@@ -35,39 +36,43 @@ const recipeSchema = z.object({
     portions: z.number().min(1),
     hours: z.number().min(0),
     minutes: z.number().min(0).max(59),
-    image: z.union([
-        z.instanceof(File).refine(
-            (file) => file.size <= 10 * 1024 * 1024,
-            "Obrázek je příliš velký (maximálně 10 MB)"
-        ),
-        z.string()
-    ]).optional(),
+    image: z
+        .union([
+            z
+                .instanceof(File)
+                .refine((file) => file.size <= 10 * 1024 * 1024, "Obrázek je příliš velký (maximálně 10 MB)"),
+            z.string(),
+        ])
+        .optional(),
 
-    ingredients: z.array(z.object({
-        name: z.string(),
-        note: z.string().optional(),
-        amount: z.preprocess(
-            (val) => {
-                const normalized = typeof val === "string" ? val.replace(",", ".") : val;
-                return normalized === "" ? undefined : normalized;
-            },
-            z.coerce.number().min(0.1).optional(),
-        ),
-        unit: z.string(),
-    }).refine(
-        (ing) => ing.name === "" || ing.unit !== "",
-        { message: "Jednotka je povinná", path: ["unit"] }
-    )).refine(
-        (list) => list.slice(0, -1).some(i => i.name.trim() !== ""),
-        { message: "Přidejte alespoň jednu ingredienci" }
-    ),
+    ingredients: z
+        .array(
+            z
+                .object({
+                    name: z.string(),
+                    note: z.string().optional(),
+                    amount: z.preprocess((val) => {
+                        const normalized = typeof val === "string" ? val.replace(",", ".") : val;
+                        return normalized === "" ? undefined : normalized;
+                    }, z.coerce.number().min(0.1).optional()),
+                    unit: z.string(),
+                })
+                .refine((ing) => ing.name === "" || ing.unit !== "", {
+                    message: "Jednotka je povinná",
+                    path: ["unit"],
+                }),
+        )
+        .refine((list) => list.slice(0, -1).some((i) => i.name.trim() !== ""), {
+            message: "Přidejte alespoň jednu ingredienci",
+        }),
 
-    steps: z.array(z.object({
-        content: z.string(),
-    })).refine(
-        (list) => list.some(s => s.content.trim() !== ""),
-        { message: "Přidejte alespoň jeden krok" }
-    ),
+    steps: z
+        .array(
+            z.object({
+                content: z.string(),
+            }),
+        )
+        .refine((list) => list.some((s) => s.content.trim() !== ""), { message: "Přidejte alespoň jeden krok" }),
 });
 
 function mapToFormValues(recipe: RecipeWithDetails) {
@@ -82,18 +87,23 @@ function mapToFormValues(recipe: RecipeWithDetails) {
         portions: recipe.portions,
 
         ingredients: [
-            ...recipe.ingredients.map(
-                ({ name, note, amount, unit }) =>
-                    ({ name, note: note ?? undefined, amount: amount ?? undefined, unit })),
+            ...recipe.ingredients.map(({ name, note, amount, unit }) => ({
+                name,
+                note: note ?? undefined,
+                amount: amount ?? undefined,
+                unit,
+            })),
             { name: "", note: undefined, amount: undefined, unit: "" },
         ],
         steps: recipe.steps.map(({ content }) => ({ content })),
-    }
+    };
 }
 
 function mapImportedToFormValues(recipe: ImportedRecipe): RecipeFormValues {
-    const prepTime = recipe.prepTimeMinutes ? parseHoursMinutes(Math.round(recipe.prepTimeMinutes)) : { hours: 0, minutes: 0 };
-    const steps = recipe.steps.filter(s => s.trim() !== "").map(content => ({ content }));
+    const prepTime = recipe.prepTimeMinutes
+        ? parseHoursMinutes(Math.round(recipe.prepTimeMinutes))
+        : { hours: 0, minutes: 0 };
+    const steps = recipe.steps.filter((s) => s.trim() !== "").map((content) => ({ content }));
 
     return {
         name: recipe.name,
@@ -104,13 +114,16 @@ function mapImportedToFormValues(recipe: ImportedRecipe): RecipeFormValues {
         portions: Math.max(1, Math.round(recipe.portions)),
 
         ingredients: [
-            ...recipe.ingredients.map(
-                ({ name, note, amount, unit }) =>
-                    ({ name, note: note ?? undefined, amount: amount || undefined, unit })),
+            ...recipe.ingredients.map(({ name, note, amount, unit }) => ({
+                name,
+                note: note ?? undefined,
+                amount: amount || undefined,
+                unit,
+            })),
             { name: "", note: undefined, amount: undefined, unit: "" },
         ],
         steps: steps.length > 0 ? steps : [{ content: "" }],
-    }
+    };
 }
 
 export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails | null }) {
@@ -118,9 +131,17 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
 
     const form = useForm<z.input<typeof recipeSchema>, unknown, z.output<typeof recipeSchema>>({
         resolver: zodResolver(recipeSchema),
-        defaultValues: defaultRecipe ? mapToFormValues(defaultRecipe) :
-            { name: "", description: "", portions: 2, hours: 0, minutes: 0,
-            ingredients: [{ name: "", unit: "", amount: undefined }], steps: [{ content: "" }] },
+        defaultValues: defaultRecipe
+            ? mapToFormValues(defaultRecipe)
+            : {
+                  name: "",
+                  description: "",
+                  portions: 2,
+                  hours: 0,
+                  minutes: 0,
+                  ingredients: [{ name: "", unit: "", amount: undefined }],
+                  steps: [{ content: "" }],
+              },
     });
 
     async function onSubmit(data: z.output<typeof recipeSchema>) {
@@ -161,11 +182,7 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <FieldLabel htmlFor="name">Název receptu</FieldLabel>
-                                <Input
-                                    {...field}
-                                    id="name"
-                                    aria-invalid={fieldState.invalid}
-                                />
+                                <Input {...field} id="name" aria-invalid={fieldState.invalid} />
                                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                             </Field>
                         )}
@@ -176,10 +193,7 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                         render={({ field, fieldState }) => (
                             <Field>
                                 <FieldLabel htmlFor="description">Popis</FieldLabel>
-                                <Textarea
-                                    {...field}
-                                    id="description"
-                                />
+                                <Textarea {...field} id="description" />
                                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                             </Field>
                         )}
@@ -198,7 +212,8 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                                                 id="hours"
                                                 type="number"
                                                 onChange={(e) => field.onChange(Number(e.target.value))}
-                                                min={0} max={99}
+                                                min={0}
+                                                max={99}
                                                 className="w-16"
                                                 aria-invalid={fieldState.invalid}
                                                 onFocus={(e) => e.target.select()}
@@ -296,11 +311,7 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
             <FieldSet className="xl:min-h-0">
                 <FieldLegend>Postup přípravy</FieldLegend>
                 <FieldDescription>Jednotlivé kroky, jak recept připravit.</FieldDescription>
-                <RecipeStepsField
-                    control={form.control}
-                    errors={form.formState.errors}
-                    trigger={form.trigger}
-                />
+                <RecipeStepsField control={form.control} errors={form.formState.errors} trigger={form.trigger} />
             </FieldSet>
 
             <div className="fixed inset-x-0 bottom-8 z-50 xl:hidden flex justify-between px-6">
@@ -314,5 +325,5 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                 </Button>
             </div>
         </form>
-    )
+    );
 }

@@ -1,8 +1,7 @@
-import {RecipeForm} from "@/components/recipe-form";
-import {Separator} from "@/components/ui/separator";
+import { RecipeForm } from "@/components/recipe-form";
+import { Separator } from "@/components/ui/separator";
 
 export default async function NewRecipePage() {
-
     return (
         <div className="xl:flex xl:h-full xl:min-h-0 xl:flex-col">
             <div className="pb-4 xl:shrink-0">
@@ -11,5 +10,5 @@ export default async function NewRecipePage() {
             </div>
             <RecipeForm defaultRecipe={null} />
         </div>
-    )
+    );
 }

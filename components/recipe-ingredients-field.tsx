@@ -1,22 +1,28 @@
-import {Control, Controller, FieldErrors, useFieldArray, UseFormGetValues, UseFormTrigger} from "react-hook-form";
-import {RecipeFormValues} from "@/components/recipe-form";
-import {Input} from "@/components/ui/input";
-import {Field, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
-import {InputGroup, InputGroupInput} from "@/components/ui/input-group";
+import { Control, Controller, FieldErrors, useFieldArray, UseFormGetValues, UseFormTrigger } from "react-hook-form";
+import { RecipeFormValues } from "@/components/recipe-form";
+import { Input } from "@/components/ui/input";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
 import {
     Autocomplete,
     AutocompleteInput,
     AutocompleteItem,
     AutocompleteList,
     AutocompletePopup,
-    AutocompleteTrigger
+    AutocompleteTrigger,
 } from "@/components/ui/autocomplete";
-import {Button} from "@/components/ui/button";
-import {ChevronDown, ChevronUp, Trash2} from "lucide-react";
-import {AnimatePresence, motion} from "motion/react";
-import {UNITS} from "@/lib/units";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { UNITS } from "@/lib/units";
 
-export function RecipeIngredientsField({ control, getValues, errors, trigger, isSubmitted }: {
+export function RecipeIngredientsField({
+    control,
+    getValues,
+    errors,
+    trigger,
+    isSubmitted,
+}: {
     control: Control<RecipeFormValues>;
     getValues: UseFormGetValues<RecipeFormValues>;
     errors: FieldErrors<RecipeFormValues>;
@@ -48,7 +54,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                     <Controller
                                         name={`ingredients.${index}.name`}
                                         control={control}
-                                        render={({field, fieldState}) => (
+                                        render={({ field, fieldState }) => (
                                             <>
                                                 <Input
                                                     {...field}
@@ -59,20 +65,27 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                                         field.onChange(e);
 
                                                         if (wasEmpty && newValue !== "" && isLast) {
-                                                            append({name: "", unit: "", amount: undefined}, {shouldFocus: false});
+                                                            append(
+                                                                { name: "", unit: "", amount: undefined },
+                                                                { shouldFocus: false },
+                                                            );
                                                         }
 
                                                         if (!wasEmpty && newValue === "" && isSecondToLast) {
-                                                            const lastName = getValues(`ingredients.${fields.length - 1}.name`);
+                                                            const lastName = getValues(
+                                                                `ingredients.${fields.length - 1}.name`,
+                                                            );
                                                             if (lastName === "") {
                                                                 remove(fields.length - 1);
                                                             }
                                                         }
 
-                                                        void trigger("ingredients")
+                                                        void trigger("ingredients");
                                                     }}
                                                 />
-                                                {isSubmitted && !isLast && fieldState.invalid && <FieldError errors={[fieldState.error]}/>}
+                                                {isSubmitted && !isLast && fieldState.invalid && (
+                                                    <FieldError errors={[fieldState.error]} />
+                                                )}
                                             </>
                                         )}
                                     />
@@ -84,9 +97,10 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                             <Controller
                                                 name={`ingredients.${index}.amount`}
                                                 control={control}
-                                                render={({field, fieldState}) => (
+                                                render={({ field, fieldState }) => (
                                                     <InputGroupInput
-                                                        type="text" inputMode="decimal"
+                                                        type="text"
+                                                        inputMode="decimal"
                                                         name={field.name}
                                                         ref={field.ref}
                                                         onBlur={field.onBlur}
@@ -99,13 +113,13 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                             <Controller
                                                 name={`ingredients.${index}.unit`}
                                                 control={control}
-                                                render={({field, fieldState}) => (
+                                                render={({ field, fieldState }) => (
                                                     <>
                                                         <Autocomplete
                                                             value={field.value}
                                                             onValueChange={(value) => {
                                                                 field.onChange(value);
-                                                                void trigger("ingredients")
+                                                                void trigger("ingredients");
                                                             }}
                                                             items={UNITS}
                                                             mode="none"
@@ -114,9 +128,11 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                                             <AutocompleteInput
                                                                 placeholder="Jednotka"
                                                                 className="w-1/2 border-0 border-l rounded-l-none shadow-none [&_input]:text-sm [&_input::placeholder]:text-[13px]"
-                                                                aria-invalid={isSubmitted && !isLast && fieldState.invalid}
+                                                                aria-invalid={
+                                                                    isSubmitted && !isLast && fieldState.invalid
+                                                                }
                                                             >
-                                                                <AutocompleteTrigger/>
+                                                                <AutocompleteTrigger />
                                                             </AutocompleteInput>
                                                             <AutocompletePopup>
                                                                 <AutocompleteList>
@@ -133,7 +149,10 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                             />
                                         </InputGroup>
                                         {isSubmitted && !isLast && errors.ingredients?.[index]?.unit && (
-                                            <FieldError className="w-1/2 ms-auto" errors={[errors.ingredients[index].unit]} />
+                                            <FieldError
+                                                className="w-1/2 ms-auto"
+                                                errors={[errors.ingredients[index].unit]}
+                                            />
                                         )}
                                     </div>
                                 </Field>
@@ -142,9 +161,7 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                     <Controller
                                         name={`ingredients.${index}.note`}
                                         control={control}
-                                        render={({field}) => (
-                                            <Input {...field} />
-                                        )}
+                                        render={({ field }) => <Input {...field} />}
                                     />
                                 </Field>
                             </div>
@@ -179,10 +196,10 @@ export function RecipeIngredientsField({ control, getValues, errors, trigger, is
                                 </Button>
                             </div>
                         </motion.div>
-                    )
+                    );
                 })}
             </AnimatePresence>
-        {errors.ingredients?.root && <FieldError errors={[errors.ingredients.root]} />}
+            {errors.ingredients?.root && <FieldError errors={[errors.ingredients.root]} />}
         </FieldGroup>
-    )
+    );
 }

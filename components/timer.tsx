@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import {useEffect, useRef, useState} from "react";
-import {Button} from "@/components/ui/button";
-import {Clock, Pause, Play, RotateCcw} from "lucide-react";
-import {Input} from "@/components/ui/input";
-import {Badge} from "@/components/ui/badge";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Clock, Pause, Play, RotateCcw } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 export function Timer() {
     const [inputMinutes, setInputMinutes] = useState(1);
@@ -17,7 +17,7 @@ export function Timer() {
     const audioRef = useRef<HTMLAudioElement>(null);
     const alarmedRef = useRef(false);
 
-    function start(){
+    function start() {
         if (inputMinutes == 0 && inputSeconds == 0) return;
 
         alarmedRef.current = false;
@@ -49,8 +49,8 @@ export function Timer() {
 
     function stop() {
         if (endTimeRef.current !== null && remainingMs > 0) {
-            setInputMinutes(Math.floor(remainingMs / 60000))
-            setInputSeconds(Math.floor((remainingMs % 60000) / 1000))
+            setInputMinutes(Math.floor(remainingMs / 60000));
+            setInputSeconds(Math.floor((remainingMs % 60000) / 1000));
         } else {
             reset();
         }
@@ -63,15 +63,15 @@ export function Timer() {
             setIsRunning(false);
             audioRef.current?.pause();
 
-            setInputMinutes(Math.floor(durationMs / 60000))
-            setInputSeconds(Math.floor((durationMs % 60000) / 1000))
+            setInputMinutes(Math.floor(durationMs / 60000));
+            setInputSeconds(Math.floor((durationMs % 60000) / 1000));
             setRemainingMs(durationMs);
         }
     }
 
     useEffect(() => {
         if (isRunning) {
-            const intId = setInterval(check, 250)
+            const intId = setInterval(check, 250);
 
             return () => clearInterval(intId);
         }
@@ -81,39 +81,59 @@ export function Timer() {
         <div className="flex flex-col gap-1">
             {!isRunning && (
                 <div className="flex gap-2 justify-center">
-                    <Badge variant="outline" className="bg-card" onClick={() => {
-                        setInputMinutes(1);
-                        setInputSeconds(0);
-                        setRemainingMs(0);
-                    }}>
+                    <Badge
+                        variant="outline"
+                        className="bg-card"
+                        onClick={() => {
+                            setInputMinutes(1);
+                            setInputSeconds(0);
+                            setRemainingMs(0);
+                        }}
+                    >
                         <Clock /> 1 min
                     </Badge>
-                    <Badge variant="outline" className="bg-card" onClick={() => {
-                        setInputMinutes(3);
-                        setInputSeconds(0);
-                        setRemainingMs(0);
-                    }}>
+                    <Badge
+                        variant="outline"
+                        className="bg-card"
+                        onClick={() => {
+                            setInputMinutes(3);
+                            setInputSeconds(0);
+                            setRemainingMs(0);
+                        }}
+                    >
                         <Clock /> 3 min
                     </Badge>
-                    <Badge variant="outline" className="bg-card" onClick={() => {
-                        setInputMinutes(5);
-                        setInputSeconds(0);
-                        setRemainingMs(0);
-                    }}>
+                    <Badge
+                        variant="outline"
+                        className="bg-card"
+                        onClick={() => {
+                            setInputMinutes(5);
+                            setInputSeconds(0);
+                            setRemainingMs(0);
+                        }}
+                    >
                         <Clock /> 5 min
                     </Badge>
-                    <Badge variant="outline" className="bg-card" onClick={() => {
-                        setInputMinutes(10);
-                        setInputSeconds(0);
-                        setRemainingMs(0);
-                    }}>
+                    <Badge
+                        variant="outline"
+                        className="bg-card"
+                        onClick={() => {
+                            setInputMinutes(10);
+                            setInputSeconds(0);
+                            setRemainingMs(0);
+                        }}
+                    >
                         <Clock /> 10 min
                     </Badge>
-                    <Badge variant="outline" className="bg-card" onClick={() => {
-                        setInputMinutes(15);
-                        setInputSeconds(0);
-                        setRemainingMs(0);
-                    }}>
+                    <Badge
+                        variant="outline"
+                        className="bg-card"
+                        onClick={() => {
+                            setInputMinutes(15);
+                            setInputSeconds(0);
+                            setRemainingMs(0);
+                        }}
+                    >
                         <Clock /> 15 min
                     </Badge>
                 </div>
@@ -177,11 +197,19 @@ export function Timer() {
                     </div>
                 )}
                 <Button variant="ghost" className="w-30 justify-start" onClick={isRunning ? stop : start}>
-                    {isRunning ? (<><Pause /> Zastavit</>) : (<><Play /> Spustit</>)}
+                    {isRunning ? (
+                        <>
+                            <Pause /> Zastavit
+                        </>
+                    ) : (
+                        <>
+                            <Play /> Spustit
+                        </>
+                    )}
                 </Button>
 
                 <audio className="hidden" src="/alarm.mp3" ref={audioRef} />
             </div>
         </div>
-    )
+    );
 }
