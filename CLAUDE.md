@@ -10,6 +10,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Tailwind CSS v4
 - TypeScript, ESLint
 
+## Commands
+
+- `npm run dev` – dev server (listens on 0.0.0.0)
+- `npm run lint` / `npm run typecheck` / `npm test` (Vitest, `npm run test:watch` for watch mode) / `npm run build`
+- CI (`.github/workflows/ci.yml`) runs all four on push to `main` and on PRs; `deploy.yml` (tag `v*`) deploys to the NAS only after CI passes.
+- Tests live next to the code as `*.test.ts`. Files with `"use server"` may export only async server actions, so keep testable helpers in plain modules (e.g. `lib/import/recipe-source.ts`).
+
 ## Project overview
 
 Umai is a personal recipe-keeping web app, for single-user use on the owner's home server (NAS), accessible from a phone. Planned stack: **React + Next.js + SQLite**. Core features (planned):

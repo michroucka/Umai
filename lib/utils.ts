@@ -31,15 +31,16 @@ export function parseScalable(text: string): Segment[] {
                 return { type: "text", value: token };
             }
 
-            const match = token.trim().match(/^(\d+(?:[.,]\d+)?)\s*(.*)$/);
-            if (!match) {
+            const match = token.trim().match(/^(\d+(?:[.,]\d+)?)(?:\/(\d+))?\s*(.*)$/);
+            const denominator = match?.[2] ? Number(match[2]) : 1;
+            if (!match || denominator === 0) {
                 return { type: "text", value: `{${token}}` };
             }
 
             return {
                 type: "amount",
-                value: Number(match[1].replace(",", ".")),
-                unit: match[2],
+                value: Number(match[1].replace(",", ".")) / denominator,
+                unit: match[3],
             };
         })
         .filter((segment) => segment.type !== "text" || segment.value !== "");
