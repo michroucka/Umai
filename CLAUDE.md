@@ -15,6 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run dev` – dev server (listens on 0.0.0.0)
 - `npm run format` (Prettier, `npm run format:check` in CI) / `npm run lint` / `npm run typecheck` / `npm test` (Vitest, `npm run test:watch` for watch mode) / `npm run build`
 - CI (`.github/workflows/ci.yml`) runs all of them on PRs. Every push to `main` runs `deploy.yml`, which calls CI and deploys to the NAS only when it passes. Changes go through branches and PRs.
+- `npm run pairing-code -- --admin` creates a one-time pairing code (on the NAS: `docker compose exec umai node scripts/create-pairing-code.mjs --admin`).
 - Tests live next to the code as `*.test.ts`. Files with `"use server"` may export only async server actions, so keep testable helpers in plain modules (e.g. `lib/import/recipe-source.ts`).
 
 ## Project overview

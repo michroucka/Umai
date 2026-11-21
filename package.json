@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "pairing-code": "node scripts/create-pairing-code.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",
