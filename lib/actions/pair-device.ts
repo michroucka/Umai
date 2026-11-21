@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { MAX_DEVICE_NAME_LENGTH, redeemPairingCode } from "@/lib/auth/devices";
 import { PAIRING_LOCKOUT_MS, isPairingLocked, recordFailedPairing } from "@/lib/auth/pairing-limit";
+import { safeNextPath } from "@/lib/auth/next-path";
 import { setDeviceCookie } from "@/lib/auth/session";
 
 export type PairDeviceState = { error?: string };
@@ -30,12 +31,4 @@ export async function pairDevice(_previousState: PairDeviceState, formData: Form
     await setDeviceCookie(result.token);
 
     redirect(next);
-}
-
-function safeNextPath(path: string) {
-    if (path.startsWith("/") && !(path.startsWith("//") || path.startsWith("/\\"))) {
-        return path;
-    }
-
-    return "/";
 }
