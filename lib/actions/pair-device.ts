@@ -1,7 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { MAX_DEVICE_NAME_LENGTH, redeemPairingCode } from "@/lib/auth/devices";
+import { MAX_DEVICE_NAME_LENGTH } from "@/lib/auth/device-name";
+import { redeemPairingCode } from "@/lib/auth/devices";
 import { PAIRING_LOCKOUT_MS, isPairingLocked, recordFailedPairing } from "@/lib/auth/pairing-limit";
 import { safeNextPath } from "@/lib/auth/next-path";
 import { setDeviceCookie } from "@/lib/auth/session";

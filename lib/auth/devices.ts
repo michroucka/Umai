@@ -4,7 +4,6 @@ import { db } from "@/db";
 import { devices, pairingCodes } from "@/db/schema";
 
 export const PAIRING_CODE_TTL_MS = 15 * 60 * 1000;
-export const MAX_DEVICE_NAME_LENGTH = 50;
 const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 export type Device = Omit<typeof devices.$inferSelect, "tokenHash">;
