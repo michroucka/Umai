@@ -30,7 +30,7 @@ Remote access for the family without accounts: each browser is paired once with 
 - [x] `/pair` page + `components/pair-form.tsx` (device name prefilled from User-Agent, OTP input auto-submits, shake on invalid code)
 - [x] `scripts/create-pairing-code.mjs` (`docker compose exec umai node scripts/create-pairing-code.mjs --admin`)
 - [x] `proxy.ts`: optimistic cookie check, redirect to `/pair?next=...`, 401 for other methods, renews the cookie
-- [ ] `requireDevice()` at the top of every server action in `lib/actions/*` and in `app/uploads/[filename]/route.ts` (proxy alone is not enough: Next docs say server functions must check auth themselves)
+- [x] `requireDevice()` at the top of every server action in `lib/actions/*` and in `app/uploads/[filename]/route.ts` (proxy alone is not enough: Next docs say server functions must check auth themselves); uploads route rejects paths outside `public/uploads`, `saveImage` moved to `lib/recipes/` so it is no longer a public action
 - [ ] Devices page in settings (admin only): list devices, revoke, create a pairing code; an admin must not revoke their own device or the last admin
 - [ ] PR `device-pairing` -> `main` with manual test steps; after deploy create the first admin code on the NAS
 

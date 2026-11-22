@@ -1,6 +1,9 @@
 "use server";
 
+import { requireDevice } from "@/lib/auth/session";
+
 export async function searchImages(query: string) {
+    await requireDevice();
     const res = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=12`, {
         headers: { Authorization: process.env.PEXELS_API_KEY! },
     });

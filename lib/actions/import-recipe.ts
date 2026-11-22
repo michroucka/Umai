@@ -5,6 +5,7 @@ import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import * as z from "zod";
 import { UNITS } from "@/lib/units";
 import { capitalize, fetchRecipeSource, parseUrl } from "@/lib/import/recipe-source";
+import { requireDevice } from "@/lib/auth/session";
 
 const importedRecipeSchema = z.object({
     name: z.string(),
@@ -81,6 +82,7 @@ Než odpověď vrátíš, projdi každý krok a každou note: každé číslo, k
 Uživatel může k receptu připojit doplňující pokyny (např. "přepočítej na 4 porce", "bez cibule"). Ty mají přednost před pravidly výše – uprav podle nich recept a nastav odpovídající hodnoty (např. portions a množství surovin).`;
 
 export async function importRecipe(input: string, instructions?: string): Promise<ImportResult> {
+    await requireDevice();
     const trimmed = input.trim();
     if (!trimmed) return { ok: false, error: "Vložte URL nebo text receptu." };
     if (!process.env.ANTHROPIC_API_KEY) return { ok: false, error: "Chybí ANTHROPIC_API_KEY v .env." };
