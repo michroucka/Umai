@@ -4,6 +4,7 @@ import { devices, pairingCodes } from "@/db/schema";
 import {
     PAIRING_CODE_TTL_MS,
     createPairingCode,
+    findDeviceById,
     findDeviceByToken,
     listDevices,
     redeemPairingCode,
@@ -172,6 +173,38 @@ describe("findDeviceByToken", () => {
         const { token, device } = await pairNewDevice();
         await revokeDevice(device.id);
         expect(await findDeviceByToken(token)).toBeNull();
+    });
+});
+
+describe("findDeviceById", () => {
+    it("finds the device by its id without exposing the token hash", async () => {
+        const { device } = await pairNewDevice();
+
+        const found = await findDeviceById(device.id);
+
+        expect(found).toEqual(device);
+        expect(Object.keys(found!)).not.toContain("tokenHash");
+    });
+
+    it("returns null for an unknown id", async () => {
+        await pairNewDevice();
+        expect(await findDeviceById(999_999)).toBeNull();
+    });
+
+    it("returns null for a revoked device", async () => {
+        const { device } = await pairNewDevice();
+        await revokeDevice(device.id);
+        expect(await findDeviceById(device.id)).toBeNull();
+    });
+
+    // Only a request from the device itself counts as "seen", not an admin looking at it.
+    it("does not change when the device was last seen", async () => {
+        const { device } = await pairNewDevice();
+        vi.advanceTimersByTime(MINUTE);
+
+        const found = await findDeviceById(device.id);
+
+        expect(found?.lastSeenAt).toEqual(device.lastSeenAt);
     });
 });
 

@@ -75,6 +75,12 @@ export async function findDeviceByToken(token: string): Promise<Device | null> {
     return device ?? null;
 }
 
+export async function findDeviceById(id: number): Promise<Device | null> {
+    const [device] = await db.select(deviceColumns).from(devices).where(eq(devices.id, id)).limit(1);
+
+    return device ?? null;
+}
+
 export async function listDevices(): Promise<Device[]> {
     return db.select(deviceColumns).from(devices).orderBy(desc(devices.lastSeenAt));
 }
