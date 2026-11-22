@@ -32,6 +32,9 @@ Remote access for the family without accounts: each browser is paired once with 
 - [x] `proxy.ts`: optimistic cookie check, redirect to `/pair?next=...`, 401 for other methods, renews the cookie
 - [x] `requireDevice()` at the top of every server action in `lib/actions/*` and in `app/uploads/[filename]/route.ts` (proxy alone is not enough: Next docs say server functions must check auth themselves); uploads route rejects paths outside `public/uploads`, `saveImage` moved to `lib/recipes/` so it is no longer a public action
 - [ ] Devices page in settings (admin only): list devices, revoke, create a pairing code; an admin must not revoke their own device or the last admin
+  - [x] `revokePairedDevice` action + `findDeviceById`
+  - [ ] `createDevicePairingCode` action (skeleton and tests committed, tests red until implemented)
+  - [ ] `/settings/devices` page
 - [ ] PR `device-pairing` -> `main` with manual test steps; after deploy create the first admin code on the NAS
 
 Notes:
@@ -39,12 +42,23 @@ Notes:
 - Client components must not import modules that reach the database (`lib/auth/devices.ts`, `session.ts`); shared constants live in DB-free modules like `lib/auth/device-name.ts`. Tests run in Node and don't catch this, `npm run build` does.
 - The cookie is always `secure`: home access goes through nginx with HTTPS on a custom domain. Dev on `localhost` works; testing on a phone in dev needs `next dev --experimental-https`.
 
-## 4. Public access
+## 4. Dependency security (branch from `main`, before public access)
+
+Claude does this one (package updates count as setup), after device pairing is finished.
+
+GitHub reported 105 open Dependabot alerts on `main` (2026-11-22): 6 critical, 35 high, 55 moderate, 9 low.
+
+- [ ] `next` 16.2.9 -> latest 16.4.x (>= 16.4.5): 5 critical RCEs, incl. two in the Image Optimization API (`/_next/image` is outside the proxy matcher, so reachable without pairing) and one in `use cache`
+- [ ] `zod` 4.4.3 -> >= 4.6.6 (memory exhaustion on oversized collections; used for the AI import output)
+- [ ] Transitive alerts: mostly dev-only via the `shadcn` CLI (`hono`, `@modelcontextprotocol/sdk`, `express`/`proxy-addr`, `undici`); `npm update`, then check `npm audit` and the remaining alerts one by one
+- [ ] Find out why Dependabot opened no PRs yet (weekly grouped updates, security updates enabled)
+
+## 5. Public access
 
 - [ ] Cloudflare Tunnel (`cloudflared` in `docker-compose.yml`), no Cloudflare Access; the app's pairing is the gate
 - [ ] Spending limit for the Anthropic API key in the Anthropic Console
 
-## 5. UI redesign
+## 6. UI redesign
 
 Concept C "Knihovna + kuchyně", mobile only, built for cooking at the stove. Clickable mockup: https://claude.ai/artifact/JKMw61zUFMBETBAKBMjymY
 
@@ -65,6 +79,6 @@ Features to add:
 - [ ] PWA share target (`method: "GET"`), incl. Instagram and TikTok links; continues to the import after pairing via `next`
 - [ ] JSON backup
 
-## 6. E2E tests
+## 7. E2E tests
 
 - [ ] Playwright in CI (pairing flow, recipe CRUD, import)
