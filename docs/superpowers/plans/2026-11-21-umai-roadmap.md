@@ -55,12 +55,39 @@ GitHub reported 105 open Dependabot alerts on `main` (2026-11-22): 6 critical, 3
 - [x] Find out why Dependabot opened no PRs yet (weekly grouped updates, security updates enabled)
   - Every run failed: the merged branch `dependabot` blocked `dependabot/...` refs. Merged branches deleted 2026-11-23, the repo now deletes head branches on merge.
 
-## 5. Public access
+## 5. Production safety (before public access)
+
+Goal: a bad deploy or migration must never lose recipes, and anything CI can catch must not first show up on the NAS. Claude does the CI, deploy and backup parts (setup) and writes the tests; bugs the tests find are fixed by the user.
+
+Backups:
+
+- [ ] Nightly off-site backup, like `pedicure-db-backup`: private repo `umai-db-backup` with its own self-hosted runner on the NAS (artifacts of the public Umai repo are downloadable by any GitHub user). Workflow: SQLite `.backup` of `data/umai.db` (a plain `cp` is not consistent with WAL) + tar of `uploads/`, `gpg --symmetric` AES-256 with a secret passphrase that also lives in the password manager, artifact kept 30 days. README with restore steps; restore verified once by hand.
+- [ ] Backup before every deploy in `deploy.yml`: SQLite `.backup` next to the data, keep the last 10. Migrations run on container start, so this is the restore point for a broken migration.
+
+Deploy:
+
+- [ ] `Dockerfile`: `npm ci` instead of `npm install`, so the image has exactly the versions CI tested
+- [ ] Rollback: tag the running image before the build; after `up --wait` run a smoke test (`/pair` returns 200); on failure restore the previous image and the pre-deploy DB backup
+- [ ] CI builds the Docker image on PRs and starts it with an empty DB (catches a missing `COPY` before the NAS does)
+
+CI:
+
+- [ ] Migration drift: `drizzle-kit generate` in CI must not produce a new file, plus `drizzle-kit check`
+- [ ] Weekly scheduled `npm audit --omit=dev --audit-level=high` (not on every PR, so an unrelated advisory doesn't turn a PR red)
+- [ ] Coverage report (`vitest --coverage`), no thresholds yet, to see what is untested
+
+Tests:
+
+- [ ] Recipe actions: `create-recipe`, `update-recipe` (editing must not silently drop ingredients or steps), `delete-recipe`, `get-recipe-details`
+- [ ] Portion scaling: `components/scalable-text.tsx`, `lib/units.ts`, `lib/recipes/recipe-utils.ts`
+- [ ] Smoke E2E with Playwright in CI before the redesign rewrites the UI: pair -> create a recipe -> open it -> change portions -> delete. The full suite stays in section 8.
+
+## 6. Public access
 
 - [ ] Cloudflare Tunnel (`cloudflared` in `docker-compose.yml`), no Cloudflare Access; the app's pairing is the gate
 - [ ] Spending limit for the Anthropic API key in the Anthropic Console
 
-## 6. UI redesign
+## 7. UI redesign
 
 Concept C "Knihovna + kuchyně", mobile only, built for cooking at the stove. Clickable mockup: https://claude.ai/artifact/JKMw61zUFMBETBAKBMjymY
 
@@ -83,6 +110,6 @@ Features to add:
 - [ ] PWA share target (`method: "GET"`), incl. Instagram and TikTok links; continues to the import after pairing via `next`
 - [ ] JSON backup
 
-## 7. E2E tests
+## 8. E2E tests
 
 - [ ] Playwright in CI (pairing flow, recipe CRUD, import)
