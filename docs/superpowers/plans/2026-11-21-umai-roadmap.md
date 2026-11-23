@@ -48,8 +48,8 @@ Claude does this one (package updates count as setup), after device pairing is f
 
 GitHub reported 105 open Dependabot alerts on `main` (2026-11-22): 6 critical, 35 high, 55 moderate, 9 low.
 
-- [ ] `next` 16.2.9 -> latest 16.4.x (>= 16.4.5): 5 critical RCEs, incl. two in the Image Optimization API (`/_next/image` is outside the proxy matcher, so reachable without pairing) and one in `use cache`
-- [ ] `zod` 4.4.3 -> >= 4.6.6 (memory exhaustion on oversized collections; used for the AI import output)
+- [x] `next` 16.2.9 -> latest 16.4.x (>= 16.4.5): 5 critical RCEs, incl. two in the Image Optimization API (`/_next/image` is outside the proxy matcher, so reachable without pairing) and one in `use cache`
+- [x] `zod` 4.4.3 -> >= 4.6.6 (memory exhaustion on oversized collections; used for the AI import output)
 - [ ] Transitive alerts: mostly dev-only via the `shadcn` CLI (`hono`, `@modelcontextprotocol/sdk`, `express`/`proxy-addr`, `undici`); `npm update`, then check `npm audit` and the remaining alerts one by one
 - [ ] Find out why Dependabot opened no PRs yet (weekly grouped updates, security updates enabled)
 
