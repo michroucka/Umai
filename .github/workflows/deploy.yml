@@ -19,6 +19,50 @@ jobs:
       group: deploy-nas
       cancel-in-progress: false
     steps:
+      # Migrations run when the new container starts, so this copy is the restore point
+      # if one of them breaks the data. It runs in a one-off container from the current
+      # image because the NAS has no sqlite3 CLI, and the SQLite backup API stays
+      # consistent while the app keeps writing (a plain cp would not, with WAL).
+      - name: Back up the database before the deploy
+        working-directory: /home/michroucka/umai
+        run: |
+          set -e
+          if [ ! -f data/umai.db ]; then
+            echo "No database yet, nothing to back up"
+            exit 0
+          fi
+
+          backup_name="pre-deploy-$(date -u +%Y%m%d-%H%M%S)-$(git rev-parse --short HEAD).db"
+          docker compose run --rm --no-deps -T -e BACKUP_NAME="$backup_name" umai node -e '
+            const fs = require("node:fs");
+            const Database = require("better-sqlite3");
+            const backupDir = "/app/data/backups";
+            const keepCount = 10;
+
+            fs.mkdirSync(backupDir, { recursive: true });
+            const target = `${backupDir}/${process.env.BACKUP_NAME}`;
+            const source = new Database(process.env.DATABASE_PATH, { fileMustExist: true });
+            source.backup(target).then(() => {
+              // The copy inherits WAL mode; DELETE makes it one self-contained file
+              // with no -wal/-shm files next to it.
+              const copy = new Database(target);
+              copy.pragma("journal_mode = DELETE");
+              const integrity = copy.pragma("integrity_check", { simple: true });
+              copy.close();
+              if (integrity !== "ok") throw new Error(`integrity_check of ${target}: ${integrity}`);
+              console.log(`Backed up to data/backups/${process.env.BACKUP_NAME}`);
+
+              // Names start with a UTC timestamp, so sorting them sorts by age.
+              const oldBackups = fs
+                .readdirSync(backupDir)
+                .filter((name) => name.startsWith("pre-deploy-") && name.endsWith(".db"))
+                .sort()
+                .slice(0, -keepCount);
+              for (const name of oldBackups) fs.rmSync(`${backupDir}/${name}`);
+              if (oldBackups.length) console.log(`Removed ${oldBackups.length} old backup(s)`);
+            });
+          '
+
       - name: Check out the tested commit and redeploy
         working-directory: /home/michroucka/umai
         run: |
