@@ -36,6 +36,17 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      # A schema change without `drizzle-kit generate` would deploy with no migration.
+      - name: Migrations match the schema
+        run: |
+          npx drizzle-kit check
+          npx drizzle-kit generate
+          if [ -n "$(git status --porcelain drizzle)" ]; then
+            git status --porcelain drizzle
+            echo "db/schema.ts has changes without a migration; run npx drizzle-kit generate and commit the result."
+            exit 1
+          fi
+
       - name: Test
         run: npm test
 
