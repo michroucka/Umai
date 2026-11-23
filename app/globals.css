@@ -150,10 +150,4 @@
   h4 {
     @apply scroll-m-20 font-serif text-xl font-normal tracking-tight;
   }
-  p {
-    @apply leading-7 not-first:mt-6;
-  }
-  blockquote {
-    @apply mt-6 border-l-2 pl-6 italic;
-  }
 }
