@@ -44,3 +44,34 @@ jobs:
         env:
           # The build opens the SQLite file; keep it out of the workspace.
           DATABASE_PATH: ${{ runner.temp }}/ci-build.db
+
+  # Catches a broken Dockerfile (e.g. a missing COPY) before the deploy on the NAS does.
+  # An empty database also checks that all migrations apply from scratch at startup.
+  docker:
+    name: Docker image starts
+    # The deploy builds the image on the NAS anyway, so only PRs need this.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: ci-docker-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build the image
+        run: docker build -t umai-ci .
+
+      - name: Start it with an empty database
+        run: |
+          docker run -d --name umai-ci -e DATABASE_PATH=/tmp/umai.db -p 3000:3000 umai-ci
+          for i in $(seq 1 30); do
+            if curl -fsS -o /dev/null http://127.0.0.1:3000/pair; then
+              echo "/pair responds after ${i}s"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "/pair did not respond within 30s, container logs:"
+          docker logs umai-ci
+          exit 1

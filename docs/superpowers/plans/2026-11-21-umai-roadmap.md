@@ -69,7 +69,7 @@ Deploy:
 
 - [x] `Dockerfile`: `npm ci` instead of `npm install`, so the image has exactly the versions CI tested
 - [x] Rollback: tag the running image before the build; after `up --wait` run a smoke test (`/pair` returns 200); on failure restore the previous image and the pre-deploy DB backup
-- [ ] CI builds the Docker image on PRs and starts it with an empty DB (catches a missing `COPY` before the NAS does)
+- [x] CI builds the Docker image on PRs and starts it with an empty DB (catches a missing `COPY` before the NAS does)
 
 CI:
 
