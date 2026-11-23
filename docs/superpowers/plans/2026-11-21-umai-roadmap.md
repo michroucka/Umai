@@ -61,7 +61,8 @@ Goal: a bad deploy or migration must never lose recipes, and anything CI can cat
 
 Backups:
 
-- [ ] Nightly off-site backup, like `pedicure-db-backup`: private repo `umai-db-backup` with its own self-hosted runner on the NAS (artifacts of the public Umai repo are downloadable by any GitHub user). Workflow: SQLite `.backup` of `data/umai.db` (a plain `cp` is not consistent with WAL) + tar of `uploads/`, `gpg --symmetric` AES-256 with a secret passphrase that also lives in the password manager, artifact kept 30 days. README with restore steps; restore verified once by hand.
+- [x] Nightly off-site backup, like `pedicure-db-backup`: private repo `umai-db-backup` with its own self-hosted runner on the NAS (artifacts of the public Umai repo are downloadable by any GitHub user). Workflow: SQLite `.backup` of `data/umai.db` (a plain `cp` is not consistent with WAL) + tar of `uploads/`, `gpg --symmetric` AES-256 with a secret passphrase that also lives in the password manager, artifact kept 14 days (30 x 18 MB would exceed the 500 MB artifact limit of GitHub Free). README with restore steps; restore verified once by hand.
+  - Done 2026-11-24 in `michroucka/umai-db-backup` (runner `umai-db-backup` on the NAS, 1:15 UTC). Restore verified: the first backup decrypted and opened with all 25 recipes.
 - [ ] Backup before every deploy in `deploy.yml`: SQLite `.backup` next to the data, keep the last 10. Migrations run on container start, so this is the restore point for a broken migration.
 
 Deploy:
