@@ -24,9 +24,14 @@ jobs:
       # image because the NAS has no sqlite3 CLI, and the SQLite backup API stays
       # consistent while the app keeps writing (a plain cp would not, with WAL).
       - name: Back up the database before the deploy
+        id: backup
         working-directory: /home/michroucka/umai
         run: |
           set -e
+          echo "previous_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          # The image ID of the running container, not a tag: the tag moves with every build.
+          echo "previous_image=$(docker inspect --format '{{.Image}}' umai 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
+
           if [ ! -f data/umai.db ]; then
             echo "No database yet, nothing to back up"
             exit 0
@@ -62,18 +67,25 @@ jobs:
               if (oldBackups.length) console.log(`Removed ${oldBackups.length} old backup(s)`);
             });
           '
+          echo "backup_name=$backup_name" >> "$GITHUB_OUTPUT"
 
       - name: Check out the tested commit and redeploy
+        id: deploy
         working-directory: /home/michroucka/umai
         run: |
           set -e
           git fetch origin
           git checkout --detach "${{ github.sha }}"
 
+          # The healthcheck only asks for "/", which redirects; /pair must render a page.
+          smoke_test() {
+            docker compose exec -T umai wget -q --spider http://127.0.0.1:3000/pair
+          }
+
           attempts=3
           for ((i=1; i<=attempts; i++)); do
             echo "Deploy attempt $i/$attempts"
-            if docker compose build --pull && docker compose up -d --wait; then
+            if docker compose build --pull && docker compose up -d --wait && smoke_test; then
               echo "Deploy succeeded"
               exit 0
             fi
@@ -84,3 +96,33 @@ jobs:
           echo "Deploy failed after $attempts attempts, recent logs:"
           docker compose logs --tail=50
           exit 1
+
+      # The new container may have already run its migrations, and the previous code
+      # might not work with the migrated schema, so the database goes back too.
+      # Writes made between the backup and the failure are lost; that is minutes at most.
+      - name: Roll back to the previous version
+        if: failure() && steps.deploy.outcome == 'failure' && steps.backup.outputs.previous_image != ''
+        working-directory: /home/michroucka/umai
+        env:
+          PREVIOUS_SHA: ${{ steps.backup.outputs.previous_sha }}
+          PREVIOUS_IMAGE: ${{ steps.backup.outputs.previous_image }}
+          BACKUP_NAME: ${{ steps.backup.outputs.backup_name }}
+        run: |
+          set -e
+          echo "Rolling back to $PREVIOUS_SHA"
+          docker compose stop umai
+          git checkout --detach "$PREVIOUS_SHA"
+
+          if [ -n "$BACKUP_NAME" ]; then
+            # data/ belongs to root (the container writes it), so the copy runs in a container.
+            # Stale -wal/-shm files would be replayed onto the restored database and corrupt it.
+            docker compose run --rm --no-deps -T umai sh -c \
+              "rm -f /app/data/umai.db-wal /app/data/umai.db-shm && cp /app/data/backups/$BACKUP_NAME /app/data/umai.db"
+            echo "Database restored from data/backups/$BACKUP_NAME"
+          fi
+
+          # The tag compose would build to now points at the failed image; move it back.
+          docker image tag "$PREVIOUS_IMAGE" "$(docker compose config --images)"
+          docker compose up -d --wait --no-build
+          docker compose exec -T umai wget -q --spider http://127.0.0.1:3000/pair
+          echo "Rolled back to $PREVIOUS_SHA. The deploy itself failed, see the step above."
