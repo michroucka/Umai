@@ -47,8 +47,9 @@ jobs:
             exit 1
           fi
 
+      # The coverage table in the log shows what is untested; there are no thresholds yet.
       - name: Test
-        run: npm test
+        run: npm run test:coverage
 
       - name: Build
         run: npm run build

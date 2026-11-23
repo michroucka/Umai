@@ -11,5 +11,11 @@ export default defineConfig({
         exclude: ["node_modules/**", ".next/**"],
         // Every test file imports its own copy of db/index.ts, so each gets a fresh migrated DB.
         env: { DATABASE_PATH: ":memory:" },
+        coverage: {
+            provider: "v8",
+            include: ["app/**", "components/**", "lib/**", "db/**", "proxy.ts", "scripts/**"],
+            exclude: ["**/*.test.{ts,tsx}", "components/ui/**"],
+            reporter: ["text", "html"],
+        },
     },
 });

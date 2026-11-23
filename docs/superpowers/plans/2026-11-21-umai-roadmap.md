@@ -75,7 +75,7 @@ CI:
 
 - [x] Migration drift: `drizzle-kit generate` in CI must not produce a new file, plus `drizzle-kit check`
 - [x] Weekly scheduled `npm audit --omit=dev --audit-level=high` (not on every PR, so an unrelated advisory doesn't turn a PR red)
-- [ ] Coverage report (`vitest --coverage`), no thresholds yet, to see what is untested
+- [x] Coverage report (`vitest --coverage`), no thresholds yet, to see what is untested
 
 Tests:
 
