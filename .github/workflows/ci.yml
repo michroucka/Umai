@@ -60,6 +60,7 @@ jobs:
   # Catches a broken Dockerfile (e.g. a missing COPY) before the deploy on the NAS does.
   # An empty database also checks that all migrations apply from scratch at startup.
   docker:
+    # The main ruleset requires this exact check name too.
     name: Docker image starts
     # The deploy builds the image on the NAS anyway, so only PRs need this.
     if: github.event_name == 'pull_request'
