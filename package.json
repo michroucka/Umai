@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "pairing-code": "node scripts/create-pairing-code.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",
@@ -22,6 +23,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.2",
+    "input-otp": "^1.5.0",
     "lucide-react": "^1.18.0",
     "motion": "^12.42.2",
     "next": "16.2.9",
@@ -35,6 +37,8 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.13",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^22.20.5",
     "@types/react": "^19",
@@ -43,10 +47,14 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "eslint-config-prettier": "^10.1.8",
+    "jsdom": "^31.0.1",
     "prettier": "3.10.1",
     "shadcn": "^4.11.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^5.1.1"
+  },
+  "allowScripts": {
+    "better-sqlite3": true
   }
 }

@@ -1,14 +1,16 @@
 "use server";
 
-import { saveImage } from "@/lib/actions/recipe-utils";
+import { saveImage } from "@/lib/recipes/recipe-utils";
 import { db } from "@/db";
 import { ingredients, recipes, steps } from "@/db/schema";
 import { RecipeFormValues } from "@/components/recipe-form";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { parsePrepTime } from "@/lib/utils";
+import { requireDevice } from "@/lib/auth/session";
 
 export async function updateRecipe(recipeId: number, data: FormData) {
+    await requireDevice();
     const ing = (JSON.parse(data.get("ingredients") as string) as RecipeFormValues["ingredients"]).filter(
         (i) => i.name.trim() !== "",
     );

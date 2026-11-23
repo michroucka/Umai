@@ -36,3 +36,23 @@ export const steps = sqliteTable("steps", {
     stepOrder: integer("step_order").notNull(),
     content: text("content").notNull(),
 });
+
+export const devices = sqliteTable("devices", {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    name: text("name").notNull(),
+    tokenHash: text("token_hash").unique().notNull(),
+    isAdmin: integer("is_admin", { mode: "boolean" }).notNull().default(false),
+    createdAt: integer("created_at", { mode: "timestamp_ms" })
+        .notNull()
+        .$defaultFn(() => new Date()),
+    lastSeenAt: integer("last_seen_at", { mode: "timestamp_ms" })
+        .notNull()
+        .$defaultFn(() => new Date()),
+});
+
+export const pairingCodes = sqliteTable("pairing_codes", {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    codeHash: text("code_hash").unique().notNull(),
+    isAdmin: integer("is_admin", { mode: "boolean" }).notNull().default(false),
+    expiresAt: integer("expires_at", { mode: "timestamp_ms" }).notNull(),
+});

@@ -3,11 +3,13 @@
 import { db } from "@/db";
 import { ingredients, recipes, steps } from "@/db/schema";
 import { redirect } from "next/navigation";
-import { saveImage } from "@/lib/actions/recipe-utils";
+import { saveImage } from "@/lib/recipes/recipe-utils";
 import { RecipeFormValues } from "@/components/recipe-form";
 import { parsePrepTime } from "@/lib/utils";
+import { requireDevice } from "@/lib/auth/session";
 
 export async function createRecipe(data: FormData) {
+    await requireDevice();
     const ing = (JSON.parse(data.get("ingredients") as string) as RecipeFormValues["ingredients"]).filter(
         (i) => i.name.trim() !== "",
     );

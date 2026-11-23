@@ -1,5 +1,3 @@
-"use server";
-
 import path from "path";
 import { mkdir, writeFile } from "fs/promises";
 
