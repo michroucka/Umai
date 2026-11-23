@@ -70,6 +70,7 @@ export function PairForm({ next, suggestedName }: PairFormProps) {
                         ref={codeInputRef}
                         id="pairing-code"
                         name="code"
+                        inputMode="text"
                         required
                         maxLength={CODE_LENGTH}
                         pattern={REGEXP_ONLY_DIGITS_AND_CHARS}

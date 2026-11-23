@@ -71,6 +71,11 @@ describe("PairForm fields", () => {
         expect(codeField().getAttribute("autocapitalize")).toBe("characters");
     });
 
+    it("opens a keyboard with letters on a phone, because codes are not only digits", () => {
+        renderForm();
+        expect(codeField().getAttribute("inputmode")).toBe("text");
+    });
+
     it("takes exactly the 8 characters of a pairing code", () => {
         renderForm();
         expect(codeField().maxLength).toBe(8);

@@ -35,7 +35,7 @@ Remote access for the family without accounts: each browser is paired once with 
   - [x] `revokePairedDevice` action + `findDeviceById`
   - [x] `createDevicePairingCode` action
   - [x] `/settings/devices` page
-- [ ] PR `device-pairing` -> `main` with manual test steps; after deploy create the first admin code on the NAS
+- [x] PR `device-pairing` -> `main` with manual test steps; after deploy create the first admin code on the NAS
 
 Notes:
 
