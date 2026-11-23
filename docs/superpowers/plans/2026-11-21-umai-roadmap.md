@@ -50,7 +50,8 @@ GitHub reported 105 open Dependabot alerts on `main` (2026-11-22): 6 critical, 3
 
 - [x] `next` 16.2.9 -> latest 16.4.x (>= 16.4.5): 5 critical RCEs, incl. two in the Image Optimization API (`/_next/image` is outside the proxy matcher, so reachable without pairing) and one in `use cache`
 - [x] `zod` 4.4.3 -> >= 4.6.6 (memory exhaustion on oversized collections; used for the AI import output)
-- [ ] Transitive alerts: mostly dev-only via the `shadcn` CLI (`hono`, `@modelcontextprotocol/sdk`, `express`/`proxy-addr`, `undici`); `npm update`, then check `npm audit` and the remaining alerts one by one
+- [x] Transitive alerts: mostly dev-only via the `shadcn` CLI (`hono`, `@modelcontextprotocol/sdk`, `express`/`proxy-addr`, `undici`); `npm update`, then check `npm audit` and the remaining alerts one by one
+  - `npm audit --omit=dev` is clean. 8 moderate dev-only findings remain, accepted: `drizzle-kit` -> `@esbuild-kit` -> old `esbuild` (dev server CORS; drizzle-kit never starts the esbuild dev server) and `shadcn` -> `ts-morph` -> `minimatch` (ReDoS on untrusted glob patterns; the CLI only sees our own). Both parents are on their latest version and `npm audit fix --force` would downgrade them to ancient majors. Revisit when they release fixes.
 - [ ] Find out why Dependabot opened no PRs yet (weekly grouped updates, security updates enabled)
 
 ## 5. Public access
