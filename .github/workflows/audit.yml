@@ -1,0 +1,27 @@
+name: Audit
+
+# Weekly, not on every PR: a new advisory would otherwise turn unrelated PRs red.
+# Only production dependencies; the known dev-only findings are accepted in the roadmap.
+# A failed scheduled run is emailed by GitHub.
+on:
+  schedule:
+    # Monday 6:00 UTC, after Dependabot's weekly run
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: npm audit (production)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - run: npm audit --omit=dev --audit-level=high

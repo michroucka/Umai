@@ -61,20 +61,21 @@ Goal: a bad deploy or migration must never lose recipes, and anything CI can cat
 
 Backups:
 
-- [ ] Nightly off-site backup, like `pedicure-db-backup`: private repo `umai-db-backup` with its own self-hosted runner on the NAS (artifacts of the public Umai repo are downloadable by any GitHub user). Workflow: SQLite `.backup` of `data/umai.db` (a plain `cp` is not consistent with WAL) + tar of `uploads/`, `gpg --symmetric` AES-256 with a secret passphrase that also lives in the password manager, artifact kept 30 days. README with restore steps; restore verified once by hand.
-- [ ] Backup before every deploy in `deploy.yml`: SQLite `.backup` next to the data, keep the last 10. Migrations run on container start, so this is the restore point for a broken migration.
+- [x] Nightly off-site backup, like `pedicure-db-backup`: private repo `umai-db-backup` with its own self-hosted runner on the NAS (artifacts of the public Umai repo are downloadable by any GitHub user). Workflow: SQLite `.backup` of `data/umai.db` (a plain `cp` is not consistent with WAL) + tar of `uploads/`, `gpg --symmetric` AES-256 with a secret passphrase that also lives in the password manager, artifact kept 14 days (30 x 18 MB would exceed the 500 MB artifact limit of GitHub Free). README with restore steps; restore verified once by hand.
+  - Done 2026-11-24 in `michroucka/umai-db-backup` (runner `umai-db-backup` on the NAS, 1:15 UTC). Restore verified: the first backup decrypted and opened with all 25 recipes.
+- [x] Backup before every deploy in `deploy.yml`: SQLite `.backup` next to the data, keep the last 10. Migrations run on container start, so this is the restore point for a broken migration.
 
 Deploy:
 
-- [ ] `Dockerfile`: `npm ci` instead of `npm install`, so the image has exactly the versions CI tested
-- [ ] Rollback: tag the running image before the build; after `up --wait` run a smoke test (`/pair` returns 200); on failure restore the previous image and the pre-deploy DB backup
-- [ ] CI builds the Docker image on PRs and starts it with an empty DB (catches a missing `COPY` before the NAS does)
+- [x] `Dockerfile`: `npm ci` instead of `npm install`, so the image has exactly the versions CI tested
+- [x] Rollback: tag the running image before the build; after `up --wait` run a smoke test (`/pair` returns 200); on failure restore the previous image and the pre-deploy DB backup
+- [x] CI builds the Docker image on PRs and starts it with an empty DB (catches a missing `COPY` before the NAS does)
 
 CI:
 
-- [ ] Migration drift: `drizzle-kit generate` in CI must not produce a new file, plus `drizzle-kit check`
-- [ ] Weekly scheduled `npm audit --omit=dev --audit-level=high` (not on every PR, so an unrelated advisory doesn't turn a PR red)
-- [ ] Coverage report (`vitest --coverage`), no thresholds yet, to see what is untested
+- [x] Migration drift: `drizzle-kit generate` in CI must not produce a new file, plus `drizzle-kit check`
+- [x] Weekly scheduled `npm audit --omit=dev --audit-level=high` (not on every PR, so an unrelated advisory doesn't turn a PR red)
+- [x] Coverage report (`vitest --coverage`), no thresholds yet, to see what is untested
 
 Tests:
 
