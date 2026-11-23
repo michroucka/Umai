@@ -10,8 +10,8 @@ export async function createDevicePairingCode(
     formData: FormData,
 ): Promise<CreateDevicePairingCodeState> {
     await requireAdmin();
-    const isAdmin = formData.get("isAdmin") === "true";
-    const { code, expiresAt } = await createPairingCode({isAdmin});
+    const isAdmin = formData.get("isAdmin") === "on";
+    const { code, expiresAt } = await createPairingCode({ isAdmin });
 
     return { code, expiresAt, isAdmin };
 }

@@ -33,7 +33,7 @@ Remote access for the family without accounts: each browser is paired once with 
 - [x] `requireDevice()` at the top of every server action in `lib/actions/*` and in `app/uploads/[filename]/route.ts` (proxy alone is not enough: Next docs say server functions must check auth themselves); uploads route rejects paths outside `public/uploads`, `saveImage` moved to `lib/recipes/` so it is no longer a public action
 - [ ] Devices page in settings (admin only): list devices, revoke, create a pairing code; an admin must not revoke their own device or the last admin
   - [x] `revokePairedDevice` action + `findDeviceById`
-  - [ ] `createDevicePairingCode` action (skeleton and tests committed, tests red until implemented)
+  - [x] `createDevicePairingCode` action
   - [ ] `/settings/devices` page
 - [ ] PR `device-pairing` -> `main` with manual test steps; after deploy create the first admin code on the NAS
 
