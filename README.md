@@ -74,7 +74,7 @@ Open [http://localhost:3000](http://localhost:3000). The dev server uses a local
 ### Running with Docker
 
 ```bash
-cp .env.example .env  # add your PEXELS_API_KEY
+cp .env.example .env  # add your PEXELS_API_KEY and CLOUDFLARE_TUNNEL_TOKEN
 docker compose up -d --build
 ```
 
@@ -92,6 +92,17 @@ drizzle/        Generated SQL migrations
 ## Deployment
 
 `.github/workflows/deploy.yml` redeploys the app to my home server (NAS) via a self-hosted GitHub Actions runner on every push to `main` - it runs CI first, then checks out the tested commit and rebuilds with `docker compose`. It can also be started manually from the Actions tab.
+
+### Public access
+
+A `cloudflared` container in `docker-compose.yml` connects the app to a Cloudflare Tunnel, so it is reachable over HTTPS from outside the home network without opening a port on the router. There is no Cloudflare Access in front of it: the app's device pairing is the gate.
+
+One-time setup:
+
+1. Cloudflare dashboard -> Zero Trust -> Networks -> Tunnels -> Create a tunnel (type Cloudflared), name it `umai`.
+2. Copy the token from the install command (the long string after `--token`) into `CLOUDFLARE_TUNNEL_TOKEN` in `.env` on the NAS. `docker compose` refuses to start without it.
+3. Add a public hostname: your subdomain -> service `HTTP`, URL `umai:3000` (the compose service name, not `localhost`).
+4. Redeploy, open `https://<your hostname>/pair` on the phone and pair it with a code from `docker compose exec umai node scripts/create-pairing-code.mjs`.
 
 ## License
 

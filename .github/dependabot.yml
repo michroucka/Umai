@@ -31,3 +31,9 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+
+  # cloudflared uses calendar versions (2026.11.2), so the major version is the year and stays allowed.
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: weekly
