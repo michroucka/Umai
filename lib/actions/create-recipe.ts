@@ -21,35 +21,42 @@ export async function createRecipe(data: FormData) {
     const date = new Date().toISOString();
     const imgPath = await saveImage(data.get("image"));
 
-    const [recipe] = await db
-        .insert(recipes)
-        .values({
-            name: data.get("name") as string,
-            description: (data.get("description") as string) || null,
-            date: date,
-            prepTime: prepTime,
-            image: imgPath,
-            portions: Number(data.get("portions")),
-        })
-        .returning();
+    db.transaction((tx) => {
+        const recipe = tx
+            .insert(recipes)
+            .values({
+                name: data.get("name") as string,
+                description: (data.get("description") as string) || null,
+                date: date,
+                prepTime: prepTime,
+                image: imgPath,
+                portions: Number(data.get("portions")),
+            })
+            .returning()
+            .get();
 
-    await db.insert(ingredients).values(
-        ing.map((i) => ({
-            recipeId: recipe.id,
-            name: i.name as string,
-            note: (i.note as string) || null,
-            amount: (i.amount as number) || null,
-            unit: i.unit as string,
-        })),
-    );
+        tx.insert(ingredients)
+            .values(
+                ing.map((i) => ({
+                    recipeId: recipe.id,
+                    name: i.name as string,
+                    note: (i.note as string) || null,
+                    amount: (i.amount as number) || null,
+                    unit: i.unit as string,
+                })),
+            )
+            .run();
 
-    await db.insert(steps).values(
-        stp.map((s, idx) => ({
-            recipeId: recipe.id,
-            stepOrder: idx,
-            content: s.content,
-        })),
-    );
+        tx.insert(steps)
+            .values(
+                stp.map((s, idx) => ({
+                    recipeId: recipe.id,
+                    stepOrder: idx,
+                    content: s.content,
+                })),
+            )
+            .run();
+    });
 
     redirect("/");
 }
