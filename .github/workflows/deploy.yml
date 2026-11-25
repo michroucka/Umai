@@ -74,7 +74,8 @@ jobs:
         working-directory: /home/michroucka/umai
         run: |
           set -e
-          git fetch origin
+          # --prune drops refs of deleted branches; a stale origin/dependabot blocks fetching dependabot/... branches.
+          git fetch --prune origin
           git checkout --detach "${{ github.sha }}"
 
           # The healthcheck only asks for "/", which redirects; /pair must render a page.
@@ -85,9 +86,13 @@ jobs:
           attempts=3
           for ((i=1; i<=attempts; i++)); do
             echo "Deploy attempt $i/$attempts"
-            if docker compose build --pull && docker compose up -d --wait && smoke_test; then
-              echo "Deploy succeeded"
-              exit 0
+            if docker compose build --pull; then
+              # From here on the new container may run its migrations, so a rollback has to restore the database.
+              echo "new_container_started=true" >> "$GITHUB_OUTPUT"
+              if docker compose up -d --wait && smoke_test; then
+                echo "Deploy succeeded"
+                exit 0
+              fi
             fi
             echo "Attempt $i failed"
             [ "$i" -lt "$attempts" ] && sleep 10
@@ -100,6 +105,8 @@ jobs:
       # The new container may have already run its migrations, and the previous code
       # might not work with the migrated schema, so the database goes back too.
       # Writes made between the backup and the failure are lost; that is minutes at most.
+      # When the deploy failed before the new container started (fetch or build), the old
+      # container still runs on an untouched database, so only the checkout goes back.
       - name: Roll back to the previous version
         if: failure() && steps.deploy.outcome == 'failure' && steps.backup.outputs.previous_image != ''
         working-directory: /home/michroucka/umai
@@ -107,9 +114,19 @@ jobs:
           PREVIOUS_SHA: ${{ steps.backup.outputs.previous_sha }}
           PREVIOUS_IMAGE: ${{ steps.backup.outputs.previous_image }}
           BACKUP_NAME: ${{ steps.backup.outputs.backup_name }}
+          NEW_CONTAINER_STARTED: ${{ steps.deploy.outputs.new_container_started }}
         run: |
           set -e
           echo "Rolling back to $PREVIOUS_SHA"
+
+          if [ "$NEW_CONTAINER_STARTED" != "true" ]; then
+            git checkout --detach "$PREVIOUS_SHA"
+            docker compose exec -T umai wget -q --spider http://127.0.0.1:3000/pair
+            echo "The new version never started; the running container and the database are unchanged."
+            echo "Back on $PREVIOUS_SHA. The deploy itself failed, see the step above."
+            exit 0
+          fi
+
           docker compose stop umai
           git checkout --detach "$PREVIOUS_SHA"
 
