@@ -20,3 +20,17 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+
+  # Public access through a Cloudflare Tunnel: an outbound connection only, so no port is opened
+  # on the router. The public hostname points to http://umai:3000 (the service name in this network).
+  # No Cloudflare Access in front: device pairing in the app is the gate.
+  cloudflared:
+    image: cloudflare/cloudflared:2026.11.2
+    container_name: umai-cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN:?set CLOUDFLARE_TUNNEL_TOKEN in .env}
+    depends_on:
+      umai:
+        condition: service_healthy

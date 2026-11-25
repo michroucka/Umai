@@ -139,7 +139,7 @@ jobs:
           fi
 
           # The tag compose would build to now points at the failed image; move it back.
-          docker image tag "$PREVIOUS_IMAGE" "$(docker compose config --images)"
+          docker image tag "$PREVIOUS_IMAGE" "$(docker compose config --images umai)"
           docker compose up -d --wait --no-build
           docker compose exec -T umai wget -q --spider http://127.0.0.1:3000/pair
           echo "Rolled back to $PREVIOUS_SHA. The deploy itself failed, see the step above."
