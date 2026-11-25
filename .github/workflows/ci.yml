@@ -53,9 +53,6 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          # The build opens the SQLite file; keep it out of the workspace.
-          DATABASE_PATH: ${{ runner.temp }}/ci-build.db
 
       # Starts the build from the previous step with its own empty database (see playwright.config.ts).
       - name: Install Playwright browser
