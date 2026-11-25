@@ -14,6 +14,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
     "pairing-code": "node scripts/create-pairing-code.mjs"
   },
   "dependencies": {
@@ -37,6 +38,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/postcss": "^4",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.13",

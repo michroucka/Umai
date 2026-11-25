@@ -57,6 +57,21 @@ jobs:
           # The build opens the SQLite file; keep it out of the workspace.
           DATABASE_PATH: ${{ runner.temp }}/ci-build.db
 
+      # Starts the build from the previous step with its own empty database (see playwright.config.ts).
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E smoke test
+        run: npm run test:e2e
+
+      - name: Upload the Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
   # Catches a broken Dockerfile (e.g. a missing COPY) before the deploy on the NAS does.
   # An empty database also checks that all migrations apply from scratch at startup.
   docker:
