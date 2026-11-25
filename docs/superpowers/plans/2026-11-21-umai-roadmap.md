@@ -79,7 +79,7 @@ CI:
 
 Tests:
 
-- [ ] Recipe actions: `create-recipe`, `update-recipe` (editing must not silently drop ingredients or steps), `delete-recipe`, `get-recipe-details`
+- [x] Recipe actions: `create-recipe`, `update-recipe` (editing must not silently drop ingredients or steps), `delete-recipe`, `get-recipe-details`
 - [ ] Portion scaling: `components/scalable-text.tsx`, `lib/units.ts`, `lib/recipes/recipe-utils.ts`
 - [ ] Smoke E2E with Playwright in CI before the redesign rewrites the UI: pair -> create a recipe -> open it -> change portions -> delete. The full suite stays in section 8.
 
