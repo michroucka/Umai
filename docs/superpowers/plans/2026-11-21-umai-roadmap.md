@@ -81,7 +81,7 @@ Tests:
 
 - [x] Recipe actions: `create-recipe`, `update-recipe` (editing must not silently drop ingredients or steps), `delete-recipe`, `get-recipe-details`
 - [x] Portion scaling: `components/scalable-text.tsx`, `components/ingredients.tsx` and the portions control in `components/recipe.tsx` (`parseScalable` and `formatAmount` were already covered in `lib/utils.test.ts`)
-- [ ] Smoke E2E with Playwright in CI before the redesign rewrites the UI: pair -> create a recipe -> open it -> change portions -> delete. The full suite stays in section 8.
+- [x] Smoke E2E with Playwright in CI before the redesign rewrites the UI: pair -> create a recipe -> open it -> change portions -> delete. The full suite stays in section 8.
 
 ## 6. Public access
 
@@ -93,6 +93,12 @@ Tests:
 Concept C "Knihovna + kuchyně", mobile only, built for cooking at the stove. Clickable mockup: https://claude.ai/artifact/JKMw61zUFMBETBAKBMjymY
 
 Branding (`~/Repos/graphic-design/recepty/kit`): ink #1E211F, slate #2A302C, rice #F4F1EA, light nori #94BFA2, yuzu #E8B931, nori #2F4A3A; DM Serif Display + DM Sans; dark only; smooth animations and transitions.
+
+Found by the tests in section 5, left for the redesign (`components/recipe.tsx`):
+
+- [ ] Portion minus/plus buttons are icon-only and have no accessible name
+- [ ] Clearing the portions field jumps to 1 (`Number("")` is 0, then clamped), so typing 6 after Backspace gives 16
+- [ ] The portions field accepts decimals ("2.5"); decide whether only whole portions are allowed
 
 Features to add:
 
