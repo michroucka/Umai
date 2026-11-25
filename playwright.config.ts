@@ -5,7 +5,6 @@ import { defineConfig, devices } from "@playwright/test";
 const PORT = 3100;
 // Outside test-results: Playwright empties that folder after the server has already opened the database.
 export const E2E_DATABASE_PATH = path.join(os.tmpdir(), "umai-e2e.db");
-const BUILD_DATABASE_PATH = path.join(os.tmpdir(), "umai-e2e-build.db");
 
 export default defineConfig({
     testDir: "e2e",
@@ -25,8 +24,7 @@ export default defineConfig({
         // CI builds in an earlier step; locally the build has to match the current code.
         command: [
             `rm -f ${E2E_DATABASE_PATH}*`,
-            // The build opens its own database, like in ci.yml.
-            ...(process.env.CI ? [] : [`DATABASE_PATH=${BUILD_DATABASE_PATH} npm run build`]),
+            ...(process.env.CI ? [] : ["npm run build"]),
             `DATABASE_PATH=${E2E_DATABASE_PATH} npm run start -- -p ${PORT}`,
         ].join(" && "),
         url: `http://localhost:${PORT}/pair`,

@@ -5,15 +5,18 @@ import * as schema from "./schema";
 import path from "path";
 import { PHASE_PRODUCTION_BUILD } from "next/constants";
 
-const sqlite = new Database(process.env.DATABASE_PATH ?? "umai.db");
-// busy_timeout goes first: `next build` opens the database from parallel workers, and switching
-// the journal mode without it fails at once with "database is locked" instead of waiting.
+// `next build` imports this module from parallel workers. Opened on a shared file they lock each
+// other out ("database is locked" while switching to WAL, even with busy_timeout), and every
+// route that reads data is dynamic anyway, so the build gets a private, empty in-memory database.
+const isBuilding = process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD;
+
+const sqlite = new Database(isBuilding ? ":memory:" : (process.env.DATABASE_PATH ?? "umai.db"));
 sqlite.pragma("busy_timeout = 5000");
 sqlite.pragma("journal_mode = WAL");
 sqlite.pragma("foreign_keys = ON");
 
 export const db = drizzle(sqlite, { schema });
 
-if (process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD) {
+if (!isBuilding) {
     migrate(db, { migrationsFolder: path.join(process.cwd(), "drizzle") });
 }
