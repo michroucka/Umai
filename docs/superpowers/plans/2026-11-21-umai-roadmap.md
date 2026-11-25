@@ -85,8 +85,8 @@ Tests:
 
 ## 6. Public access
 
-- [ ] Cloudflare Tunnel (`cloudflared` in `docker-compose.yml`), no Cloudflare Access; the app's pairing is the gate
-- [ ] Spending limit for the Anthropic API key in the Anthropic Console
+- [x] Cloudflare Tunnel (`cloudflared` in `docker-compose.yml`), no Cloudflare Access; the app's pairing is the gate
+- [x] Spending limit for the Anthropic API key in the Anthropic Console
 
 ## 7. UI redesign
 
