@@ -45,6 +45,11 @@
   --font-serif: var(--font-dm-serif-display), Georgia, ui-serif, serif;
   --font-mono: ui-monospace, monospace;
   --radius: 0.8rem;
+  --tab-bar-height: 4.25rem;
+  --tab-bar-offset: 0.875rem;
+  /* space the floating tab bar takes from the bottom edge; content pads by this so nothing hides under it */
+  --tab-bar-bottom: calc(var(--tab-bar-offset) + env(safe-area-inset-bottom));
+  --tab-bar-clearance: calc(var(--tab-bar-height) + var(--tab-bar-bottom));
   --shadow-x: 0px;
   --shadow-y: 10px;
   --shadow-blur: 24px;
@@ -81,8 +86,12 @@
 
   --radius-card: 18px;
   --radius-sheet: 28px;
+  --radius-tab-bar: 26px;
 
   --shadow-photo: 0 12px 32px rgb(0 0 0 / 0.45), 0 2px 6px rgb(0 0 0 / 0.35);
+  --shadow-tab-bar: 0 16px 40px rgb(0 0 0 / 0.5), inset 0 0 0 1px rgb(244 241 234 / 0.06);
+
+  --blur-tab-bar: 18px;
 
   --animate-rise: rise 0.5s var(--ease-smooth) both;
   --animate-pop: pop 0.45s var(--ease-spring);
