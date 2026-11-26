@@ -2,7 +2,7 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Control, Controller, UseFormGetValues, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
 import { ButtonGroup } from "./ui/button-group";
 import { Button } from "@/components/ui/button";
-import { ChefHat, Search, Upload, X } from "lucide-react";
+import { IconChefHat, IconSearch, IconUpload, IconX } from "@tabler/icons-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { searchImages } from "@/lib/actions/search-images";
@@ -71,7 +71,7 @@ export function RecipeImageField({
                       content-type / size and reuse isPrivateHost() from import-recipe.ts. */}
                 <ButtonGroup id="image">
                     <Button type="button" size="sm" variant="outline" onClick={() => fileInputRef.current?.click()}>
-                        <Upload /> Nahrát obrázek
+                        <IconUpload /> Nahrát obrázek
                     </Button>
                     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                         <DialogTrigger asChild>
@@ -89,7 +89,7 @@ export function RecipeImageField({
                                     setDialogOpen(true);
                                 }}
                             >
-                                <Search /> Hledat online
+                                <IconSearch /> Hledat online
                             </Button>
                         </DialogTrigger>
                         <DialogContent>
@@ -105,7 +105,7 @@ export function RecipeImageField({
                                         setSearchResults(results);
                                     }}
                                 >
-                                    <Search /> Hledat
+                                    <IconSearch /> Hledat
                                 </Button>
                             </div>
                             <div className="grid grid-cols-3 gap-2">
@@ -147,12 +147,12 @@ export function RecipeImageField({
                                 setValue("image", undefined);
                             }}
                         >
-                            <X />
+                            <IconX />
                         </Button>
                         <img src={previewUrl} alt="" className="aspect-video w-full object-cover" />
                     </>
                 ) : (
-                    <ChefHat className="size-12 text-muted" />
+                    <IconChefHat className="size-12 text-muted" />
                 )}
             </div>
         </div>

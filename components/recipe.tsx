@@ -6,7 +6,18 @@ import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { formatAmount, parseHoursMinutes } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, List, Maximize2, Minus, PenSquare, Plus, TimerIcon, Trash2, X } from "lucide-react";
+import {
+    IconChevronLeft,
+    IconChevronRight,
+    IconList,
+    IconMaximize,
+    IconMinus,
+    IconEdit,
+    IconPlus,
+    IconStopwatch,
+    IconTrash,
+    IconX,
+} from "@tabler/icons-react";
 import { Separator } from "@/components/ui/separator";
 import { Field, FieldContent, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -193,7 +204,7 @@ export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
                                 className="rounded-full"
                                 onClick={() => setFullScreenMode(false)}
                             >
-                                <X />
+                                <IconX />
                             </Button>
                             <Button
                                 size="icon-xl"
@@ -201,7 +212,7 @@ export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
                                 className="rounded-full"
                                 onClick={() => setTimerOpen(!timerOpen)}
                             >
-                                <TimerIcon />
+                                <IconStopwatch />
                             </Button>
                             <Button
                                 size="icon-xl"
@@ -209,7 +220,7 @@ export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
                                 className="rounded-full"
                                 onClick={() => setIngredientsOpen(!ingredientsOpen)}
                             >
-                                <List />
+                                <IconList />
                             </Button>
                         </div>
                         <div>
@@ -222,7 +233,7 @@ export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
                                     }}
                                     disabled={currentStep === 0}
                                 >
-                                    <ChevronLeft />
+                                    <IconChevronLeft />
                                 </Button>
                                 <Button
                                     size="icon-xl"
@@ -230,7 +241,7 @@ export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
                                     onClick={() => paginate(1)}
                                     disabled={currentStep === recipe.steps.length - 1}
                                 >
-                                    <ChevronRight />
+                                    <IconChevronRight />
                                 </Button>
                             </ButtonGroup>
                         </div>
@@ -259,7 +270,7 @@ export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
                                     asChild
                                 >
                                     <Link href="/">
-                                        <Trash2 /> Smazat
+                                        <IconTrash /> Smazat
                                     </Link>
                                 </Button>
                             </DialogFooter>
@@ -269,17 +280,17 @@ export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
                     <div className="flex justify-between mb-4 xl:shrink-0">
                         <Button variant="outline" asChild>
                             <Link href="/">
-                                <X /> Zavřít
+                                <IconX /> Zavřít
                             </Link>
                         </Button>
                         <div className="flex gap-2">
                             <Button variant="secondary" asChild>
                                 <Link href={`/recipes/${recipe.id}/edit`}>
-                                    <PenSquare /> Upravit
+                                    <IconEdit /> Upravit
                                 </Link>
                             </Button>
                             <Button variant="destructive" size="icon" onClick={() => setDeleteOpen(true)}>
-                                <Trash2 />
+                                <IconTrash />
                             </Button>
                         </div>
                     </div>
@@ -308,7 +319,7 @@ export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
                                                     onClick={() => setPortions((p) => clampPortions(p - 1))}
                                                     disabled={portions <= MIN_PORTIONS}
                                                 >
-                                                    <Minus className="size-4" />
+                                                    <IconMinus className="size-4" />
                                                 </Button>
                                                 <Input
                                                     type="number"
@@ -325,7 +336,7 @@ export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
                                                     onClick={() => setPortions((p) => clampPortions(p + 1))}
                                                     disabled={portions >= MAX_PORTIONS}
                                                 >
-                                                    <Plus className="size-4" />
+                                                    <IconPlus className="size-4" />
                                                 </Button>
                                             </div>
                                         </div>
@@ -388,7 +399,7 @@ export function Recipe({ recipe }: { recipe: RecipeWithDetails }) {
                                     className="xl:hidden"
                                     onClick={() => setFullScreenMode(true)}
                                 >
-                                    <Maximize2 />
+                                    <IconMaximize />
                                 </Button>
                             </div>
                             <div className="flex flex-col gap-1 xl:flex-1 xl:min-h-0 xl:overflow-y-auto xl:pb-4">

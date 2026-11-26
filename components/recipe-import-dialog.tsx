@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FieldError } from "@/components/ui/field";
-import { Loader2, Sparkles } from "lucide-react";
+import { IconLoader2, IconSparkles } from "@tabler/icons-react";
 import { ImportedRecipe, importRecipe } from "@/lib/actions/import-recipe";
 
 export function RecipeImportDialog({ onImport }: { onImport: (recipe: ImportedRecipe) => void }) {
@@ -39,7 +39,7 @@ export function RecipeImportDialog({ onImport }: { onImport: (recipe: ImportedRe
         <Dialog open={open} onOpenChange={(o) => !isPending && setOpen(o)}>
             <DialogTrigger asChild>
                 <Button variant="outline" type="button">
-                    <Sparkles /> Importovat z webu
+                    <IconSparkles /> Importovat z webu
                 </Button>
             </DialogTrigger>
             <DialogContent>
@@ -67,11 +67,11 @@ export function RecipeImportDialog({ onImport }: { onImport: (recipe: ImportedRe
                 <Button type="button" onClick={handleImport} disabled={isPending || !input.trim()}>
                     {isPending ? (
                         <>
-                            <Loader2 className="animate-spin" /> Zpracovávám…
+                            <IconLoader2 className="animate-spin" /> Zpracovávám…
                         </>
                     ) : (
                         <>
-                            <Sparkles /> Importovat
+                            <IconSparkles /> Importovat
                         </>
                     )}
                 </Button>

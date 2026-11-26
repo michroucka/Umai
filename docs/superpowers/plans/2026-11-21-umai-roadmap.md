@@ -106,7 +106,7 @@ Found by the tests in section 5, left for the redesign:
 Features to add:
 
 - [ ] Link to `/settings/devices` for admins (the navbar lives in the layout and does not know the current device yet)
-- [ ] Switch icons from Lucide to Tabler (`@tabler/icons-react`, `iconLibrary` in `components.json`, replace `lucide-react` imports incl. `components/ui`)
+- [x] Switch icons from Lucide to Tabler (`@tabler/icons-react`, `iconLibrary` in `components.json`, replace `lucide-react` imports incl. `components/ui`)
 - [ ] Tags and filters
 - [ ] Favorites and recently cooked
 - [ ] "Co dneska?" (what to cook today)

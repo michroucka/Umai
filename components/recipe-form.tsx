@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Save, X } from "lucide-react";
+import { IconDeviceFloppy, IconX } from "@tabler/icons-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm, Controller } from "react-hook-form";
@@ -282,11 +282,11 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
                     <Field orientation="horizontal" className="max-xl:hidden justify-between">
                         <Button variant="outline" type="button" asChild>
                             <Link href={cancelHref}>
-                                <X /> Zrušit
+                                <IconX /> Zrušit
                             </Link>
                         </Button>
                         <Button type="submit">
-                            <Save /> Uložit
+                            <IconDeviceFloppy /> Uložit
                         </Button>
                     </Field>
                 </FieldGroup>
@@ -317,11 +317,11 @@ export function RecipeForm({ defaultRecipe }: { defaultRecipe: RecipeWithDetails
             <div className="fixed inset-x-0 bottom-8 z-50 xl:hidden flex justify-between px-6">
                 <Button variant="secondary" type="button" asChild>
                     <Link href={cancelHref}>
-                        <X /> Zrušit
+                        <IconX /> Zrušit
                     </Link>
                 </Button>
                 <Button type="submit">
-                    <Save /> Uložit
+                    <IconDeviceFloppy /> Uložit
                 </Button>
             </div>
         </form>

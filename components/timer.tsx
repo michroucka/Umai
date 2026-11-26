@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Clock, Pause, Play, RotateCcw } from "lucide-react";
+import { IconClock, IconPlayerPause, IconPlayerPlay, IconRotate } from "@tabler/icons-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
@@ -90,7 +90,7 @@ export function Timer() {
                             setRemainingMs(0);
                         }}
                     >
-                        <Clock /> 1 min
+                        <IconClock /> 1 min
                     </Badge>
                     <Badge
                         variant="outline"
@@ -101,7 +101,7 @@ export function Timer() {
                             setRemainingMs(0);
                         }}
                     >
-                        <Clock /> 3 min
+                        <IconClock /> 3 min
                     </Badge>
                     <Badge
                         variant="outline"
@@ -112,7 +112,7 @@ export function Timer() {
                             setRemainingMs(0);
                         }}
                     >
-                        <Clock /> 5 min
+                        <IconClock /> 5 min
                     </Badge>
                     <Badge
                         variant="outline"
@@ -123,7 +123,7 @@ export function Timer() {
                             setRemainingMs(0);
                         }}
                     >
-                        <Clock /> 10 min
+                        <IconClock /> 10 min
                     </Badge>
                     <Badge
                         variant="outline"
@@ -134,13 +134,13 @@ export function Timer() {
                             setRemainingMs(0);
                         }}
                     >
-                        <Clock /> 15 min
+                        <IconClock /> 15 min
                     </Badge>
                 </div>
             )}
             <div className="bg-card rounded-full border p-2 m-2 flex justify-between tabular-nums">
                 <Button variant="ghost" onClick={reset}>
-                    <RotateCcw /> Reset
+                    <IconRotate /> Reset
                 </Button>
                 {isRunning ? (
                     <div className="grid grid-cols-2 gap-2 items-center text-2xl font-bold">
@@ -199,11 +199,11 @@ export function Timer() {
                 <Button variant="ghost" className="w-30 justify-start" onClick={isRunning ? stop : start}>
                     {isRunning ? (
                         <>
-                            <Pause /> Zastavit
+                            <IconPlayerPause /> Zastavit
                         </>
                     ) : (
                         <>
-                            <Play /> Spustit
+                            <IconPlayerPlay /> Spustit
                         </>
                     )}
                 </Button>

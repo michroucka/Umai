@@ -12,7 +12,7 @@ import {
     AutocompleteTrigger,
 } from "@/components/ui/autocomplete";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { IconChevronDown, IconChevronUp, IconTrash } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
 import { UNITS } from "@/lib/units";
 
@@ -173,7 +173,7 @@ export function RecipeIngredientsField({
                                     onClick={() => move(index, index - 1)}
                                     disabled={fields.length === 1 || isLast || isFirst}
                                 >
-                                    <ChevronUp />
+                                    <IconChevronUp />
                                 </Button>
                                 <Button
                                     size="icon-sm"
@@ -183,7 +183,7 @@ export function RecipeIngredientsField({
                                     onClick={() => remove(index)}
                                     disabled={fields.length === 1 || isLast}
                                 >
-                                    <Trash2 />
+                                    <IconTrash />
                                 </Button>
                                 <Button
                                     size="icon-sm"
@@ -192,7 +192,7 @@ export function RecipeIngredientsField({
                                     onClick={() => move(index, index + 1)}
                                     disabled={fields.length === 1 || isLast || isSecondToLast}
                                 >
-                                    <ChevronDown />
+                                    <IconChevronDown />
                                 </Button>
                             </div>
                         </motion.div>

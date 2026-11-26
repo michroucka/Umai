@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { IconTrash } from "@tabler/icons-react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -31,7 +31,7 @@ export function RevokeDeviceButton({ deviceName, isPending, onConfirm }: RevokeD
                     aria-label={`Zrušit spárování ${deviceName}`}
                     disabled={isPending}
                 >
-                    {isPending ? <Spinner /> : <Trash2 />}
+                    {isPending ? <Spinner /> : <IconTrash />}
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

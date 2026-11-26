@@ -1,4 +1,4 @@
-import { ChefHat } from "lucide-react";
+import { IconChefHat } from "@tabler/icons-react";
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Recipe } from "@/lib/types";
@@ -25,7 +25,7 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
                     />
                 ) : (
                     <div className="relative z-20 w-full aspect-video bg-muted/40 flex items-center justify-center">
-                        <ChefHat className="size-20 text-muted" />
+                        <IconChefHat className="size-20 text-muted" />
                     </div>
                 )}
                 <CardHeader>

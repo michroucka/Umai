@@ -3,7 +3,7 @@
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
 import { cn } from "@/lib/utils";
 import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete";
-import { ChevronDownIcon, XIcon } from "lucide-react";
+import { IconChevronDown, IconX } from "@tabler/icons-react";
 import { createContext, useContext, useImperativeHandle, useRef, type ComponentProps, type RefObject } from "react";
 
 export type AutocompleteProps = ComponentProps<typeof AutocompletePrimitive.Root>;
@@ -51,7 +51,7 @@ function AutocompleteClear({ ...props }: ComponentProps<typeof AutocompletePrimi
     return (
         <InputGroupAddon align="inline-end">
             <AutocompletePrimitive.Clear render={(props) => <InputGroupButton size="icon-xs" {...props} />} {...props}>
-                <XIcon />
+                <IconX />
             </AutocompletePrimitive.Clear>
         </InputGroupAddon>
     );
@@ -65,7 +65,7 @@ function AutocompleteTrigger({ className, ...props }: ComponentProps<typeof Auto
                 className={cn("data-popup-open:[&_svg]:rotate-180 [&_svg]:transition-transform", className)}
                 {...props}
             >
-                <AutocompleteIcon render={(props) => <ChevronDownIcon {...props} />} />
+                <AutocompleteIcon render={(props) => <IconChevronDown {...props} />} />
             </AutocompletePrimitive.Trigger>
         </InputGroupAddon>
     );
