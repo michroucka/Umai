@@ -90,19 +90,23 @@ Tests:
 
 ## 7. UI redesign
 
-Concept C "Knihovna + kuchyně", mobile only, built for cooking at the stove. Clickable mockup: https://claude.ai/artifact/JKMw61zUFMBETBAKBMjymY
+Concept C "Knihovna + kuchyně", mobile-first and built for cooking at the stove, with tablet and desktop layouts too. Clickable mockups: phone https://claude.ai/artifact/JKMw61zUFMBETBAKBMjymY, responsive (phone / tablet / desktop switcher) https://claude.ai/artifact/VnupdyPPHuhCPtUe9FRZMq
+
+Breakpoints: phone below 700px (floating tab bar at the bottom), tablet from 700px (narrow rail on the left with icon and label, content in one centered column), desktop from 1000px (sidebar with logo, Recepty / Nákup / Přidat / Nastavení). Write mobile styles first and add `md:`/`lg:`-style variants on top; the current `xl:` desktop variants get replaced, not kept.
 
 Branding (`~/Repos/graphic-design/recepty/kit`): ink #1E211F, slate #2A302C, rice #F4F1EA, light nori #94BFA2, yuzu #E8B931, nori #2F4A3A; DM Serif Display + DM Sans; dark only; smooth animations and transitions.
 
 Screens, one branch and PR each, in this order. Each rebuilds existing functionality in the new look; new features stay in the list below. Fix the a11y bugs below in the screen that rewrites the component.
 
 - [x] Design tokens from the mockup in `app/globals.css` (`ink-deep`, `slate-hi`, `line`, `rice-dim`, `yuzu-soft`, `danger`, `ease-smooth`, `ease-spring`, `rounded-card`, `shadow-photo`, `animate-rise`, `animate-pop`, reduced motion)
-- [ ] Shell (branch `redesign-shell`): mobile-only layout without the `xl:` desktop variants, floating tab bar Recepty / Nákup / Přidat (Nákup is a placeholder page until the shopping list), settings reachable from the home header, screen transitions
-- [ ] Home: logo and greeting, search, recipe grid with cards as links, empty state
-- [ ] Detail: hero photo, meta, portion stepper, ingredients with check-off, steps, sticky "Vařit" button, edit and delete
-- [ ] Cook mode: replaces `fullScreenMode` in `components/recipe.tsx`; step progress, swipe between steps, large text, timer, "hotovo" screen
-- [ ] Add and edit: recipe form and import
-- [ ] Settings, devices, pairing
+- [ ] Shell (branch `redesign-shell`): navigation that is a floating tab bar Recepty / Nákup / Přidat on phones, a rail on tablets and a sidebar with Nastavení on desktop (Nákup is a placeholder page until the shopping list); settings from the home header on phones; admin-only link to devices; screen transitions
+- [ ] Home: greeting, search, "Co dneska?" and filter chips (one column on phones, search and "Co dneska?" side by side on desktop), recipe grid with cards as links (2 columns on phones, auto-fill on wider screens), empty state
+- [ ] Detail: phones and tablets in one column (photo, title, portions, ingredients, steps, sticky "Vařit"); desktop in two columns with photo, portions and ingredients on the left (sticky, scrolls on its own) and title, steps and "Vařit" on the right; edit and delete
+- [ ] Cook mode: replaces `fullScreenMode` in `components/recipe.tsx`; step progress, swipe between steps, large text, timer, "hotovo" screen; from 900px the step is on the left and "V tomto kroku" plus all ingredients with check-off on the right, arrow keys switch steps
+- [ ] Add and edit: recipe form and import; desktop adds a tips column next to the form
+- [ ] Settings, devices, pairing: one readable column on every width; on desktop settings is a sidebar item
+
+Dialogs and toasts by width: bottom sheet and bottom toast on phones; centered dialog and top-right toast from 700px. Running timers dock above the tab bar on phones and to the bottom right on wider screens.
 
 Found by the tests in section 5, left for the redesign:
 
