@@ -94,6 +94,16 @@ Concept C "Knihovna + kuchyně", mobile only, built for cooking at the stove. Cl
 
 Branding (`~/Repos/graphic-design/recepty/kit`): ink #1E211F, slate #2A302C, rice #F4F1EA, light nori #94BFA2, yuzu #E8B931, nori #2F4A3A; DM Serif Display + DM Sans; dark only; smooth animations and transitions.
 
+Screens, one branch and PR each, in this order. Each rebuilds existing functionality in the new look; new features stay in the list below. Fix the a11y bugs below in the screen that rewrites the component.
+
+- [x] Design tokens from the mockup in `app/globals.css` (`ink-deep`, `slate-hi`, `line`, `rice-dim`, `yuzu-soft`, `danger`, `ease-smooth`, `ease-spring`, `rounded-card`, `shadow-photo`, `animate-rise`, `animate-pop`, reduced motion)
+- [ ] Shell (branch `redesign-shell`): mobile-only layout without the `xl:` desktop variants, floating tab bar Recepty / Nákup / Přidat (Nákup is a placeholder page until the shopping list), settings reachable from the home header, screen transitions
+- [ ] Home: logo and greeting, search, recipe grid with cards as links, empty state
+- [ ] Detail: hero photo, meta, portion stepper, ingredients with check-off, steps, sticky "Vařit" button, edit and delete
+- [ ] Cook mode: replaces `fullScreenMode` in `components/recipe.tsx`; step progress, swipe between steps, large text, timer, "hotovo" screen
+- [ ] Add and edit: recipe form and import
+- [ ] Settings, devices, pairing
+
 Found by the tests in section 5, left for the redesign:
 
 - [ ] Portion minus/plus buttons in `components/recipe.tsx` are icon-only and have no accessible name
@@ -105,7 +115,7 @@ Found by the tests in section 5, left for the redesign:
 
 Features to add:
 
-- [ ] Link to `/settings/devices` for admins (the navbar lives in the layout and does not know the current device yet)
+- [ ] Link to `/settings/devices` for admins (the navbar lives in the layout and does not know the current device yet; part of the shell)
 - [x] Switch icons from Lucide to Tabler (`@tabler/icons-react`, `iconLibrary` in `components.json`, replace `lucide-react` imports incl. `components/ui`)
 - [ ] Tags and filters
 - [ ] Favorites and recently cooked
