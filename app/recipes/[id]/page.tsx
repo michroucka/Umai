@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { recipes } from "@/db/schema";
 import { getRecipeDetails } from "@/lib/actions/get-recipe-details";
 import { Recipe } from "@/components/recipe";
-import { ChevronLeft, HeartCrack } from "lucide-react";
+import { IconChevronLeft, IconHeartBroken } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -23,11 +23,11 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
         <div className="xl:pb-6">
             <div className="flex p-4 gap-2 justify-center text-2xl font-medium items-center text-muted pt-32">
                 <h3>Recept nebyl nalezen</h3>
-                <HeartCrack className="size-7" />
+                <IconHeartBroken className="size-7" />
             </div>
             <Button variant="link" asChild>
                 <Link href="/">
-                    <ChevronLeft /> Zpět na recepty
+                    <IconChevronLeft /> Zpět na recepty
                 </Link>
             </Button>
         </div>

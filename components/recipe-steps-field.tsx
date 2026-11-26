@@ -2,7 +2,7 @@ import { RecipeFormValues } from "@/components/recipe-form";
 import { Control, Controller, FieldErrors, useFieldArray, UseFormTrigger } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2 } from "lucide-react";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -60,7 +60,7 @@ export function RecipeStepsField({
                                 onClick={() => remove(index)}
                                 disabled={fields.length === 1}
                             >
-                                <Trash2 />
+                                <IconTrash />
                             </Button>
                         </div>
                     </motion.div>
@@ -73,7 +73,7 @@ export function RecipeStepsField({
                 className="w-full mb-6"
                 onClick={() => append({ content: "" })}
             >
-                <Plus className="size-3.5" /> Přidat krok
+                <IconPlus className="size-3.5" /> Přidat krok
             </Button>
             {errors.steps?.root && <FieldError errors={[errors.steps.root]} />}
         </FieldGroup>

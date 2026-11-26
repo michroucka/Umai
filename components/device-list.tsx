@@ -3,7 +3,7 @@
 import type { Device } from "@/lib/auth/devices";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
-import { MonitorSmartphone } from "lucide-react";
+import { IconDevices } from "@tabler/icons-react";
 import { revokePairedDevice } from "@/lib/actions/revoke-paired-device";
 import { useState, useTransition } from "react";
 import { RevokeDeviceButton } from "@/components/revoke-device-button";
@@ -31,7 +31,7 @@ function DeviceRow({ device, isCurrent }: { device: DeviceListItem; isCurrent: b
             <ItemContent>
                 <ItemTitle>
                     <div className="flex gap-2 items-center text-base font-semibold">
-                        <MonitorSmartphone />
+                        <IconDevices />
                         {device.name}
                     </div>
                     <div className="flex gap-2">

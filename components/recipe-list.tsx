@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { HeartCrack, Plus, Search } from "lucide-react";
+import { IconHeartBroken, IconPlus, IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import Link from "next/link";
@@ -18,7 +18,7 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
             <div className="fixed bottom-12 sm:bottom-6 right-4 sm:hidden z-50">
                 <Button size="icon-xl" className="rounded-full" asChild>
                     <Link href="/recipes/new">
-                        <Plus className="size-7" />
+                        <IconPlus className="size-7" />
                     </Link>
                 </Button>
             </div>
@@ -26,7 +26,7 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
                 <InputGroup className="w-full sm:max-w-100">
                     <InputGroupInput placeholder="Hledat..." onChange={(e) => setNameFilter(e.target.value)} />
                     <InputGroupAddon>
-                        <Search />
+                        <IconSearch />
                     </InputGroupAddon>
                     <InputGroupAddon align="inline-end">
                         {filteredRecipes.length}{" "}
@@ -42,7 +42,7 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
                 <div className="hidden sm:flex">
                     <Button asChild>
                         <Link href="/recipes/new">
-                            <Plus /> Přidat
+                            <IconPlus /> Přidat
                         </Link>
                     </Button>
                 </div>
@@ -50,7 +50,7 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
             {filteredRecipes.length === 0 ? (
                 <div className="flex p-8 gap-2 justify-center text-2xl font-medium items-center text-muted pt-32">
                     <h3>Žádné recepty</h3>
-                    <HeartCrack className="size-7" />
+                    <IconHeartBroken className="size-7" />
                 </div>
             ) : (
                 <div
