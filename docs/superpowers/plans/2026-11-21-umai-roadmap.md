@@ -27,7 +27,7 @@ Remote access for the family without accounts: each browser is paired once with 
 - [x] `lib/auth/devices.ts`: create/redeem codes (SHA-256 hashes, 15 min, single use), find/list/revoke devices
 - [x] `lib/auth/session.ts`: cookie (`httpOnly`, `secure`, `lax`, 400 days), `getCurrentDevice`, `requireDevice`, `requireAdmin`
 - [x] `lib/actions/pair-device.ts` + `lib/auth/pairing-limit.ts` (global lockout: 10 failed codes / 15 min)
-- [x] `/pair` page + `components/pair-form.tsx` (device name prefilled from User-Agent, OTP input auto-submits, shake on invalid code)
+- [x] `/pair` page + `components/devices/pair-form.tsx` (device name prefilled from User-Agent, OTP input auto-submits, shake on invalid code)
 - [x] `scripts/create-pairing-code.mjs` (`docker compose exec umai node scripts/create-pairing-code.mjs --admin`)
 - [x] `proxy.ts`: optimistic cookie check, redirect to `/pair?next=...`, 401 for other methods, renews the cookie
 - [x] `requireDevice()` at the top of every server action in `lib/actions/*` and in `app/uploads/[filename]/route.ts` (proxy alone is not enough: Next docs say server functions must check auth themselves); uploads route rejects paths outside `public/uploads`, `saveImage` moved to `lib/recipes/` so it is no longer a public action
@@ -80,7 +80,7 @@ CI:
 Tests:
 
 - [x] Recipe actions: `create-recipe`, `update-recipe` (editing must not silently drop ingredients or steps), `delete-recipe`, `get-recipe-details`
-- [x] Portion scaling: `components/scalable-text.tsx`, `components/ingredients.tsx` and the portions control in `components/recipe.tsx` (`parseScalable` and `formatAmount` were already covered in `lib/utils.test.ts`)
+- [x] Portion scaling: `components/recipes/scalable-text.tsx`, `components/recipes/ingredients.tsx` and the portions control in `components/recipes/recipe.tsx` (`parseScalable` and `formatAmount` were already covered in `lib/utils.test.ts`)
 - [x] Smoke E2E with Playwright in CI before the redesign rewrites the UI: pair -> create a recipe -> open it -> change portions -> delete. The full suite stays in section 8.
 
 ## 6. Public access
@@ -104,7 +104,7 @@ Screens, one branch and PR each, in this order. Each rebuilds existing functiona
 - [ ] Shell (branch `redesign-shell`): navigation that is a floating tab bar Recepty / Nákup / Přidat on phones, a rail on tablets and a sidebar with Nastavení on desktop (Nákup is a placeholder page until the shopping list); settings from the home header on phones; admin-only link to devices; screen transitions
 - [ ] Home: greeting, search, "Co dneska?" and filter chips (one column on phones, search and "Co dneska?" side by side on desktop), recipe grid with cards as links (2 columns on phones, auto-fill on wider screens), empty state
 - [ ] Detail: phones and tablets in one column (photo, title, portions, ingredients, steps, sticky "Vařit"); desktop in two columns with photo, portions and ingredients on the left (sticky, scrolls on its own) and title, steps and "Vařit" on the right; edit and delete
-- [ ] Cook mode: replaces `fullScreenMode` in `components/recipe.tsx`; step progress, swipe between steps, large text, timer, "hotovo" screen; from `lg` the step is on the left and "V tomto kroku" plus all ingredients with check-off on the right, arrow keys switch steps
+- [ ] Cook mode: replaces `fullScreenMode` in `components/recipes/recipe.tsx`; step progress, swipe between steps, large text, timer, "hotovo" screen; from `lg` the step is on the left and "V tomto kroku" plus all ingredients with check-off on the right, arrow keys switch steps
 - [ ] Add and edit: recipe form and import; desktop adds a tips column next to the form
 - [ ] Settings, devices, pairing: one readable column on every width; on desktop settings is a sidebar item
 
@@ -112,11 +112,11 @@ Dialogs and toasts by width: bottom sheet and bottom toast on phones; centered d
 
 Found by the tests in section 5, left for the redesign:
 
-- [ ] Portion minus/plus buttons in `components/recipe.tsx` are icon-only and have no accessible name
+- [ ] Portion minus/plus buttons in `components/recipes/recipe.tsx` are icon-only and have no accessible name
 - [ ] Clearing the portions field jumps to 1 (`Number("")` is 0, then clamped), so typing 6 after Backspace gives 16
 - [ ] The portions field accepts decimals ("2.5"); decide whether only whole portions are allowed
-- [ ] The delete recipe button is icon-only and has no accessible name (`components/recipe.tsx`)
-- [ ] Ingredient and step labels are not linked to their inputs: `FieldLabel htmlFor` points to `ingredients.0.name` etc., but the inputs have no `id` (name, amount, note, minutes, step text; `components/recipe-ingredients-field.tsx`)
+- [ ] The delete recipe button is icon-only and has no accessible name (`components/recipes/recipe.tsx`)
+- [ ] Ingredient and step labels are not linked to their inputs: `FieldLabel htmlFor` points to `ingredients.0.name` etc., but the inputs have no `id` (name, amount, note, minutes, step text; `components/recipes/recipe-ingredients-field.tsx`)
 - [ ] The recipe card on the home page is not a link, so a recipe cannot be opened in a new tab (check keyboard access too)
 
 Features to add:

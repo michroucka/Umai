@@ -1,5 +1,5 @@
-import { DeviceList } from "@/components/device-list";
-import { PairingCodeForm } from "@/components/pairing-code-form";
+import { DeviceList } from "@/components/devices/device-list";
+import { PairingCodeForm } from "@/components/devices/pairing-code-form";
 import { requireAdmin } from "@/lib/auth/session";
 import { listDevices } from "@/lib/auth/devices";
 import { formatPragueDateTime } from "@/lib/format-date";

@@ -5,7 +5,7 @@ import { IconHeartBroken, IconPlus, IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import Link from "next/link";
-import { RecipeCard } from "@/components/recipe-card";
+import { RecipeCard } from "@/components/recipes/recipe-card";
 import { Recipe } from "@/lib/types";
 
 export function RecipeList({ recipes }: { recipes: Recipe[] }) {

@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { eq } from "drizzle-orm";
 import { recipes } from "@/db/schema";
 import { getRecipeDetails } from "@/lib/actions/get-recipe-details";
-import { Recipe } from "@/components/recipe";
+import { Recipe } from "@/components/recipes/recipe";
 import { IconChevronLeft, IconHeartBroken } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

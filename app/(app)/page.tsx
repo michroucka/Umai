@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { recipes } from "@/db/schema";
-import { RecipeList } from "@/components/recipe-list";
+import { RecipeList } from "@/components/recipes/recipe-list";
 
 export const dynamic = "force-dynamic";
 

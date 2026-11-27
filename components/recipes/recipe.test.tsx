@@ -2,7 +2,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Recipe } from "@/components/recipe";
+import { Recipe } from "@/components/recipes/recipe";
 import type { RecipeWithDetails } from "@/lib/types";
 
 vi.mock("@/lib/actions/delete-recipe", () => ({ deleteRecipe: vi.fn() }));

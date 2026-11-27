@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import { Ingredients } from "@/components/ingredients";
+import { Ingredients } from "@/components/recipes/ingredients";
 import type { Ingredient } from "@/lib/types";
 
 afterEach(cleanup);

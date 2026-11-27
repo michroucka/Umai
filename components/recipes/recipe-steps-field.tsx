@@ -1,4 +1,4 @@
-import { RecipeFormValues } from "@/components/recipe-form";
+import { RecipeFormValues } from "@/components/recipes/recipe-form";
 import { Control, Controller, FieldErrors, useFieldArray, UseFormTrigger } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";

@@ -2,7 +2,7 @@
 
 import { Ingredient } from "@/lib/types";
 import { formatAmount } from "@/lib/utils";
-import { ScalableText } from "@/components/scalable-text";
+import { ScalableText } from "@/components/recipes/scalable-text";
 
 export function Ingredients({ ingredients, portionsFactor }: { ingredients: Ingredient[]; portionsFactor: number }) {
     return (

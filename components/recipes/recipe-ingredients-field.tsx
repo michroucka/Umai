@@ -1,5 +1,5 @@
 import { Control, Controller, FieldErrors, useFieldArray, UseFormGetValues, UseFormTrigger } from "react-hook-form";
-import { RecipeFormValues } from "@/components/recipe-form";
+import { RecipeFormValues } from "@/components/recipes/recipe-form";
 import { Input } from "@/components/ui/input";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group";

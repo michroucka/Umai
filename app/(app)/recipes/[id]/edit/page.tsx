@@ -1,4 +1,4 @@
-import { RecipeForm } from "@/components/recipe-form";
+import { RecipeForm } from "@/components/recipes/recipe-form";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/db";
 import { recipes } from "@/db/schema";

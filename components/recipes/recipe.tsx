@@ -33,10 +33,10 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { deleteRecipe } from "@/lib/actions/delete-recipe";
-import { Timer } from "@/components/timer";
+import { Timer } from "@/components/recipes/timer";
 import { motion, AnimatePresence, useDragControls } from "motion/react";
-import { Ingredients } from "@/components/ingredients";
-import { ScalableText } from "@/components/scalable-text";
+import { Ingredients } from "@/components/recipes/ingredients";
+import { ScalableText } from "@/components/recipes/scalable-text";
 
 const MIN_PORTIONS = 1;
 const MAX_PORTIONS = 99;

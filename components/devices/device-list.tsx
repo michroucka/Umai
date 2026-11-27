@@ -6,7 +6,7 @@ import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/co
 import { IconDevices } from "@tabler/icons-react";
 import { revokePairedDevice } from "@/lib/actions/revoke-paired-device";
 import { useState, useTransition } from "react";
-import { RevokeDeviceButton } from "@/components/revoke-device-button";
+import { RevokeDeviceButton } from "@/components/devices/revoke-device-button";
 
 export type DeviceListItem = Device & { lastSeenLabel: string };
 

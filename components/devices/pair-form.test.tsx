@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { PairForm } from "@/components/pair-form";
+import { PairForm } from "@/components/devices/pair-form";
 import { pairDevice, type PairDeviceState } from "@/lib/actions/pair-device";
 import { MAX_DEVICE_NAME_LENGTH } from "@/lib/auth/device-name";
 

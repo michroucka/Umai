@@ -1,13 +1,13 @@
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Control, Controller, UseFormGetValues, UseFormSetValue, useFormState, useWatch } from "react-hook-form";
-import { ButtonGroup } from "./ui/button-group";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
 import { IconChefHat, IconSearch, IconUpload, IconX } from "@tabler/icons-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { searchImages } from "@/lib/actions/search-images";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { RecipeFormValues } from "@/components/recipe-form";
+import { RecipeFormValues } from "@/components/recipes/recipe-form";
 
 export function RecipeImageField({
     control,
