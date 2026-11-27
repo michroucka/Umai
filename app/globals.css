@@ -195,18 +195,6 @@
   body {
     @apply bg-background text-foreground;
   }
-  h1 {
-    @apply scroll-m-20 text-center font-serif text-4xl font-normal tracking-tight text-balance;
-  }
-  h2 {
-    @apply scroll-m-20 border-b pb-2 font-serif text-3xl font-normal tracking-tight first:mt-0;
-  }
-  h3 {
-    @apply scroll-m-20 font-serif text-2xl font-normal tracking-tight;
-  }
-  h4 {
-    @apply scroll-m-20 font-serif text-xl font-normal tracking-tight;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
