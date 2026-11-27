@@ -57,8 +57,9 @@ export function Navbar({ isAdmin }: { isAdmin: boolean }) {
                 "md:rounded-none md:border-r md:border-line md:bg-ink-deep md:shadow-none md:backdrop-blur-none",
                 "lg:gap-9 lg:px-4.5 lg:py-7",
             )}
+            style={{ viewTransitionName: "navbar" }}
         >
-            <Link href="/" className="hidden md:flex lg:px-3.5">
+            <Link href="/" className="hidden md:flex lg:px-3.5" transitionTypes={["nav-fade"]}>
                 <Image src="/brand/umai-horizontal.svg" alt="Umai" width={144} height={48} className="w-full lg:w-29" />
             </Link>
             <ul className="grid grid-cols-3 md:grid-cols-1 md:auto-rows-[64px] md:gap-1.5 lg:auto-rows-[52px]">
@@ -76,6 +77,7 @@ export function Navbar({ isAdmin }: { isAdmin: boolean }) {
                                         "md:h-full md:justify-center md:rounded-2xl md:hover:text-rice",
                                         "lg:flex-row lg:justify-start lg:gap-3.5 lg:px-4 lg:py-0 lg:text-[0.98rem]",
                                     )}
+                                    transitionTypes={["nav-fade"]}
                                 >
                                     <item.Icon
                                         className="shrink-0 group-aria-[current=page]:text-nori-light"

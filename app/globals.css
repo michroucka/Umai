@@ -197,6 +197,87 @@
   }
 }
 
+/* Screen transitions from the mockup. Links pick the type with `transitionTypes`: nav-forward goes deeper,
+   nav-back returns, nav-fade switches between navigation tabs. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+/* the overlay would otherwise swallow taps made while a transition runs */
+::view-transition {
+  pointer-events: none;
+}
+
+/* the navigation stays put while the page content moves */
+::view-transition-group(navbar) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(navbar) {
+  display: none;
+}
+::view-transition-new(navbar) {
+  animation: none;
+}
+
+::view-transition-old(.nav-forward) {
+  animation: screen-out-left 0.48s var(--ease-smooth) both;
+}
+::view-transition-new(.nav-forward) {
+  animation: screen-in-right 0.48s var(--ease-smooth) both;
+  box-shadow: -20px 0 40px rgb(0 0 0 / 0.45);
+}
+
+::view-transition-old(.nav-back) {
+  animation: screen-out-right 0.44s var(--ease-smooth) both;
+  z-index: 2;
+}
+::view-transition-new(.nav-back) {
+  animation: screen-in-left 0.44s var(--ease-smooth) both;
+}
+
+::view-transition-old(.nav-fade) {
+  animation: screen-fade-out 0.18s ease both;
+}
+::view-transition-new(.nav-fade) {
+  animation: screen-fade-in 0.32s var(--ease-smooth) 0.06s both;
+}
+
+@keyframes screen-in-right {
+  from {
+    transform: translateX(100%);
+  }
+}
+@keyframes screen-out-left {
+  to {
+    transform: translateX(-28%);
+    opacity: 0.4;
+  }
+}
+@keyframes screen-in-left {
+  from {
+    transform: translateX(-28%);
+    opacity: 0.4;
+  }
+}
+@keyframes screen-out-right {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes screen-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes screen-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -204,5 +285,12 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }
