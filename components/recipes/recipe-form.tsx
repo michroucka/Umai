@@ -19,13 +19,13 @@ import * as z from "zod";
 import { useForm, Controller } from "react-hook-form";
 import Link from "next/link";
 import { createRecipe } from "@/lib/actions/create-recipe";
-import { RecipeImageField } from "@/components/recipe-image-field";
-import { RecipeIngredientsField } from "@/components/recipe-ingredients-field";
-import { RecipeStepsField } from "@/components/recipe-steps-field";
+import { RecipeImageField } from "@/components/recipes/recipe-image-field";
+import { RecipeIngredientsField } from "@/components/recipes/recipe-ingredients-field";
+import { RecipeStepsField } from "@/components/recipes/recipe-steps-field";
 import { RecipeWithDetails } from "@/lib/types";
 import { parseHoursMinutes } from "@/lib/utils";
 import { updateRecipe } from "@/lib/actions/update-recipe";
-import { RecipeImportDialog } from "@/components/recipe-import-dialog";
+import { RecipeImportDialog } from "@/components/recipes/recipe-import-dialog";
 import { ImportedRecipe } from "@/lib/actions/import-recipe";
 
 export type RecipeFormValues = z.input<typeof recipeSchema>;

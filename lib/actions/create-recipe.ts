@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { ingredients, recipes, steps } from "@/db/schema";
 import { redirect } from "next/navigation";
 import { saveImage } from "@/lib/recipes/recipe-utils";
-import { RecipeFormValues } from "@/components/recipe-form";
+import { RecipeFormValues } from "@/components/recipes/recipe-form";
 import { parsePrepTime } from "@/lib/utils";
 import { requireDevice } from "@/lib/auth/session";
 

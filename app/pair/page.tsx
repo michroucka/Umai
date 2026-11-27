@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { PairForm } from "@/components/pair-form";
+import { PairForm } from "@/components/devices/pair-form";
 import { suggestDeviceName } from "@/lib/auth/device-name";
 import { safeNextPath } from "@/lib/auth/next-path";
 import { getCurrentDevice } from "@/lib/auth/session";

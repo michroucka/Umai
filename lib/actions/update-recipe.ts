@@ -3,7 +3,7 @@
 import { saveImage } from "@/lib/recipes/recipe-utils";
 import { db } from "@/db";
 import { ingredients, recipes, steps } from "@/db/schema";
-import { RecipeFormValues } from "@/components/recipe-form";
+import { RecipeFormValues } from "@/components/recipes/recipe-form";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { parsePrepTime } from "@/lib/utils";

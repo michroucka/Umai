@@ -84,7 +84,7 @@ This builds the production image and starts the app on port `3333` (see `docker-
 
 ```
 app/            Next.js App Router pages and API routes
-components/     React components (recipe form, list, ingredients, UI primitives)
+components/     React components by feature: recipes/, devices/, layout/ (navigation), ui/ (shadcn primitives)
 db/             Drizzle schema and database client
 drizzle/        Generated SQL migrations
 ```
