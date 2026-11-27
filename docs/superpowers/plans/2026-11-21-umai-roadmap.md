@@ -101,7 +101,7 @@ Branding (`~/Repos/graphic-design/recepty/kit`): ink #1E211F, slate #2A302C, ric
 Screens, one branch and PR each, in this order. Each rebuilds existing functionality in the new look; new features stay in the list below. Fix the a11y bugs below in the screen that rewrites the component.
 
 - [x] Design tokens from the mockup in `app/globals.css` (`ink-deep`, `slate-hi`, `line`, `rice-dim`, `yuzu-soft`, `danger`, `ease-smooth`, `ease-spring`, `rounded-card`, `shadow-photo`, `animate-rise`, `animate-pop`, reduced motion)
-- [ ] Shell (branch `redesign-shell`): navigation that is a floating tab bar Recepty / Nákup / Přidat on phones, a rail on tablets and a sidebar with Nastavení on desktop (Nákup is a placeholder page until the shopping list); settings from the home header on phones; admin-only link to devices; screen transitions
+- [x] Shell (branch `redesign-shell`): navigation that is a floating tab bar Recepty / Nákup / Přidat on phones, a rail on tablets and a sidebar with Nastavení on desktop (Nákup is a placeholder page until the shopping list); settings from the home header on phones; admin-only link to devices; screen transitions
 - [ ] Home: greeting, search, "Co dneska?" and filter chips (one column on phones, search and "Co dneska?" side by side on desktop), recipe grid with cards as links (2 columns on phones, auto-fill on wider screens), empty state
 - [ ] Detail: phones and tablets in one column (photo, title, portions, ingredients, steps, sticky "Vařit"); desktop in two columns with photo, portions and ingredients on the left (sticky, scrolls on its own) and title, steps and "Vařit" on the right; edit and delete
 - [ ] Cook mode: replaces `fullScreenMode` in `components/recipes/recipe.tsx`; step progress, swipe between steps, large text, timer, "hotovo" screen; from `lg` the step is on the left and "V tomto kroku" plus all ingredients with check-off on the right, arrow keys switch steps
@@ -121,7 +121,7 @@ Found by the tests in section 5, left for the redesign:
 
 Features to add:
 
-- [ ] Link to `/settings/devices` for admins (the navbar lives in the layout and does not know the current device yet; part of the shell)
+- [x] Link to `/settings/devices` for admins (the navbar lives in the layout and does not know the current device yet; part of the shell)
 - [x] Switch icons from Lucide to Tabler (`@tabler/icons-react`, `iconLibrary` in `components.json`, replace `lucide-react` imports incl. `components/ui`)
 - [ ] Tags and filters
 - [ ] Favorites and recently cooked
